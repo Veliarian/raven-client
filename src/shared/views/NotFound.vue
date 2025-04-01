@@ -1,8 +1,9 @@
 <script setup>
+
 </script>
 
 <template>
-  <RouterView/>
+<div>404 MotherFucker</div>
 </template>
 
 <style scoped>
