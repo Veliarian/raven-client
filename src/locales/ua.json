@@ -1,0 +1,27 @@
+{
+  "sidebar": {
+    "dashboard": "Головна",
+    "lessons": "Уроки",
+    "schedule": "Розклад",
+    "materials": "Матеріали"
+  },
+  "lessons": {
+    "header": "Управління уроками",
+    "search": "Шукати уроки...",
+    "createLessonBtn": "Створити урок",
+    "filters": {
+      "all": "Всі",
+      "publish": "Опубліковані",
+      "draft": "Чернетки"
+    },
+    "cards": {
+      "lastUpdate": "Останнє оновлення",
+      "details": "Деталі",
+      "publish": "Опублікувати",
+      "draft": "Позначити як чорновик",
+      "edit": "Редагувати",
+      "duplicate": "Дублювати",
+      "delete": "Видалити"
+    }
+  }
+}

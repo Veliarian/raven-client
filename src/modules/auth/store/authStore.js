@@ -12,6 +12,9 @@ export const useAuthStore = defineStore("auth", {
         removeToken(){
             this.token = null;
         },
+        logout() {
+            this.removeToken();
+        }
     },
 
     persist: {

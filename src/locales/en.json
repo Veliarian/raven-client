@@ -1,0 +1,27 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "lessons": "Lessons",
+    "schedule": "Schedule",
+    "materials": "Materials"
+  },
+  "lessons": {
+    "header": "Lesson Management",
+    "search": "Search lessons...",
+    "createLessonBtn": "Create Lesson",
+    "filters": {
+      "all": "All",
+      "publish": "Published",
+      "draft": "Drafts"
+    },
+    "cards": {
+      "lastUpdate": "Last updated",
+      "details": "View Details",
+      "publish": "Publish Lesson",
+      "draft": "Mark as Draft",
+      "edit": "Edit",
+      "duplicate": "Duplicate",
+      "delete": "Delete"
+    }
+  }
+}

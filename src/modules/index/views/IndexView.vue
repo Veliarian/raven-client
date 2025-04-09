@@ -1,12 +1,19 @@
 <script setup>
 
 import Sidebar from "../components/Sidebar.vue";
+import TopBar from "../components/TopBar.vue";
+
 </script>
 
 <template>
     <div class="index-view">
         <Sidebar/>
-        <RouterView/>
+        <div class="content-box">
+            <TopBar/>
+            <main class="views-box">
+                <RouterView/>
+            </main>
+        </div>
     </div>
 </template>
 
@@ -15,5 +22,16 @@ import Sidebar from "../components/Sidebar.vue";
         width: 100%;
         height: 100%;
         display: flex;
+    }
+
+    .content-box{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .views-box{
+        flex: 1;
+        padding: 2rem;
     }
 </style>

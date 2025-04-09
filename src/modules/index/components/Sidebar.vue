@@ -1,6 +1,16 @@
 <script setup>
+import {useI18n} from "vue-i18n";
+import Icon from "../../../shared/components/Icon.vue";
+import {
+    mdiBookOpenBlankVariantOutline,
+    mdiCalendarMonth,
+    mdiFolderOutline,
+    mdiHomeOutline
+} from "@mdi/js";
 
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+const { t, locale } = useI18n();
+
+
 </script>
 
 <template>
@@ -9,9 +19,21 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
             <div class="sidebar-header"></div>
             <nav class="sidebar-body">
                 <div class="sidebar-list">
-                    <router-link class="sidebar-list-item" to="/dashboard">
-                        <font-awesome-icon class="sidebar-list-item-icon" icon="house"></font-awesome-icon>
-                        <span class="sidebar-list-item-text">Dashboard</span>
+                    <router-link class="sidebar-list-item" exact-active-class="active" to="/">
+                        <Icon :icon="mdiHomeOutline"/>
+                        <span class="sidebar-list-item-text">{{ t("sidebar.dashboard") }}</span>
+                    </router-link>
+                    <router-link class="sidebar-list-item" exact-active-class="active" to="/schedule">
+                        <Icon :icon="mdiCalendarMonth"/>
+                        <span class="sidebar-list-item-text">{{ t("sidebar.schedule") }}</span>
+                    </router-link>
+                    <router-link class="sidebar-list-item" exact-active-class="active" to="/lessons">
+                        <Icon :icon="mdiBookOpenBlankVariantOutline"/>
+                        <span class="sidebar-list-item-text">{{ t("sidebar.lessons") }}</span>
+                    </router-link>
+                    <router-link class="sidebar-list-item" exact-active-class="active" to="/materials">
+                        <Icon :icon="mdiFolderOutline"/>
+                        <span class="sidebar-list-item-text">{{ t("sidebar.materials") }}</span>
                     </router-link>
                 </div>
             </nav>
@@ -24,33 +46,48 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 .sidebar{
     width: 16rem;
     height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
     z-index: 50;
-    background: hsl(240 10% 15%);
+    background: var(--background);
+    border-right: 2px solid var(--border-color);
 }
 
 .sidebar-content{
     height: 100%;
     display: flex;
     flex-direction: column;
-    border: 1px solid hsl(240 10% 20%);
 }
 
 .sidebar-header{
     padding: 1rem;
-    border-bottom: 1px solid hsl(240 10% 20%);
 }
 
 .sidebar-body{
     padding: 1.5rem .75rem;
-    flex: 1 1 0%;
+    flex: 1 1 0;
 }
 
 .sidebar-footer{
     padding: 1rem;
-    border-top: 1px solid hsl(240 10% 20%);
 }
+
+.sidebar-list-item{
+    padding: .75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 1.5rem;
+    color: var(--text-color-secondary);
+    margin-bottom: .2rem;
+}
+
+.sidebar-list-item:hover{
+    background: var(--background-muted);
+}
+
+.sidebar-list-item.active{
+    background: var(--green);
+    color: var(--text-color-contrast);
+}
+
+
 </style>
