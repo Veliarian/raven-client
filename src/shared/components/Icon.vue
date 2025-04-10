@@ -14,6 +14,6 @@
 defineProps({
     icon: String,      // шлях з @mdi/js
     size: { type: [Number, String], default: 24 },
-    color: { type: String, default: "inherit" },
+    color: { type: String},
 });
 </script>
