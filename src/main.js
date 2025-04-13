@@ -1,17 +1,21 @@
 import { createApp } from 'vue';
 import { createPinia } from "pinia";
-import piniaPersist from "pinia-plugin-persistedstate";
-import App from "./App.vue";
-import router from "./shared/router/router.js";
 import { createI18n } from "vue-i18n";
-import en from "./locales/en.json";
-import ua from "./locales/ua.json";
-import "./style.css";
-import {useThemeStore} from "./shared/store/themeStore.js";
+
+import App from "./App.vue";
+import piniaPersist from "pinia-plugin-persistedstate";
+
+import router from "@/shared/router/router.js";
+
+import en from "@/locales/en.json";
+import ua from "@/locales/ua.json";
+
+import {useThemeStore} from "@/shared/store/themeStore.js";
+import "@/style.css";
 
 const i18n = createI18n({
    legacy: false,
-   locale: "ua",
+   locale: navigator.language || "ua",
    fallbackLng: "en",
    messages: {
        en,

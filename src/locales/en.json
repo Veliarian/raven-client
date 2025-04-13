@@ -5,6 +5,32 @@
     "schedule": "Schedule",
     "materials": "Materials"
   },
+  "topBar": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "profile": {
+    "profileSettings": "Profile Settings",
+    "additionalMessage": "Manage your account settings and set email preferences",
+    "profileSettingsHeader": "Profile Information",
+    "profileSettingsAdditional": "Update your photo and personal details here.",
+    "changePassword": "Change Password",
+    "changePasswordAdditional": "Update your password to keep your account secure.",
+    "notificationPreferences": "Notification Preferences",
+    "notificationPreferencesAdditional": "Choose how you want to be notified about activity in the platform.",
+    "profilePictureHeader": "Profile Picture",
+    "profilePictureAdditional": "Upload a clear photo to help others recognize you.",
+    "username": "Username",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "patronymic": "Patronymic",
+    "email": "Email",
+    "bio": "Bio"
+  },
+  "dashboard": {
+    "header": "Dashboard"
+  },
   "lessons": {
     "header": "Lesson Management",
     "search": "Search lessons...",
@@ -23,5 +49,14 @@
       "duplicate": "Duplicate",
       "delete": "Delete"
     }
+  },
+  "controls": {
+    "back": "Back",
+    "profile": "Profile",
+    "account": "Account",
+    "notifications": "Notifications",
+    "delete": "Delete",
+    "upload": "Upload",
+    "save": "Save"
   }
 }

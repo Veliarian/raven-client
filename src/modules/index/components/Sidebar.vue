@@ -1,6 +1,6 @@
 <script setup>
 import {useI18n} from "vue-i18n";
-import Icon from "../../../shared/components/Icon.vue";
+import Icon from "@/shared/components/Icon.vue";
 import {
     mdiBookOpenBlankVariantOutline,
     mdiCalendarMonth,
@@ -81,7 +81,7 @@ const { t, locale } = useI18n();
 }
 
 .sidebar-list-item:hover{
-    background: var(--background-muted);
+    background: var(--green-muted);
 }
 
 .sidebar-list-item.active{

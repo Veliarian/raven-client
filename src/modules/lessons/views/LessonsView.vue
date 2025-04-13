@@ -1,7 +1,7 @@
 <script setup>
 
 import {useI18n} from "vue-i18n";
-import Icon from "../../../shared/components/Icon.vue";
+import Icon from "@/shared/components/Icon.vue";
 import {mdiPlus} from "@mdi/js";
 
 const { t, locale } = useI18n();

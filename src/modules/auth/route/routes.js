@@ -1,5 +1,5 @@
-import AuthView from "./views/AuthView.vue";
-import OAuthCallback from "./components/OAuthCallback.vue";
+import AuthView from "../views/AuthView.vue";
+import OAuthCallback from "../components/OAuthCallback.vue";
 
 export default [
     {

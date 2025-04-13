@@ -1,7 +1,9 @@
 <script setup>
 
-import SearchInput from "../../../shared/components/SearchInput.vue";
-import ThemeSwitch from "../../../shared/components/ThemeSwitch.vue";
+import SearchInput from "@/shared/components/SearchInput.vue"
+import ThemeSwitch from "@/shared/components/ThemeSwitch.vue";
+import NoticeButton from "@/shared/components/NoticeButton.vue";
+import ProfileDetails from "@/modules/index/components/ProfileDetails.vue";
 </script>
 
 <template>
@@ -13,6 +15,10 @@ import ThemeSwitch from "../../../shared/components/ThemeSwitch.vue";
         <div class="top-bar-content-box">
             <SearchInput/>
             <ThemeSwitch/>
+            <div class="user-actions">
+                <NoticeButton/>
+                <ProfileDetails/>
+            </div>
         </div>
     </div>
 </header>
@@ -34,5 +40,10 @@ import ThemeSwitch from "../../../shared/components/ThemeSwitch.vue";
     display: flex;
     align-items: center;
     gap: 2.5rem;
+}
+
+.user-actions{
+    display: flex;
+    gap: 1rem;
 }
 </style>

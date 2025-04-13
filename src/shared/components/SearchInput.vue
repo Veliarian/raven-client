@@ -1,6 +1,5 @@
 <script setup>
 
-import IndexView from "../../modules/index/views/IndexView.vue";
 import Icon from "./Icon.vue";
 import {mdiMagnify} from "@mdi/js";
 
@@ -50,9 +49,11 @@ defineEmits(["update:modelValue"]);
     border-radius: 1.2rem;
     color: var(--text-color-secondary);
     font-size: .9rem;
+    transition: outline-width .2s;
 }
 
-.search-box:focus{
+.search-box:hover, .search-box:focus{
     outline: .15rem solid var(--green);
+    transition: outline-width .2s;
 }
 </style>

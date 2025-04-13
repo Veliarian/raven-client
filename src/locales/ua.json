@@ -5,6 +5,32 @@
     "schedule": "Розклад",
     "materials": "Матеріали"
   },
+  "topBar": {
+    "profile": "Профіль",
+    "settings": "Налаштування",
+    "logout": "Вийти"
+  },
+  "profile": {
+    "profileSettings": "Налаштування профілю",
+    "additionalMessage": "Керуйте налаштуваннями свого акаунта та налаштовуйте параметри електронної пошти",
+    "profileSettingsHeader": "Основна інформація",
+    "profileSettingsAdditional": "Оновіть своє фото та особисті дані тут.",
+    "changePassword": "Змінити пароль",
+    "changePasswordAdditional": "Оновіть пароль, щоб захистити свій обліковий запис.",
+    "notificationPreferences": "Налаштування сповіщень",
+    "notificationPreferencesAdditional": "Виберіть, як ви хочете отримувати сповіщення про активність на платформі.",
+    "profilePictureHeader": "Фото профілю",
+    "profilePictureAdditional": "Завантажте чітке фото, щоб інші могли вас впізнати.",
+    "username": "Імʼя користувача",
+    "firstname": "Імʼя",
+    "lastname": "Прізвище",
+    "patronymic": "По-батькові",
+    "email": "Пошта",
+    "bio": " Біографія"
+  },
+  "dashboard": {
+    "header": "Головна"
+  },
   "lessons": {
     "header": "Управління уроками",
     "search": "Шукати уроки...",
@@ -23,5 +49,14 @@
       "duplicate": "Дублювати",
       "delete": "Видалити"
     }
+  },
+  "controls": {
+    "back": "Назад",
+    "profile": "Профіль",
+    "account": "Акаунт",
+    "notifications": "Сповіщення",
+    "delete": "Видалити",
+    "upload": "Завантажити",
+    "save": "Зберегти"
   }
 }
