@@ -28,6 +28,7 @@ defineEmits(["update:modelValue"]);
 
 <style scoped>
 .search-input{
+    width: 100%;
     display: flex;
     align-items: center;
     gap: .5rem;
@@ -41,7 +42,7 @@ defineEmits(["update:modelValue"]);
 }
 
 .search-box{
-    width: 300px;
+    width: 100%;
     height: 2.5rem;
     background-color: var(--background-light);
     border: none;

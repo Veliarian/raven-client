@@ -16,8 +16,10 @@ export const useUserStore = defineStore("user", {
             const user = await userApi.fetchUserProfile();
             this.setUser(user);
 
-            const profilePictureStore = useProfilePictureStore();
-            profilePictureStore.setPicture(user.profilePicture);
+            if(this.user.profilePicture){
+                const profilePictureStore = useProfilePictureStore();
+                profilePictureStore.setPicture(this.user.profilePicture);
+            }
         },
 
         async updateUser(newUser){

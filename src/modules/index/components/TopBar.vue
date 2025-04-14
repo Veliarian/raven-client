@@ -13,7 +13,9 @@ import ProfileDetails from "@/modules/index/components/ProfileDetails.vue";
 
         </div>
         <div class="top-bar-content-box">
-            <SearchInput/>
+            <div class="top-bar-search-input">
+                <SearchInput/>
+            </div>
             <ThemeSwitch/>
             <div class="user-actions">
                 <NoticeButton/>
@@ -40,6 +42,10 @@ import ProfileDetails from "@/modules/index/components/ProfileDetails.vue";
     display: flex;
     align-items: center;
     gap: 2.5rem;
+}
+
+.top-bar-search-input{
+    width: 300px;
 }
 
 .user-actions{

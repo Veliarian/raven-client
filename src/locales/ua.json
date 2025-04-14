@@ -2,8 +2,13 @@
   "sidebar": {
     "dashboard": "Головна",
     "lessons": "Уроки",
+    "lessonsAdditional": "Створення та керування шаблонами уроків",
     "schedule": "Розклад",
-    "materials": "Матеріали"
+    "scheduleAdditional": "Перегляд та керування розкладом",
+    "materials": "Матеріали",
+    "materialsAdditional": "Доступ до навчальних матеріалів",
+    "chat": "Чат",
+    "chatAdditional": "Спілкування між користувачами"
   },
   "topBar": {
     "profile": "Профіль",
@@ -29,7 +34,8 @@
     "bio": " Біографія"
   },
   "dashboard": {
-    "header": "Головна"
+    "header": "Головна",
+    "startClass": "Розпочати заняття"
   },
   "lessons": {
     "header": "Управління уроками",

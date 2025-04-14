@@ -2,8 +2,13 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "lessons": "Lessons",
+    "lessonsAdditional": "Create and manage lesson templates",
     "schedule": "Schedule",
-    "materials": "Materials"
+    "scheduleAdditional": "View and manage schedule",
+    "materials": "Materials",
+    "materialsAdditional": "Access learning materials",
+    "chat": "Chat",
+    "chatAdditional": "Communication between users"
   },
   "topBar": {
     "profile": "Profile",
@@ -29,14 +34,15 @@
     "bio": "Bio"
   },
   "dashboard": {
-    "header": "Dashboard"
+    "header": "Dashboard",
+    "startClass": "Start a class"
   },
   "lessons": {
     "header": "Lesson Management",
     "search": "Search lessons...",
     "createLessonBtn": "Create Lesson",
     "filters": {
-      "all": "All",
+      "all": "All Lessons",
       "publish": "Published",
       "draft": "Drafts"
     },
