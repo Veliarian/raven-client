@@ -5,18 +5,39 @@ import Icon from "@/shared/components/Icon.vue";
 import {mdiPlus} from "@mdi/js";
 import SearchInput from "@/shared/components/SearchInput.vue";
 import MultiButton from "@/shared/components/MultiButton.vue";
-import {ref} from "vue";
+import {computed, onMounted, ref} from "vue";
+import {useLessonsStore} from "@/modules/lessons/store/lessonsStore.js";
 
 const {t} = useI18n();
+const lessonsStore = useLessonsStore();
 
+const lessons = computed(() => lessonsStore.lessons);
+
+console.log(lessons[0]);
 
 const lessonsType = ref("all");
+const editingLessonId = ref(null);
+const editableLesson = ref(null);
 
 const selectLessonsType = (type) => {
     if (lessonsType.value !== type) {
         lessonsType.value = type;
     }
 }
+
+function startEditing(lesson) {
+    editingLessonId.value = lesson.id;
+    editableLesson.value = { ...lesson };
+}
+
+function cancelEditing() {
+    editingLessonId.value = null;
+    editableLesson.value = null;
+}
+
+onMounted(() => {
+   lessonsStore.fetchLessonsIfNeeded();
+});
 </script>
 
 <template>

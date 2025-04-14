@@ -8,7 +8,7 @@ export const lessonsApi = {
 
     async fetchLessons(userId) {
         try {
-            const response = await axios.get(URL, {
+            const response = await axios.get(URL + `/user/${userId}`, {
                 headers: authHeader()
             });
             return response.data;
