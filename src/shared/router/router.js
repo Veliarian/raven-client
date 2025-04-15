@@ -12,6 +12,7 @@ import LessonsView from "@/modules/lessons/views/LessonsView.vue";
 import NotFound from "../views/NotFound.vue";
 
 import {jwtDecode} from "jwt-decode";
+import MaterialsView from "@/modules/materials/views/MaterialsView.vue";
 
 
 const router = createRouter({
@@ -35,6 +36,10 @@ const router = createRouter({
                     path: "lessons",
                     component: LessonsView
                 },
+                {
+                    path: "materials",
+                    component: MaterialsView
+                }
             ],
         },
 

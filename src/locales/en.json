@@ -56,6 +56,23 @@
       "delete": "Delete"
     }
   },
+  "materials": {
+    "title": "Materials",
+    "subtitle": "Browse and manage your educational resources",
+    "overview": "Overview",
+    "all": "All Files",
+    "controls": {
+      "upload": "Upload",
+      "filter": "Filter",
+      "search": "Type for search your files...",
+      "all": "All Files",
+      "recent": "Recent",
+      "images": "Images",
+      "videos": "Videos",
+      "documents": "Documents",
+      "others": "Others"
+    }
+  },
   "controls": {
     "back": "Back",
     "profile": "Profile",

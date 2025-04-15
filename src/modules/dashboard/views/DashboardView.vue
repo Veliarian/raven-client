@@ -30,32 +30,32 @@ const {t} = useI18n();
             <div class="quick-links">
                 <router-link class="quick-link" to="/schedule">
                     <MiniCard class="schedule" :icon="mdiCalendarMonth"
-                              :header="t('sidebar.schedule')"
-                              :add="t('sidebar.scheduleAdditional')"
+                              :title="t('sidebar.schedule')"
+                              :sub="t('sidebar.scheduleAdditional')"
                               color="#7dae78"/>
                 </router-link>
                 <router-link class="quick-link" to="/lessons">
                     <MiniCard :icon="mdiBookOpenBlankVariantOutline"
-                              :header="t('sidebar.lessons')"
-                              :add="t('sidebar.lessonsAdditional')"
+                              :title="t('sidebar.lessons')"
+                              :sub="t('sidebar.lessonsAdditional')"
                               color="#ffcf47"/>
                 </router-link>
                 <router-link class="quick-link" to="/materials">
                     <MiniCard :icon="mdiFolderOutline"
-                              :header="t('sidebar.materials')"
-                              :add="t('sidebar.materialsAdditional')"
+                              :title="t('sidebar.materials')"
+                              :sub="t('sidebar.materialsAdditional')"
                               color="#edaaca"/>
                 </router-link>
                 <router-link class="quick-link" to="/chat">
                     <MiniCard :icon="mdiChatOutline"
-                              :header="t('sidebar.chat')"
-                              :add="t('sidebar.chatAdditional')"
+                              :title="t('sidebar.chat')"
+                              :sub="t('sidebar.chatAdditional')"
                               color="#b0ceea"/>
                 </router-link>
                 <router-link class="quick-link" to="/whiteboard">
                     <MiniCard :icon="mdiVectorSquareEdit"
-                              :header="t('sidebar.materials')"
-                              :add="t('sidebar.materialsAdditional')"
+                              :title="t('sidebar.materials')"
+                              :sub="t('sidebar.materialsAdditional')"
                               color="#7dae78"/>
                 </router-link>
             </div>

@@ -5,8 +5,8 @@ import Icon from "@/shared/components/Icon.vue";
 defineProps({
     icon: String,
     color: String,
-    header: String,
-    add: String
+    title: String,
+    sub: String
 });
 </script>
 
@@ -18,8 +18,8 @@ defineProps({
         </div>
     </div>
     <div class="info-box">
-        <h4 class="info-h">{{ header }}</h4>
-        <p class="info-p">{{ add }}</p>
+        <h4 class="info-h">{{ title }}</h4>
+        <p class="info-p">{{ sub }}</p>
     </div>
 </div>
 </template>
