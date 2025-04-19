@@ -23,6 +23,13 @@ export const useMediaFilesStore = defineStore("mediaFiles", {
                 this.mediaFiles = [...this.mediaFiles, mediaFile];
             }
         },
+
+        async uploadFileWithProgress(file, progress) {
+            const mediaFile = await mediaFilesApi.uploadFileWithProgress(file, progress);
+            if(mediaFile !== null){
+                this.mediaFiles = [...this.mediaFiles, mediaFile];
+            }
+        }
     },
 
     persist: {

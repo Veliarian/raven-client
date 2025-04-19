@@ -20,6 +20,7 @@ const mediaFilesStore = useMediaFilesStore();
 const mediaFiles = computed(() => mediaFilesStore.mediaFiles);
 
 const materialsType = ref("all");
+const isOpenForms = ref(false);
 const isOpenUploadFileForm = ref(false);
 
 const selectMaterialsType = (type) => {
@@ -29,7 +30,13 @@ const selectMaterialsType = (type) => {
 };
 
 const openUploadFileForm = () => {
+    isOpenForms.value = true;
     isOpenUploadFileForm.value = true;
+}
+
+const closeUploadFileForm = () => {
+    isOpenForms.value = false;
+    isOpenUploadFileForm.value = false;
 }
 
 onMounted(() => {
@@ -102,8 +109,8 @@ onMounted(() => {
         </main>
     </div>
 
-    <div class="forms-container">
-        <UploadFileForm/>
+    <div class="forms-container" v-if="isOpenForms">
+        <UploadFileForm v-if="isOpenUploadFileForm" @close-form="closeUploadFileForm"/>
     </div>
 </template>
 
@@ -183,5 +190,18 @@ tbody {
 
 td {
     padding: .75rem 1rem;
+}
+
+.forms-container{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-opacity);
 }
 </style>

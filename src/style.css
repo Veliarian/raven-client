@@ -1,10 +1,12 @@
 :root {
     --background: #F1F3F4;
     --background-light: #ffffff;
+    --background-opacity: rgba(0, 0, 0, .7);
     --border-color: #e5e7e9;
     --text-color-primary: #000000;
     --text-color-secondary: #656a69;
     --text-color-contrast: #ffffff;
+    --subtitle: #656a69;
     --green: #7dae78;
     --green-muted: #d9e3de;
     --yellow: #ffcf47;
@@ -122,6 +124,12 @@ p {
     margin-bottom: .5rem;
 }
 
+p.subtitle{
+    font-size: .875rem;
+    color: var(--subtitle);
+    margin-bottom: 0;
+}
+
 /* ===== Links ===== */
 a {
     color: inherit;
@@ -194,6 +202,15 @@ button:hover {
     transition: background-color .2s, color .2s;
 }
 
+button.small{
+    padding: .125rem;
+}
+
+button.small svg{
+    width: .75rem;
+    height: .75rem;
+}
+
 button.delete{
     background-color: transparent;
     border-color: var(--red);
@@ -211,6 +228,16 @@ button.upload{
 }
 
 button.upload:hover{
+    background-color: var(--green-muted);
+}
+
+button.cancel{
+    background-color: transparent;
+    border-color: var(--border-color);
+    color: var(--text-color-secondary);
+}
+
+button.cancel:hover{
     background-color: var(--green-muted);
 }
 

@@ -63,6 +63,7 @@
     "all": "All Files",
     "controls": {
       "upload": "Upload",
+      "cancel": "Cancel",
       "filter": "Filter",
       "search": "Type for search your files...",
       "all": "All Files",
