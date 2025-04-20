@@ -32,6 +32,7 @@ import TopBar from "../components/TopBar.vue";
 
     .views-box{
         max-width: 80rem;
+        width: 100%;
         flex: 1;
         padding: 2rem;
         margin-left: auto;

@@ -13,6 +13,7 @@ import MiniCard from "@/shared/components/MiniCard.vue";
 import {useMediaFilesStore} from "@/modules/materials/store/mediaFilesStore.js";
 import UploadFileForm from "@/modules/materials/components/UploadFileForm.vue";
 import Icon from "@/shared/components/Icon.vue";
+import MaterialsTable from "@/modules/materials/components/MaterialsTable.vue";
 
 const {t} = useI18n();
 
@@ -102,10 +103,10 @@ onMounted(() => {
                     />
                 </div>
             </div>
-            <div class="materials-list">
-                <h4>{{ t("materials.all") }}</h4>
-                {{ mediaFiles }}
-            </div>
+
+            <h4>{{ t("materials.all") }}</h4>
+
+            <MaterialsTable :files="mediaFiles"/>
         </main>
     </div>
 
