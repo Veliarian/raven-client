@@ -11,7 +11,7 @@ import en from "@/locales/en.json";
 import ua from "@/locales/ua.json";
 
 import {useThemeStore} from "@/shared/store/themeStore.js";
-import "@/style.css";
+import "@/assets/styles/main.css";
 
 const i18n = createI18n({
    legacy: false,

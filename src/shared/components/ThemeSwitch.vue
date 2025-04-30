@@ -52,10 +52,10 @@ watch(isEnabled, (value) => {
 }
 
 .theme-icon.day {
-    color: var(--green);
+    color: var(--color-green);
 }
 
 .theme-icon.night {
-    color: var(--green);
+    color: var(--color-green);
 }
 </style>

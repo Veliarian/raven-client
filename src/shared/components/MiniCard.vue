@@ -33,7 +33,7 @@ defineProps({
     align-items: center;
     gap: .75rem;
     padding: 1rem;
-    background-color: var(--background-light);
+    background-color: var(--surface);
     border-radius: 1rem;
 }
 

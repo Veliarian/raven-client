@@ -139,7 +139,7 @@ const closeForm = () => {
     gap: 3rem;
     background-color: var(--background);
     padding: 1.5rem;
-    border-radius: var(--block-radius);
+    border-radius: var(---radius-lg);
 }
 
 .file-input {
@@ -157,8 +157,8 @@ const closeForm = () => {
 }
 
 .dropzone.active {
-    border-color: var(--green);
-    background-color: var(--green-muted);
+    border-color: var(--color-green);
+    background-color: var(--color-green-light);
 }
 
 .dropzone p {

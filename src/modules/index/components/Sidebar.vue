@@ -81,13 +81,11 @@ const { t, locale } = useI18n();
 }
 
 .sidebar-list-item:hover{
-    background: var(--green-muted);
+    background: var(--color-green-light);
 }
 
 .sidebar-list-item.active{
-    background: var(--green);
-    color: var(--text-color-contrast);
+    background: var(--color-green);
+    color: var(--text-color-light);
 }
-
-
 </style>

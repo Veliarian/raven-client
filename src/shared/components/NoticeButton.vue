@@ -25,7 +25,7 @@ import {mdiBellOutline} from "@mdi/js";
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    color: var(--green);
+    color: var(--color-green);
     border: .15rem solid transparent;
     border-radius: 9999px;
     transition: border-bottom-color .2s, border-left-color .2s, border-right-color .2s, border-top-color .2s;
@@ -33,7 +33,7 @@ import {mdiBellOutline} from "@mdi/js";
 
 .notice-button:hover{
     cursor: pointer;
-    border-color: var(--green);
+    border-color: var(--color-green);
     transition: border-bottom-color .2s, border-left-color .2s, border-right-color .2s, border-top-color .2s;
 }
 
@@ -47,7 +47,7 @@ import {mdiBellOutline} from "@mdi/js";
     top: 8px;
     right: 8px;
     padding: 4px;
-    background-color: var(--red);
+    background-color: var(--color-red);
     border-radius: 9999px;
 }
 </style>

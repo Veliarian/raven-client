@@ -1,0 +1,70 @@
+button {
+    max-width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+    padding: .5rem;
+    font-size: .875rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-green);
+    background-color: var(--color-green);
+    color: var(--text-color-light);
+    transition: background-color 0.2s, color .2s;
+}
+
+button svg{
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: var(--color-green-light);
+    color: var(--text-color-secondary);
+    transition: background-color .2s, color .2s;
+}
+
+button.small{
+    padding: .125rem;
+}
+
+button.small svg{
+    width: .75rem;
+    height: .75rem;
+}
+
+button.delete{
+    background-color: transparent;
+    border-color: var(--color-red);
+    color: var(--color-red);
+}
+
+button.delete:hover{
+    background-color: var(--color-red-light);
+}
+
+button.upload{
+    background-color: transparent;
+    border-color: var(--color-green);
+    color: var(--color-green);
+}
+
+button.upload:hover{
+    background-color: var(--color-green-light);
+}
+
+button.cancel{
+    background-color: transparent;
+    border-color: var(--border-color);
+    color: var(--text-color-secondary);
+}
+
+button.cancel:hover{
+    background-color: var(--color-green-light);
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

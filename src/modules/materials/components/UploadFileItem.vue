@@ -58,7 +58,7 @@ const formatFileSize = (bytes) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--green-muted);
+    background-color: var(--color-green-light);
     border-radius: .75rem;
     position: relative;
     overflow: hidden;
@@ -87,7 +87,7 @@ const formatFileSize = (bytes) => {
     top: 0;
     bottom: 0;
     left: 0;
-    background-color: var(--green);
+    background-color: var(--color-green);
     z-index: 1;
     overflow: hidden;
     display: flex;

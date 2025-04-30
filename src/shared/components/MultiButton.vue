@@ -29,13 +29,13 @@
 }
 
 .multi-button button:hover{
-    background-color: var(--green-muted);
+    background-color: var(--color-green-light);
     cursor: pointer;
 }
 
 .multi-button button.active{
-    background-color: var(--green);
-    color: var(--text-color-contrast);
+    background-color: var(--color-green);
+    color: var(--text-color-light);
     cursor: default;
     transition: background-color .2s, color .2s;
 }

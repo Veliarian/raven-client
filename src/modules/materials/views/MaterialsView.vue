@@ -159,40 +159,6 @@ onMounted(() => {
     height: 100%;
 }
 
-.materials-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.materials-table {
-    width: 100%;
-    text-indent: 0;
-    border: 1px solid var(--border-color);
-    border-collapse: collapse;
-}
-
-thead {
-    color: var(--text-color-secondary);
-}
-
-tr {
-    border: 1px solid var(--border-color);
-}
-
-th {
-    font-weight: 500;
-    text-align: start;
-    padding: .75rem 1rem;
-}
-
-tbody {
-
-}
-
-td {
-    padding: .75rem 1rem;
-}
-
 .forms-container{
     position: fixed;
     top: 0;

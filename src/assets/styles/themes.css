@@ -1,0 +1,21 @@
+:root{
+    --background: #F1F3F4;
+    --surface: #ffffff;
+    --background-opacity: rgba(0, 0, 0, .7);
+    --text-color-primary: #000000;
+    --text-color-secondary: #656a69;
+    --text-color-light: #ffffff;
+    --border-color: #e5e7e9;
+}
+
+:root.dark{
+    --background: #1f1f1f;
+    --surface: #1d1e1f;
+    --background-opacity: rgba(255, 255, 255, .7);
+    --text-color-primary: #ffffff;
+    --text-color-secondary: #e7e7e7;
+    --text-color-light: #ffffff;
+    --border-color: #e5e7e9;
+}
+
+/*--text-color-light: #1f1f1f;*/

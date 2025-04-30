@@ -44,7 +44,7 @@ defineEmits(["update:modelValue"]);
 .search-box{
     width: 100%;
     height: 2.5rem;
-    background-color: var(--background-light);
+    background-color: var(--surface);
     border: none;
     padding: .5rem .75rem .5rem 2rem;
     border-radius: 1.2rem;
@@ -54,7 +54,7 @@ defineEmits(["update:modelValue"]);
 }
 
 .search-box:hover, .search-box:focus{
-    outline: .15rem solid var(--green);
+    outline: .15rem solid var(--color-green);
     transition: outline-width .2s;
 }
 </style>

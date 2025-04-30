@@ -129,7 +129,7 @@ const switchTab = (tab) => {
 .tabs-container{
     display: flex;
     border: 2px solid var(--border-color);
-    border-radius: var(--block-radius);
+    border-radius: var(---radius-lg);
 }
 
 .tab{

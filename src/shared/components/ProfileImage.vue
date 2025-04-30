@@ -33,7 +33,7 @@ const imageUrl = computed(() => profilePictureStore.picture);
     height: 100%;
     border-radius: 9999px;
     overflow: hidden;
-    background-color: var(--green-muted);
+    background-color: var(--color-green-light);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,6 +48,6 @@ const imageUrl = computed(() => profilePictureStore.picture);
 .user-img.icon{
     width: 60%;
     height: 60%;
-    color: var(--green);
+    color: var(--color-green);
 }
 </style>

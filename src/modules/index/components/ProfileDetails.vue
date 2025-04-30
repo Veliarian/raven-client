@@ -72,14 +72,14 @@ onUnmounted(() => {
     justify-content: center;
     align-items: center;
     border-radius: 9999px;
-    color: var(--green);
+    color: var(--color-green);
     border: .15rem solid transparent;
     transition: border-bottom-color .2s, border-left-color .2s, border-right-color .2s, border-top-color .2s;
 }
 
 .profile-details-btn:hover {
     cursor: pointer;
-    border: .15rem solid var(--green);
+    border: .15rem solid var(--color-green);
     transition: border-bottom-color .2s, border-left-color .2s, border-right-color .2s, border-top-color .2s;
 }
 
@@ -95,8 +95,8 @@ onUnmounted(() => {
     right: 0;
     display: none;
     flex-direction: column;
-    background-color: var(--background-light);
-    border-radius: var(--block-radius);
+    background-color: var(--surface);
+    border-radius: var(---radius-lg);
 }
 
 .profile-details-drop.active{
@@ -134,12 +134,12 @@ footer{
     gap: .2rem;
     width: 100%;
     padding: .2rem .5rem;
-    border-radius: var(--block-radius);
+    border-radius: var(---radius-lg);
     transition: background-color .2s;
 }
 
 .details-item:hover{
-    background-color: var(--green-muted);
+    background-color: var(--color-green-light);
     transition: background-color .2s;
 }
 

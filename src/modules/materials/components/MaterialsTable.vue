@@ -119,6 +119,12 @@ const getFileIcon = (mediaType) => {
     border-spacing: 0;
 }
 
+thead{
+    position: sticky;
+    top: 0;
+    background-color: var(--background);
+}
+
 th {
     font-weight: 500;
     text-align: start;
