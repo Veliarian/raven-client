@@ -10,6 +10,8 @@ import {
     mdiPresentation,
     mdiVideoOutline
 } from "@mdi/js";
+import Switch from "@/shared/components/Switch.vue";
+import {fileColor} from "@/shared/utils/colorUtils.js";
 
 const props = defineProps({
     files: {
@@ -86,10 +88,19 @@ const getFileIcon = (mediaType) => {
                 </thead>
                 <tbody>
                 <tr v-for="file in sortedFiles" :key="file.id">
-                    <td class="name"><Icon :icon="getFileIcon(file.mediaType)" :size="20" /> {{ file.originalName }}</td>
+                    <td>
+                        <div class="file-info">
+                            <Icon
+                                :icon="getFileIcon(file.mediaType)"
+                                :size="20"
+                                :color="fileColor(file.mediaType)"
+                                :enable-background="true"/>
+                            <span class="file-name">{{ file.originalName }}</span>
+                        </div>
+                    </td>
                     <td>{{ formatFileSize(file.size) }}</td>
                     <td>{{ formatDate(file.uploadedAt) }}</td>
-                    <td></td>
+                    <td><Switch :checked="file.isPublick" /></td>
                     <td></td>
                 </tr>
                 </tbody>
@@ -123,6 +134,7 @@ thead{
     position: sticky;
     top: 0;
     background-color: var(--background);
+    z-index: 1;
 }
 
 th {
@@ -139,11 +151,18 @@ td {
     padding: .75rem 1rem;
 }
 
-td.name{
-    max-width: 4rem;
-}
-
 tbody tr:last-child td {
     border-bottom: none;
+}
+
+.file-info{
+    display: flex;
+    text-overflow: ellipsis;
+}
+
+.file-name{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>

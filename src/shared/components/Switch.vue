@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-   modelValue: Boolean,
+   checked: Boolean,
 });
 
 defineEmits(["update:modelValue"]);
@@ -8,7 +8,7 @@ defineEmits(["update:modelValue"]);
 
 <template>
 <label class="switch">
-    <input type="checkbox" :checked="modelValue" @change="$emit('update:modelValue', $event.target.checked)"/>
+    <input type="checkbox" :checked="checked" @change="$emit('update:modelValue', $event.target.checked)"/>
     <span class="slider"></span>
 </label>
 </template>

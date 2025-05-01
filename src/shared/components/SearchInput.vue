@@ -4,7 +4,7 @@ import Icon from "./Icon.vue";
 import {mdiMagnify} from "@mdi/js";
 
 defineProps({
-   modelValue: String,
+   checked: String,
    placeholder: {
        type: String,
        default: "Search...",
