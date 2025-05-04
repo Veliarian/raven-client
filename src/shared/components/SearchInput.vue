@@ -20,7 +20,6 @@ defineEmits(["update:modelValue"]);
         <input
         type="text"
         :placeholder="placeholder"
-        :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         class="search-box"/>
     </div>

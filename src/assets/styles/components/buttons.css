@@ -26,12 +26,12 @@ button:hover {
 }
 
 button.small{
-    padding: .125rem;
+    padding: .125rem .256rem;
 }
 
 button.small svg{
-    width: .75rem;
-    height: .75rem;
+    width: 1rem;
+    height: 1rem;
 }
 
 button.delete{
@@ -62,6 +62,11 @@ button.cancel{
 
 button.cancel:hover{
     background-color: var(--color-green-light);
+}
+
+button.actions{
+    background-color: transparent;
+    border-color: transparent;
 }
 
 button:disabled {

@@ -1,17 +1,20 @@
 <script setup>
 import {computed, ref} from "vue";
 import SortIcon from "@/shared/components/SortIcon.vue";
-import Icon from "@/shared/components/Icon.vue";
+import Icon from "@/shared/components/icons/Icon.vue";
 import {
+    mdiDotsVertical,
     mdiFileDocumentOutline,
     mdiFileOutline,
     mdiImageOutline,
-    mdiMusicNoteOutline,
-    mdiPresentation,
+    mdiMusicNoteOutline, mdiPencil,
+    mdiPresentation, mdiTrashCanOutline,
     mdiVideoOutline
 } from "@mdi/js";
 import Switch from "@/shared/components/Switch.vue";
 import {fileColor} from "@/shared/utils/colorUtils.js";
+import FileIcon from "@/shared/components/icons/FileIcon.vue";
+import OptionsButton from "@/shared/components/buttons/OptionsButton.vue";
 
 const props = defineProps({
     files: {
@@ -61,15 +64,12 @@ function formatDate(date) {
     return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
 
-const getFileIcon = (mediaType) => {
-    switch (mediaType){
-        case "IMAGE": return mdiImageOutline;
-        case "VIDEO": return mdiVideoOutline;
-        case "AUDIO": return mdiMusicNoteOutline;
-        case "DOCUMENT": return mdiFileDocumentOutline;
-        case "PRESENTATION": return mdiPresentation;
-        default: return mdiFileOutline;
-    }
+const editFile = (id) => {
+    console.log(id);
+}
+
+const deleteFile = (id) => {
+
 }
 </script>
 
@@ -79,7 +79,9 @@ const getFileIcon = (mediaType) => {
             <table class="files-table">
                 <thead>
                 <tr>
-                    <th>Name <SortIcon :asc="sort.asc" :active="sort.key === 'originalName'"/></th>
+                    <th>Name
+                        <SortIcon :asc="sort.asc" :active="sort.key === 'originalName'"/>
+                    </th>
                     <th>Size</th>
                     <th>Last Modified</th>
                     <th>Public</th>
@@ -88,20 +90,29 @@ const getFileIcon = (mediaType) => {
                 </thead>
                 <tbody>
                 <tr v-for="file in sortedFiles" :key="file.id">
-                    <td>
+                    <td class="name">
                         <div class="file-info">
-                            <Icon
-                                :icon="getFileIcon(file.mediaType)"
-                                :size="20"
-                                :color="fileColor(file.mediaType)"
-                                :enable-background="true"/>
+                            <FileIcon :type="file.mediaType"/>
                             <span class="file-name">{{ file.originalName }}</span>
                         </div>
                     </td>
-                    <td>{{ formatFileSize(file.size) }}</td>
-                    <td>{{ formatDate(file.uploadedAt) }}</td>
-                    <td><Switch :checked="file.isPublick" /></td>
-                    <td></td>
+                    <td class="size">{{ formatFileSize(file.size) }}</td>
+                    <td class="date">{{ formatDate(file.uploadedAt) }}</td>
+                    <td class="public">
+                        <Switch :checked="file.isPublick"/>
+                    </td>
+                    <td class="options">
+                        <options-button>
+                            <button class="" @click="editFile(file.id)">
+                                <Icon :icon="mdiPencil" :size="16"/>
+                                Edit
+                            </button>
+                            <button class="delete" @click="deleteFile(file.id)">
+                                <Icon :icon="mdiTrashCanOutline" :size="16"/>
+                                Delete
+                            </button>
+                        </options-button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -110,27 +121,27 @@ const getFileIcon = (mediaType) => {
 </template>
 
 <style scoped>
-.materials-table{
+.materials-table {
     max-height: 24rem;
     border: 2px solid var(--border-color);
     border-radius: .75rem;
     overflow: hidden;
 }
 
-.scroll-box{
+.scroll-box {
     width: 100%;
     height: 100%;
     overflow-y: auto;
 }
 
-.files-table{
+.files-table {
     width: 100%;
     text-indent: 0;
     border-collapse: collapse;
     border-spacing: 0;
 }
 
-thead{
+thead {
     position: sticky;
     top: 0;
     background-color: var(--background);
@@ -143,7 +154,7 @@ th {
     padding: .75rem 1rem;
 }
 
-tr{
+tr {
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -155,14 +166,25 @@ tbody tr:last-child td {
     border-bottom: none;
 }
 
-.file-info{
-    display: flex;
-    text-overflow: ellipsis;
+td.name {
+    max-width: 20rem;
 }
 
-.file-name{
+.file-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.file-name {
+    flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.options {
+
 }
 </style>
