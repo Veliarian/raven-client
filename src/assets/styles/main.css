@@ -1,6 +1,8 @@
 @import "reset.css";
 @import "variables.css";
 @import "typography.css";
+
+@import "components/containers.css";
 @import "components/buttons.css";
 @import "components/forms.css";
 @import "components/links.css";

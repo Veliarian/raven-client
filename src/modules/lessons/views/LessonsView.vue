@@ -7,6 +7,8 @@ import SearchInput from "@/shared/components/SearchInput.vue";
 import MultiButton from "@/shared/components/MultiButton.vue";
 import {computed, onMounted, ref} from "vue";
 import {useLessonsStore} from "@/modules/lessons/store/lessonsStore.js";
+import FormContainer from "@/shared/components/FormContainer.vue";
+import CreateLessonForm from "@/modules/lessons/components/CreateLessonForm.vue";
 
 const {t} = useI18n();
 const lessonsStore = useLessonsStore();
@@ -73,6 +75,10 @@ onMounted(() => {
             </div>
         </main>
     </div>
+
+    <form-container>
+        <CreateLessonForm/>
+    </form-container>
 </template>
 
 <style scoped>

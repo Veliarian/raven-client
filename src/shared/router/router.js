@@ -13,6 +13,7 @@ import NotFound from "../views/NotFound.vue";
 
 import {jwtDecode} from "jwt-decode";
 import MaterialsView from "@/modules/materials/views/MaterialsView.vue";
+import MeetingsView from "@/modules/meetings/views/MeetingsView.vue";
 
 
 const router = createRouter({
@@ -39,6 +40,10 @@ const router = createRouter({
                 {
                     path: "materials",
                     component: MaterialsView
+                },
+                {
+                    path: "meetings",
+                    component: MeetingsView
                 }
             ],
         },

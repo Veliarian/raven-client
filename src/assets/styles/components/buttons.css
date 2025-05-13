@@ -69,6 +69,12 @@ button.actions{
     border-color: transparent;
 }
 
+button.close{
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--text-color-secondary);
+}
+
 button:disabled {
     background-color: #ccc;
     cursor: not-allowed;

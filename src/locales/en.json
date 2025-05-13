@@ -8,7 +8,18 @@
     "materials": "Materials",
     "materialsAdditional": "Access learning materials",
     "chat": "Chat",
-    "chatAdditional": "Communication between users"
+    "chatAdditional": "Communication between users",
+    "meetings": "Meetings"
+  },
+  "pages": {
+    "meetings": {
+      "title": "Meetings",
+      "subtitle": "Manage your virtual meeting spaces",
+
+      "controls": {
+        "createRoom": "Create room"
+      }
+    }
   },
   "topBar": {
     "profile": "Profile",

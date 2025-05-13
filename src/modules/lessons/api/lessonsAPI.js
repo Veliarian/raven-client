@@ -6,9 +6,9 @@ const URL = serverURL + "/lessons"
 
 export const lessonsApi = {
 
-    async fetchLessons(userId) {
+    async fetchLessonsByUser() {
         try {
-            const response = await axios.get(URL + `/user/${userId}`, {
+            const response = await axios.get(URL + "/user", {
                 headers: authHeader()
             });
             return response.data;

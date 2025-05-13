@@ -8,7 +8,18 @@
     "materials": "Матеріали",
     "materialsAdditional": "Доступ до навчальних матеріалів",
     "chat": "Чат",
-    "chatAdditional": "Спілкування між користувачами"
+    "chatAdditional": "Спілкування між користувачами",
+    "meetings": "Зустрічі"
+  },
+  "pages": {
+    "meetings": {
+      "title": "Зустрічі",
+      "subtitle": "Керування віртуальними зустрічами",
+
+      "controls": {
+        "createRoom": "Створити кімнату"
+      }
+    }
   },
   "topBar": {
     "profile": "Профіль",

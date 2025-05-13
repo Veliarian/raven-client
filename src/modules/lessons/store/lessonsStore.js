@@ -31,8 +31,7 @@ export const useLessonsStore = defineStore("lessons", {
         },
 
         async fetchLessons(){
-            const userStore = useUserStore();
-            const lessons = await lessonsApi.fetchLessons(userStore.user.id);
+            const lessons = await lessonsApi.fetchLessonsByUser();
             if(lessons) {
                 this.setLessons(lessons);
             }
