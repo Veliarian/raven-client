@@ -70,6 +70,7 @@ button.actions{
 }
 
 button.close{
+    padding: var(--spacing-0);
     background-color: transparent;
     border-color: transparent;
     color: var(--text-color-secondary);
