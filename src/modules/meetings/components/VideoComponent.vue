@@ -1,19 +1,17 @@
-<script setup lang="ts">
-import { LocalVideoTrack, RemoteVideoTrack } from 'livekit-client';
-import { onMounted, onUnmounted, ref } from 'vue';
+<script setup>
+import {LocalVideoTrack, RemoteVideoTrack} from 'livekit-client';
+import {onMounted, onUnmounted, ref} from 'vue';
 
-const props = withDefaults(
-    defineProps<{
-        track: LocalVideoTrack | RemoteVideoTrack;
-        participantIdentity: string;
-        local?: boolean;
-    }>(),
-    {
-        local: false
-    }
-);
+const props = defineProps({
+    track: LocalVideoTrack || RemoteVideoTrack,
+    participantIdentity: String,
+    local: {
+        type: Boolean,
+        default: false
+    },
+})
 
-const videoElement = ref<HTMLMediaElement | null>(null);
+const videoElement = ref(null);
 
 onMounted(() => {
     if (videoElement.value) {

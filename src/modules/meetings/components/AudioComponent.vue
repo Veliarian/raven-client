@@ -1,11 +1,12 @@
-<script setup lang="ts">
+<script setup>
 import { LocalAudioTrack, RemoteAudioTrack } from 'livekit-client';
 import { onMounted, onUnmounted, ref } from 'vue';
 
-const props = defineProps<{
-    track: LocalAudioTrack | RemoteAudioTrack;
-}>();
-const audioElement = ref<HTMLMediaElement | null>(null);
+const props = defineProps({
+    track: LocalAudioTrack || RemoteAudioTrack,
+});
+
+const audioElement = ref(null);
 
 onMounted(() => {
     if (audioElement.value) {
