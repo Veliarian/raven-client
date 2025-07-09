@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onBeforeUnmount } from 'vue'
 import {createLocalTracks, Room, RoomEvent} from 'livekit-client'
-import VideoComponent from "@/modules/meetings/components/VideoComponent.vue";
+import HzVideoComponent from "@/modules/meetings/components/HzVideoComponent.vue";
 import AudioComponent from "@/modules/meetings/components/AudioComponent.vue";
 
 // 🔧 Конфіг
@@ -106,14 +106,14 @@ async function getToken(roomName, participantName) {
             <button class="btn btn-danger" id="leave-room-button" @click="leaveRoom">Leave Room</button>
         </div>
         <div id="layout-container">
-            <VideoComponent
+            <HzVideoComponent
                 v-if="localTrack"
                 :track="localTrack"
                 :participantIdentity="participantName"
                 :local="true"
             />
             <template v-for="remoteTrack of remoteTracksMap.values()" :key="remoteTrack.trackPublication.trackSid">
-                <VideoComponent
+                <HzVideoComponent
                     v-if="remoteTrack.trackPublication.kind === 'video'"
                     :track="remoteTrack.trackPublication.videoTrack"
                     :participantIdentity="remoteTrack.participantIdentity"

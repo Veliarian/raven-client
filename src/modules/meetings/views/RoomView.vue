@@ -1,8 +1,19 @@
 <script setup>
 import {ref, watch, onBeforeUnmount, onMounted} from 'vue'
 import {createLocalTracks, Room, RoomEvent} from 'livekit-client'
-import VideoComponent from "@/modules/meetings/components/VideoComponent.vue";
+import HzVideoComponent from "@/modules/meetings/components/HzVideoComponent.vue";
 import AudioComponent from "@/modules/meetings/components/AudioComponent.vue";
+import ResizapleSplit from "@/shared/components/ResizapleSplit.vue";
+import RoomControlButton from "@/modules/meetings/components/buttons/RoomControlButton.vue";
+import MicrophoneButton from "@/modules/meetings/components/buttons/MicrophoneButton.vue";
+import CameraButton from "@/modules/meetings/components/buttons/CameraButton.vue";
+import LeaveButton from "@/modules/meetings/components/buttons/LeaveButton.vue";
+import MonitorShareButton from "@/modules/meetings/components/buttons/MonitorShareButton.vue";
+import BoardButton from "@/modules/meetings/components/buttons/BoardButton.vue";
+import VideoComponent from "@/modules/meetings/components/VideoComponent.vue";
+import UserVideo from "@/modules/meetings/components/UserVideo.vue";
+import MainStage from "@/modules/meetings/components/MainStage.vue";
+import ParticipantStrip from "@/modules/meetings/components/ParticipantStrip.vue";
 
 const props = defineProps({
    roomName: String,
@@ -16,11 +27,74 @@ const LIVEKIT_URL = 'ws://localhost:7880/';
 const SERVER_URL = 'http://localhost:8080/';
 
 const room = ref(null);
-// const roomName = ref("");
-// const participantName = ref("");
 
 const localTrack = ref();
+const screenTrack = ref();
 const remoteTracksMap = ref(new Map());
+
+const isCameraOn = ref(true);
+const isMicrophoneOn = ref(true);
+const isScreenShareOn = ref(false);
+
+const toggleCamera = async () => {
+    if (!room.value) return;
+
+    const participant = room.value.localParticipant;
+
+    if (isCameraOn.value) {
+        // Вимкнути камеру
+        participant.videoTrackPublications.forEach(publication => {
+            publication.track?.stop();
+            participant.unpublishTrack(publication.track);
+        });
+        localTrack.value = null;
+    } else {
+        // Увімкнути камеру
+        const [videoTrack] = await createLocalTracks({ video: true });
+        await participant.publishTrack(videoTrack);
+        localTrack.value = videoTrack;
+    }
+
+    isCameraOn.value = !isCameraOn.value;
+}
+
+const toggleScreenShare = async () => {
+    if (!room.value) return;
+
+    const participant = room.value.localParticipant;
+
+    if (isScreenShareOn.value) {
+        participant.videoTrackPublications.forEach(publication => {
+            if (publication.track?.name === 'screen') {
+                publication.track.stop();
+                participant.unpublishTrack(publication.track);
+            }
+        });
+        screenTrack.value = null;
+    } else {
+        const [videoTrack] = await participant.createScreenTracks({ video: true });
+        videoTrack.name = 'screen'; // Ідентифікуємо трек
+        await participant.publishTrack(videoTrack);
+        screenTrack.value = videoTrack;
+    }
+
+    isScreenShareOn.value = !isScreenShareOn.value;
+}
+
+const toggleMicrophone = async () => {
+    if (!room.value) return;
+
+    const participant = room.value.localParticipant;
+
+    if(isMicrophoneOn.value) {
+        participant.audioTrackPublications.forEach(publication => {
+            publication.track?.stop();
+            participant.unpublishTrack(publication.track);
+        });
+    } else {
+
+    }
+}
 
 const joinRoom = async () => {
     room.value = new Room();
@@ -41,7 +115,6 @@ const joinRoom = async () => {
     });
 
     const token = await getToken(props.roomName, props.participantName);
-    console.log(token);
 
     await room.value.connect(LIVEKIT_URL, token);
 
@@ -57,8 +130,6 @@ const joinRoom = async () => {
             localTrack.value = room.value.localParticipant.videoTrackPublications.values().next().value.videoTrack;
         }
     }
-
-    // localTrack.value = room.value.localParticipant.videoTrackPublications.values().next().value.videoTrack;
 }
 
 onMounted(() => {
@@ -94,57 +165,67 @@ async function getToken(roomName, participantName) {
 </script>
 
 <template>
-<!--    <div v-if="!room" id="join">-->
-<!--        <div id="join-dialog">-->
-<!--            <h2>Join a Video Room</h2>-->
-<!--            <form @submit.prevent="joinRoom">-->
-<!--                <div>-->
-<!--                    <label for="participant-name">Participant</label>-->
-<!--                    <input v-model="participantName" id="participant-name" class="form-control" type="text" required />-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <label for="room-name">Room</label>-->
-<!--                    <input v-model="roomName" id="room-name" class="form-control" type="text" required />-->
-<!--                </div>-->
-<!--                <button class="btn btn-lg btn-success" type="submit" :disabled="!roomName || !participantName">-->
-<!--                    Join!-->
-<!--                </button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-    <div id="room">
+    <div class="room">
         <div id="room-header">
             <h2 id="room-title">{{ roomName }}</h2>
-            <button class="btn btn-danger" id="leave-room-button" @click="leaveRoom">Leave Room</button>
         </div>
-        <div id="layout-container">
-            <VideoComponent
-                v-if="localTrack"
-                :track="localTrack"
-                :participantIdentity="participantName"
-                :local="true"
-            />
-            <template v-for="remoteTrack of remoteTracksMap.values()" :key="remoteTrack.trackPublication.trackSid">
-                <VideoComponent
-                    v-if="remoteTrack.trackPublication.kind === 'video'"
-                    :track="remoteTrack.trackPublication.videoTrack"
-                    :participantIdentity="remoteTrack.participantIdentity"
-                />
-                <AudioComponent v-else :track="remoteTrack.trackPublication.audioTrack" hidden />
+
+        <resizaple-split>
+            <template #left>
+                <div class="layout-container">
+                    <div class="videos-container">
+                        <MainStage/>
+                        <ParticipantStrip
+                            :participant-name="participantName"
+                            :local-track="localTrack"
+                            :remote-tracks="remoteTracksMap"
+                        />
+                    </div>
+                    <div class="room-controls">
+                        <MicrophoneButton/>
+                        <CameraButton :camera-publish="isCameraOn" @click="toggleCamera"/>
+                        <LeaveButton @click="leaveRoom"/>
+                        <MonitorShareButton @click="toggleScreenShare"/>
+                        <BoardButton/>
+                    </div>
+                </div>
             </template>
-        </div>
+
+            <template #right>
+
+            </template>
+        </resizaple-split>
     </div>
 </template>
 
 <style scoped>
-#layout-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
+.room{
     width: 100%;
-    max-width: 1000px;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.videos-container{
+    flex: 1;
+    width: 100%;
+}
+
+.room-controls{
+    min-width: fit-content;
+    padding: var(--spacing-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    display: flex;
+    gap: var(--spacing-3);
 }
 </style>

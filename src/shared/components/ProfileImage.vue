@@ -1,9 +1,9 @@
 <script setup>
 
 import {computed, ref} from "vue";
-import Icon from "./Icon.vue";
 import {mdiAccountOutline} from "@mdi/js";
 import {useProfilePictureStore} from "@/modules/user/store/profilePictureStore.js";
+import Icon from "@/shared/components/icons/Icon.vue";
 
 const profilePictureStore = useProfilePictureStore();
 

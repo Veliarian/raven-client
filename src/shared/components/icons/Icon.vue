@@ -33,8 +33,8 @@ const backgroundStyle = computed(() => {
 <template>
     <div class="background" :style="backgroundStyle">
         <svg
-            :width="padding > 0 ? size - (padding * 2) + 'px' : computedSize"
-            :height="padding > 0 ? size - (padding * 2) + 'px' : computedSize"
+            :width="padding > 0 ? size - (padding * 2) + 'px' : computedSize + 'px'"
+            :height="padding > 0 ? size - (padding * 2) + 'px' : computedSize + 'px'"
             viewBox="0 0 24 24"
             fill="currentColor"
             :style="{ color }"

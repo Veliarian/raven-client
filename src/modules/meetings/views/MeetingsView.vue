@@ -49,7 +49,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div v-if="!activeRoom" class="view">
+    <div v-if="!activeRoom" class="full-view">
         <header class="view-header">
             <div class="title-box">
                 <h3>{{ t("pages.meetings.title") }}</h3>
@@ -78,10 +78,6 @@ onMounted(() => {
                           :status="room.status"
                           @join-room="joinRoom(room.id)"
                 />
-<!--                <RoomCard name="Test Room" status="active" :participants="['John', 'Mary']"/>-->
-<!--                <RoomCard name="Test Room" status="scheduled" :participants="['John', 'Mary']"/>-->
-<!--                <RoomCard name="Test Room" status="active" :participants="['John', 'Mary']"/>-->
-<!--                <RoomCard name="Test Room" status="scheduled" :participants="['John', 'Mary']"/>-->
             </rooms-list>
         </main>
     </div>
