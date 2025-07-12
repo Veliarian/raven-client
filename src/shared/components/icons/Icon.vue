@@ -11,8 +11,8 @@ const props = defineProps({
     backgroundShape: { type: String, default: 'square' } // 'circle' | 'square' | 'none'
 });
 
-const computedSize = computed(() => (typeof props.size === 'number' ? `${props.size}px` : props.size));
-const computedPadding = computed(() => (`${props.padding}px`));
+const computedSize = computed(() => (typeof props.size === 'number' ? `${props.size}` : props.size));
+const computedPadding = computed(() => (`${props.padding}`));
 
 const backgroundStyle = computed(() => {
     if (!props.enableBackground) return {};

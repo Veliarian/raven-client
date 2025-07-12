@@ -37,8 +37,8 @@ const firstLetterToUpperCase = (str) => {
                 <Icon :icon="mdiAccountPlusOutline"/>
                 <span>Invite</span>
             </button>
-            <button @click="joinRoom">
-                <Icon :icon="mdiTrayArrowDown"/>
+            <button @click="joinRoom" :disabled="status.toLowerCase() === 'scheduled'">
+                <Icon :icon="mdiTrayArrowDown" class="join-icon"/>
                 <span>Join</span>
             </button>
         </div>
@@ -83,5 +83,9 @@ const firstLetterToUpperCase = (str) => {
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+.join-icon{
+    transform: rotate(270deg);
 }
 </style>

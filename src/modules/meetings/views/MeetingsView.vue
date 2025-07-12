@@ -93,5 +93,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
+main{
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
 </style>

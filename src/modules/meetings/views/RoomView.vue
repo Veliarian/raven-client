@@ -1,17 +1,12 @@
 <script setup>
-import {ref, watch, onBeforeUnmount, onMounted} from 'vue'
-import {createLocalTracks, Room, RoomEvent} from 'livekit-client'
-import HzVideoComponent from "@/modules/meetings/components/HzVideoComponent.vue";
-import AudioComponent from "@/modules/meetings/components/AudioComponent.vue";
-import ResizapleSplit from "@/shared/components/ResizapleSplit.vue";
-import RoomControlButton from "@/modules/meetings/components/buttons/RoomControlButton.vue";
+import {ref, watch, onBeforeUnmount, onMounted} from 'vue';
+import {createLocalTracks, Room, RoomEvent} from 'livekit-client';
+import ResizableSplit from "@/shared/components/ResizableSplit.vue";
 import MicrophoneButton from "@/modules/meetings/components/buttons/MicrophoneButton.vue";
 import CameraButton from "@/modules/meetings/components/buttons/CameraButton.vue";
 import LeaveButton from "@/modules/meetings/components/buttons/LeaveButton.vue";
 import MonitorShareButton from "@/modules/meetings/components/buttons/MonitorShareButton.vue";
 import BoardButton from "@/modules/meetings/components/buttons/BoardButton.vue";
-import VideoComponent from "@/modules/meetings/components/VideoComponent.vue";
-import UserVideo from "@/modules/meetings/components/UserVideo.vue";
 import MainStage from "@/modules/meetings/components/MainStage.vue";
 import ParticipantStrip from "@/modules/meetings/components/ParticipantStrip.vue";
 
@@ -30,7 +25,10 @@ const room = ref(null);
 
 const localTrack = ref();
 const screenTrack = ref();
-const remoteTracksMap = ref(new Map());
+const remoteParticipantsMap = ref(new Map());
+
+const isActiveMainStage = ref(false);
+const mainContent = ref(null);
 
 const isCameraOn = ref(true);
 const isMicrophoneOn = ref(true);
@@ -58,6 +56,37 @@ const toggleCamera = async () => {
     isCameraOn.value = !isCameraOn.value;
 }
 
+const toggleMicrophone = async () => {
+    if (!room.value) return;
+
+    const participant = room.value.localParticipant;
+    let found = false;
+
+    for (const pub of participant.audioTrackPublications.values()) {
+        if (pub.source === 'microphone' && pub.track) {
+            const track = pub.track;
+
+            if (track.isMuted) {
+                await track.unmute(); // 🔊
+                isMicrophoneOn.value = true;
+            } else {
+                await track.mute(); // 🔇
+                isMicrophoneOn.value = false;
+            }
+
+            found = true;
+            break;
+        }
+    }
+
+    // Якщо не знайшли трек — створюємо й вмикаємо
+    if (!found) {
+        const [audioTrack] = await createLocalTracks({ audio: true });
+        await participant.publishTrack(audioTrack, { source: 'microphone' });
+        isMicrophoneOn.value = true;
+    }
+};
+
 const toggleScreenShare = async () => {
     if (!room.value) return;
 
@@ -65,72 +94,117 @@ const toggleScreenShare = async () => {
 
     if (isScreenShareOn.value) {
         participant.videoTrackPublications.forEach(publication => {
-            if (publication.track?.name === 'screen') {
+            if (publication.source === "screen_share") {
                 publication.track.stop();
                 participant.unpublishTrack(publication.track);
             }
         });
+
         screenTrack.value = null;
+        mainContent.value = null;
     } else {
-        const [videoTrack] = await participant.createScreenTracks({ video: true });
-        videoTrack.name = 'screen'; // Ідентифікуємо трек
+        const [videoTrack] = await participant.createScreenTracks();
         await participant.publishTrack(videoTrack);
+
         screenTrack.value = videoTrack;
+        mainContent.value = {
+            type: 'video',
+            data: {
+                track: screenTrack.value,
+                participantIdentity: participant.identity,
+            }
+        };
     }
 
     isScreenShareOn.value = !isScreenShareOn.value;
-}
-
-const toggleMicrophone = async () => {
-    if (!room.value) return;
-
-    const participant = room.value.localParticipant;
-
-    if(isMicrophoneOn.value) {
-        participant.audioTrackPublications.forEach(publication => {
-            publication.track?.stop();
-            participant.unpublishTrack(publication.track);
-        });
-    } else {
-
-    }
+    isActiveMainStage.value = !isActiveMainStage.value;
 }
 
 const joinRoom = async () => {
     room.value = new Room();
 
-    room.value.on(
-        RoomEvent.TrackSubscribed,
-        (track, publication, participant) => {
-            remoteTracksMap.value.set(publication.trackSid, {
-                trackPublication: publication,
-                participantIdentity: participant.identity
+    room.value.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
+        const identity = participant.identity;
+
+        if (!remoteParticipantsMap.value.has(identity)) {
+            remoteParticipantsMap.value.set(identity, {
+                videoTrack: null,
+                audioTrack: null,
+                screenTrack: null,
             });
         }
-    );
 
-    // On every Track destroyed...
-    room.value.on(RoomEvent.TrackUnsubscribed, (track, publication) => {
-        remoteTracksMap.value.delete(publication.trackSid);
+        const current = remoteParticipantsMap.value.get(identity);
+
+        if (publication.kind === 'video') {
+            if (publication.source === 'screen_share') {
+                current.screenTrack = track;
+
+                mainContent.value = {
+                    type: 'video',
+                    data: {
+                        track,
+                        participantIdentity: participant.identity,
+                    },
+                };
+                isActiveMainStage.value = true;
+            } else {
+                current.videoTrack = track;
+            }
+        } else if (publication.kind === 'audio') {
+            current.audioTrack = track;
+        }
+
+        remoteParticipantsMap.value.set(identity, { ...current });
+    });
+
+    room.value.on(RoomEvent.ParticipantDisconnected, (participant) => {
+        const identity = participant.identity;
+
+        // 🔥 Видаляємо з мапи
+        remoteParticipantsMap.value.delete(identity);
+
+        // Якщо цей учасник був на MainStage — очищаємо
+        if (mainContent.value?.data?.participantIdentity === identity) {
+            mainContent.value = null;
+            isActiveMainStage.value = false;
+        }
+    });
+
+    room.value.on(RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
+        const identity = participant.identity;
+
+        const current = remoteParticipantsMap.value.get(identity);
+        if (!current) return;
+
+        if (publication.kind === 'video') {
+            if(publication.source === "screen_share"){
+                current.screenTrack = null;
+                mainContent.value = null;
+                isActiveMainStage.value = false;
+            }else {
+                current.videoTrack = null;
+            }
+        } else if (publication.kind === 'audio') {
+            current.audioTrack = null;
+        }
+
+        remoteParticipantsMap.value.set(identity, { ...current });
     });
 
     const token = await getToken(props.roomName, props.participantName);
-
     await room.value.connect(LIVEKIT_URL, token);
 
-    const tracks = await createLocalTracks({
-        audio: true,
-        video: true
-    });
+    const tracks = await createLocalTracks({ audio: true, video: true });
 
     for (let track of tracks) {
         await room.value.localParticipant.publishTrack(track);
 
-        if (track.kind === "video") {
-            localTrack.value = room.value.localParticipant.videoTrackPublications.values().next().value.videoTrack;
+        if (track.kind === 'video') {
+            localTrack.value = track;
         }
     }
-}
+};
 
 onMounted(() => {
     joinRoom();
@@ -170,19 +244,24 @@ async function getToken(roomName, participantName) {
             <h2 id="room-title">{{ roomName }}</h2>
         </div>
 
-        <resizaple-split>
+        <ResizableSplit>
             <template #left>
                 <div class="layout-container">
                     <div class="videos-container">
-                        <MainStage/>
+                        <MainStage
+                            v-if="mainContent"
+                            :content-type="mainContent.type"
+                            :content-data="mainContent.data"
+                        />
                         <ParticipantStrip
                             :participant-name="participantName"
                             :local-track="localTrack"
-                            :remote-tracks="remoteTracksMap"
+                            :remote-tracks="remoteParticipantsMap"
+                            :active-main-stage="isActiveMainStage"
                         />
                     </div>
                     <div class="room-controls">
-                        <MicrophoneButton/>
+                        <MicrophoneButton :microphone-publish="isMicrophoneOn" @click="toggleMicrophone"/>
                         <CameraButton :camera-publish="isCameraOn" @click="toggleCamera"/>
                         <LeaveButton @click="leaveRoom"/>
                         <MonitorShareButton @click="toggleScreenShare"/>
@@ -194,7 +273,7 @@ async function getToken(roomName, participantName) {
             <template #right>
 
             </template>
-        </resizaple-split>
+        </ResizableSplit>
     </div>
 </template>
 
@@ -213,11 +292,13 @@ async function getToken(roomName, participantName) {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    gap: .5rem;
 }
 
 .videos-container{
-    flex: 1;
     width: 100%;
+    height: 100%;
+    position: relative;
 }
 
 .room-controls{

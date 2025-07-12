@@ -1,7 +1,5 @@
 <script setup>
 import {LocalVideoTrack, RemoteVideoTrack} from 'livekit-client';
-import {onMounted, onUnmounted, ref, watch} from 'vue';
-import HzVideoComponent from "@/modules/meetings/components/HzVideoComponent.vue";
 import VideoComponent from "@/modules/meetings/components/VideoComponent.vue";
 import EmptyVideo from "@/modules/meetings/components/EmptyVideo.vue";
 
@@ -29,12 +27,16 @@ const props = defineProps({
 
 <style scoped>
 .video-container {
-    position: relative;
-    background: #3b3b3b;
+    max-width: 100%;
+    max-height: 100%;
     aspect-ratio: 16/9;
+    background: #3b3b3b;
     border-radius: 6px;
     overflow: hidden;
-    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .video-container .participant-data {

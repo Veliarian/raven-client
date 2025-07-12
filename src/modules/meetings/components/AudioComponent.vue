@@ -3,7 +3,9 @@ import { LocalAudioTrack, RemoteAudioTrack } from 'livekit-client';
 import { onMounted, onUnmounted, ref } from 'vue';
 
 const props = defineProps({
-    track: LocalAudioTrack || RemoteAudioTrack,
+    track: {
+        type: [LocalAudioTrack, RemoteAudioTrack]
+    },
 });
 
 const audioElement = ref(null);

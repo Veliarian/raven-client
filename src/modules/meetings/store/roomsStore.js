@@ -18,8 +18,8 @@ export const useRoomsStore = defineStore("rooms", {
             }
         },
 
-        async createRoom(name){
-            const room = await roomsApi.createRoom(name);
+        async createRoom(name, startTime){
+            const room = await roomsApi.createRoom(name, startTime);
             if(room) {
                 this.setRooms([...this.rooms, room]);
             }

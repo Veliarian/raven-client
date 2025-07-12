@@ -8,9 +8,10 @@ const roomsStore = useRoomsStore();
 const emit = defineEmits(["close"]);
 
 const roomName = ref("");
+const startTime = ref();
 
 const createRoom = () => {
-    roomsStore.createRoom(roomName.value);
+    roomsStore.createRoom(roomName.value, startTime.value);
     closeForm();
 }
 
@@ -29,6 +30,10 @@ const closeForm = () => {
         <div class="form-field">
             <label for="room-name">Room name</label>
             <input type="text" v-model="roomName" placeholder="Enter room name">
+        </div>
+        <div class="form-field">
+            <label for="start-time">Start time</label>
+            <input type="datetime-local" v-model="startTime">
         </div>
         <button type="submit">Create</button>
     </main>

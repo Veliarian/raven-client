@@ -1,5 +1,4 @@
 <script setup>
-import {ref} from "vue";
 import Icon from "@/shared/components/icons/Icon.vue";
 import {mdiMicrophone, mdiMicrophoneOff} from "@mdi/js";
 
