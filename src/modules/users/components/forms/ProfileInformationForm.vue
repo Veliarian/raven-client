@@ -1,12 +1,12 @@
 <script setup>
 
 import {useI18n} from "vue-i18n";
-import {useUserStore} from "@/modules/user/store/userStore.js";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
 import {computed, reactive} from "vue";
 
 const {t} = useI18n();
-const userStore = useUserStore();
-const user = computed(() => userStore.user);
+const usersStore = useUsersStore();
+const user = computed(() => usersStore.currentUser);
 
 const editableUser = reactive({
     username: user.value.username,
@@ -18,7 +18,7 @@ const editableUser = reactive({
 });
 
 const handleSave = () => {
-    userStore.updateUser(editableUser);
+    usersStore.updateCurrentUser(editableUser);
 };
 
 </script>
@@ -28,12 +28,12 @@ const handleSave = () => {
         <form @submit.prevent="handleSave">
             <div class="horizontal-block">
                 <div class="input-box">
-                    <label for="username">{{ t("profile.username") }}</label>
-                    <input type="text" id="username" min="2" max="256" v-model="editableUser.username">
+                    <label for="lastname">{{ t("profile.lastname") }}</label>
+                    <input type="text" id="lastname" v-model="editableUser.lastName">
                 </div>
                 <div class="input-box">
-                    <label for="email">{{ t("profile.email") }}</label>
-                    <input type="email" id="email" v-model="editableUser.email">
+                    <label for="username">{{ t("profile.username") }}</label>
+                    <input type="text" id="username" min="2" max="256" v-model="editableUser.username">
                 </div>
             </div>
             <div class="horizontal-block">
@@ -42,8 +42,8 @@ const handleSave = () => {
                     <input type="text" id="firstname" v-model="editableUser.firstName">
                 </div>
                 <div class="input-box">
-                    <label for="lastname">{{ t("profile.lastname") }}</label>
-                    <input type="text" id="lastname" v-model="editableUser.lastName">
+                    <label for="email">{{ t("profile.email") }}</label>
+                    <input type="email" id="email" v-model="editableUser.email">
                 </div>
             </div>
             <div class="half-block">

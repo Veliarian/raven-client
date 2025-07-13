@@ -5,7 +5,7 @@ import Icon from "@/shared/components/Icon.vue";
 import ProfileImage from "@/shared/components/ProfileImage.vue";
 import {useI18n} from "vue-i18n";
 import {ref} from "vue";
-import {useProfilePictureStore} from "@/modules/user/store/profilePictureStore.js";
+import {useProfilePictureStore} from "@/modules/users/store/profilePictureStore.js";
 
 const {t} = useI18n();
 

@@ -17,9 +17,9 @@ export const roomsApi = {
         }
     },
 
-    async createRoom(name, startTime){
+    async createRoom(name, startTime, participantIds){
         try{
-            const response = await axios.post(URL, {name, startTime}, {
+            const response = await axios.post(URL, {name, startTime, participantIds}, {
                 headers: authHeader()
             });
             return response.data;

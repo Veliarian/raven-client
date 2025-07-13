@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {useUserStore} from "@/modules/user/store/userStore.js";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
 import {lessonsApi} from "@/modules/lessons/api/lessonsAPI.js";
 
 export const useLessonsStore = defineStore("lessons", {

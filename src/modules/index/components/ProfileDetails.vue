@@ -5,12 +5,12 @@ import {computed, onMounted, onUnmounted, ref} from "vue";
 import {useI18n} from "vue-i18n";
 import Icon from "../../../shared/components/Icon.vue";
 import {mdiAccount, mdiCog} from "@mdi/js";
-import {useUserStore} from "@/modules/user/store/userStore.js";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
 const {t} = useI18n();
 
-const userStore = useUserStore();
+const usersStore = useUsersStore();
 
-const username = computed(() => userStore.user?.username || "Username");
+const username = computed(() => usersStore.user?.username || "Username");
 
 const isDisplayDrop = ref(false);
 const containerRef = ref(null);

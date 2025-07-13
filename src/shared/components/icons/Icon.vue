@@ -11,30 +11,40 @@ const props = defineProps({
     backgroundShape: { type: String, default: 'square' } // 'circle' | 'square' | 'none'
 });
 
-const computedSize = computed(() => (typeof props.size === 'number' ? `${props.size}` : props.size));
-const computedPadding = computed(() => (`${props.padding}`));
+// Обчислений числовий розмір (без "px")
+const baseSize = computed(() =>
+    typeof props.size === 'number' ? props.size : parseInt(props.size)
+);
 
+// Розмір для SVG (віднімаємо padding * 2)
+const svgSize = computed(() =>
+    baseSize.value - props.padding * 2
+);
+
+// Стиль для фону
 const backgroundStyle = computed(() => {
     if (!props.enableBackground) return {};
+    const hexOpacity = Math.round(props.backgroundOpacity * 255)
+        .toString(16)
+        .padStart(2, '0');
     return {
-        backgroundColor: `${props.color}${Math.round(props.backgroundOpacity * 255).toString(16).padStart(2, '0')}`,
+        backgroundColor: `${props.color}${hexOpacity}`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: props.backgroundShape === 'circle' ? '50%' : '10px',
-        width: computedSize.value,
-        height: computedSize.value,
-        padding: computedPadding.value
+        width: `${baseSize.value}px`,
+        height: `${baseSize.value}px`,
+        padding: `${props.padding}px`,
     };
 });
-
 </script>
 
 <template>
-    <div class="background" :style="backgroundStyle">
+    <div class="icon-wrapper" :style="backgroundStyle">
         <svg
-            :width="padding > 0 ? size - (padding * 2) + 'px' : computedSize + 'px'"
-            :height="padding > 0 ? size - (padding * 2) + 'px' : computedSize + 'px'"
+            :width="svgSize + 'px'"
+            :height="svgSize + 'px'"
             viewBox="0 0 24 24"
             fill="currentColor"
             :style="{ color }"
@@ -45,7 +55,7 @@ const backgroundStyle = computed(() => {
 </template>
 
 <style>
-.background {
+.icon-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;

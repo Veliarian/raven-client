@@ -2,18 +2,18 @@
 import {useRoute, useRouter} from "vue-router";
 import {useAuthStore} from "../store/authStore.js";
 import {onMounted} from "vue";
-import {useUserStore} from "@/modules/user/store/userStore.js";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
-const userStore = useUserStore();
+const usersStore = useUsersStore();
 
 onMounted(() => {
     const token = route.query.token;
     if(token) {
         authStore.setToken(token);
-        userStore.fetchUser();
+        usersStore.fetchCurrentUser();
         router.push("/");
     } else {
         router.push("/auth")

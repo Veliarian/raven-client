@@ -12,8 +12,8 @@ import {
 } from "@mdi/js";
 import MultiButton from "@/shared/components/MultiButton.vue";
 import {ref} from "vue";
-import ProfileImageForm from "@/modules/user/components/forms/ProfileImageForm.vue";
-import ProfileInformationForm from "@/modules/user/components/forms/ProfileInformationForm.vue";
+import ProfileImageForm from "@/modules/users/components/forms/ProfileImageForm.vue";
+import ProfileInformationForm from "@/modules/users/components/forms/ProfileInformationForm.vue";
 
 const router = useRouter();
 const { t } = useI18n();

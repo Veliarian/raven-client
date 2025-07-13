@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
-import {profilePictureApi} from "@/modules/user/api/profilePictureApi.js";
-import {useUserStore} from "@/modules/user/store/userStore.js";
+import {profilePictureApi} from "@/modules/users/api/profilePictureApi.js";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
 import {serverURL} from "@/shared/utils/serverURL.js";
 
 export const useProfilePictureStore = defineStore("profilePicture", {
@@ -15,8 +15,8 @@ export const useProfilePictureStore = defineStore("profilePicture", {
         },
 
         async uploadProfilePicture(file) {
-            const userStore = useUserStore();
-            const picture = await profilePictureApi.uploadPicture(userStore.user.id, file);
+            const usersStore = useUsersStore();
+            const picture = await profilePictureApi.uploadPicture(usersStore.user.id, file);
             this.setPicture(picture);
         }
     },

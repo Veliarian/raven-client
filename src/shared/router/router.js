@@ -1,10 +1,10 @@
 import {createRouter, createWebHistory} from "vue-router";
 
 import authRoutes from "@/modules/auth/route/routes.js";
-import profileRoutes from "@/modules/user/route/routes.js"
+import profileRoutes from "@/modules/users/route/routes.js"
 
 import {useAuthStore} from "@/modules/auth/store/authStore.js";
-import {useUserStore} from "@/modules/user/store/userStore.js";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
 
 import IndexView from "@/modules/index/views/IndexView.vue";
 import DashboardView from "@/modules/dashboard/views/DashboardView.vue";
@@ -43,7 +43,10 @@ const router = createRouter({
                 },
                 {
                     path: "meetings",
-                    component: MeetingsView
+                    component: MeetingsView,
+                    meta: {
+                        requiresUsers: true,
+                    }
                 }
             ],
         },
@@ -86,12 +89,20 @@ router.beforeEach((to, from, next) => {
         }
     }
 
-    const userStore = useUserStore();
-    const user = userStore.user;
+    const usersStore = useUsersStore();
+    const currentUser = usersStore.currentUser;
 
     if (to.meta.requiresUser) {
-        if(!user || user === {}){
-            userStore.fetchUser();
+        if(!currentUser || currentUser === {}){
+            usersStore.fetchCurrentUser();
+        }
+    }
+
+    const allUsers = usersStore.allUsers;
+
+    if (to.meta.requiresUsers) {
+        if (allUsers.length === 0){
+            usersStore.fetchAllUsers();
         }
     }
 

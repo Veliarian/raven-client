@@ -11,16 +11,17 @@ import CreateRoomForm from "@/modules/meetings/components/CreateRoomForm.vue";
 import {computed, onMounted, ref} from "vue";
 import {useRoomsStore} from "@/modules/meetings/store/roomsStore.js";
 import RoomView from "@/modules/meetings/views/RoomView.vue";
-import {useUserStore} from "@/modules/user/store/userStore.js";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
 
 const i18n = useI18n();
 const {t} = i18n;
 
 const roomsStore = useRoomsStore();
-const userStore = useUserStore();
+const usersStore = useUsersStore();
 
 const rooms = computed(() => roomsStore.rooms);
 
+const filterMeetingsStatus = ref("active");
 const isOpenedForm = ref(false);
 const isOpenedRoomForm = ref(false);
 const activeRoom = ref(null);
@@ -33,6 +34,12 @@ const openRoomForm = () => {
 const closeRoomForm = () => {
     isOpenedForm.value = false;
     isOpenedRoomForm.value = false;
+}
+
+const selectMeetingStatus = (status) => {
+    if(filterMeetingsStatus.value !== status) {
+        filterMeetingsStatus.value = status;
+    }
 }
 
 const joinRoom = (roomId) => {
@@ -62,11 +69,11 @@ onMounted(() => {
         </header>
         <main>
             <multi-button>
-                <button>
+                <button :class="{'active': filterMeetingsStatus === 'active'}" @click="selectMeetingStatus('active')">
                     <Icon :icon="mdiVideoOutline"/>
-                    <span>Rooms</span>
+                    <span>Active</span>
                 </button>
-                <button>
+                <button :class="{'active': filterMeetingsStatus === 'scheduled'}" @click="selectMeetingStatus('scheduled')">
                     <Icon :icon="mdiCalendarMonthOutline"/>
                     <span>Scheduled</span>
                 </button>
@@ -76,6 +83,7 @@ onMounted(() => {
                 <RoomCard v-for="room in rooms"
                           :name="room.name"
                           :status="room.status"
+                          :participant-ids="room.participantIds"
                           @join-room="joinRoom(room.id)"
                 />
             </rooms-list>
@@ -84,7 +92,7 @@ onMounted(() => {
 
     <RoomView v-if="activeRoom"
               :room-name="activeRoom.name"
-              :participant-name="userStore.user.username"
+              :participant-name="usersStore.user.username"
               @leave-room="leaveRoom"/>
 
     <form-container v-if="isOpenedForm">

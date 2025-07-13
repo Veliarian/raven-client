@@ -1,6 +1,9 @@
 <script setup>
 import {mdiAccountPlusOutline, mdiTrayArrowDown} from "@mdi/js";
 import Icon from "@/shared/components/icons/Icon.vue";
+import ProfileImage from "@/shared/components/ProfileImage.vue";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
+import {computed} from "vue";
 
 const props = defineProps({
     name: String,
@@ -8,8 +11,10 @@ const props = defineProps({
         type: String,
         default: "active"
     },
-    participants: Array
+    participantIds: Array
 });
+
+const usersStore = useUsersStore();
 
 const emit = defineEmits(["joinRoom"]);
 
@@ -20,6 +25,8 @@ const joinRoom = () => {
 const firstLetterToUpperCase = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+
+console.log(props.participantIds)
 </script>
 
 <template>
@@ -30,7 +37,11 @@ const firstLetterToUpperCase = (str) => {
     </header>
     <main>
         <div class="participants-list">
-
+            <ProfileImage
+                v-for="participantId in participantIds"
+                :profile-picture="usersStore.getProfilePictureByUserId(participantId)"
+                class="participant-image"
+            />
         </div>
         <div class="actions-box">
             <button>
@@ -55,6 +66,9 @@ const firstLetterToUpperCase = (str) => {
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
     background-color: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
 }
 
 .room-card-header {
@@ -77,6 +91,28 @@ const firstLetterToUpperCase = (str) => {
 
 .status.scheduled {
     background-color: var(--color-yellow);
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.participants-list{
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+}
+
+.participant-image{
+    width: 3rem;
+    height: 3rem;
+    border: 2px solid var(--color-green);
+}
+
+.participants-list .participant-image:not(:first-child){
+    transform: translateX(-1.5rem);
 }
 
 .actions-box{

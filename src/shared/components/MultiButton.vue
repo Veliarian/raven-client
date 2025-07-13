@@ -26,6 +26,7 @@
     border: none;
     padding: .3rem .5rem;
     color: var(--text-color-secondary);
+    border-radius: var(--radius-full);
 }
 
 .multi-button button:hover{

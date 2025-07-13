@@ -4,7 +4,7 @@ import axios, {HttpStatusCode} from "axios";
 
 const URL = serverURL + "/users"
 
-export const userApi = {
+export const usersApi = {
 
     async fetchUserProfile() {
         try {
@@ -17,10 +17,22 @@ export const userApi = {
         }
     },
 
-    async updateUser(userId, newUser) {
+    async updateCurrentUser(userId, newUser) {
         try {
             const response = await axios.put(URL + "/" + userId, newUser, {
                 headers: authHeader(),
+            });
+
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
+    async fetchAllUsers() {
+        try {
+            const response = await axios.get(URL, {
+               headers: authHeader()
             });
 
             return response.data;
