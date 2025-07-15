@@ -14,6 +14,7 @@ import NotFound from "../views/NotFound.vue";
 import {jwtDecode} from "jwt-decode";
 import MaterialsView from "@/modules/materials/views/MaterialsView.vue";
 import MeetingsView from "@/modules/meetings/views/MeetingsView.vue";
+import NotesView from "@/modules/notes/views/NotesView.vue";
 
 
 const router = createRouter({
@@ -47,7 +48,11 @@ const router = createRouter({
                     meta: {
                         requiresUsers: true,
                     }
-                }
+                },
+                {
+                    path: "notes",
+                    component: NotesView
+                },
             ],
         },
 

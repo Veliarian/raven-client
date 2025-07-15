@@ -12,7 +12,7 @@ import {
     mdiVideoOutline
 } from "@mdi/js";
 import Switch from "@/shared/components/Switch.vue";
-import {fileColor} from "@/shared/utils/colorUtils.js";
+import {useColorUtils} from "@/shared/utils/colorUtils.js";
 import FileIcon from "@/shared/components/icons/FileIcon.vue";
 import OptionsButton from "@/shared/components/buttons/OptionsButton.vue";
 
@@ -22,6 +22,8 @@ const props = defineProps({
         default: []
     }
 });
+
+const colorUtils = useColorUtils()
 
 const sort = ref({key: "name", asc: true});
 

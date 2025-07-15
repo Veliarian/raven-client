@@ -9,7 +9,8 @@
     "materialsAdditional": "Доступ до навчальних матеріалів",
     "chat": "Чат",
     "chatAdditional": "Спілкування між користувачами",
-    "meetings": "Зустрічі"
+    "meetings": "Зустрічі",
+    "notes": "Нотатки"
   },
   "pages": {
     "meetings": {

@@ -9,7 +9,8 @@
     "materialsAdditional": "Access learning materials",
     "chat": "Chat",
     "chatAdditional": "Communication between users",
-    "meetings": "Meetings"
+    "meetings": "Meetings",
+    "notes": "Notes"
   },
   "pages": {
     "meetings": {

@@ -5,7 +5,7 @@ import {
     mdiBookOpenBlankVariantOutline,
     mdiCalendarMonth,
     mdiFolderOutline,
-    mdiHomeOutline, mdiVideo, mdiVideoOutline
+    mdiHomeOutline, mdiNoteOutline, mdiVideo, mdiVideoOutline
 } from "@mdi/js";
 
 const { t, locale } = useI18n();
@@ -38,6 +38,10 @@ const { t, locale } = useI18n();
                     <router-link class="sidebar-list-item" exact-active-class="active" to="/meetings">
                         <Icon :icon="mdiVideoOutline"/>
                         <span class="sidebar-list-item-text">{{ t("sidebar.meetings") }}</span>
+                    </router-link>
+                    <router-link class="sidebar-list-item" exact-active-class="active" to="/notes">
+                        <Icon :icon="mdiNoteOutline"/>
+                        <span class="sidebar-list-item-text">{{ t("sidebar.notes") }}</span>
                     </router-link>
                 </div>
             </nav>

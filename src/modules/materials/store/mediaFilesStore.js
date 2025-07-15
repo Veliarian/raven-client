@@ -1,6 +1,5 @@
 import {defineStore} from "pinia";
 import {mediaFilesApi} from "@/modules/materials/api/mediaFilesApi.js";
-import axios from "axios";
 
 export const useMediaFilesStore = defineStore("mediaFiles", {
     state: () => ({
