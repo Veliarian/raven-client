@@ -92,7 +92,7 @@ onMounted(() => {
 
     <RoomView v-if="activeRoom"
               :room-name="activeRoom.name"
-              :participant-name="usersStore.user.username"
+              :participant-name="usersStore.currentUser.username"
               @leave-room="leaveRoom"/>
 
     <form-container v-if="isOpenedForm">

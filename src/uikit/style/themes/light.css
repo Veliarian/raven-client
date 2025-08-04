@@ -1,0 +1,9 @@
+:root{
+    --background: #F1F3F4;
+    --surface: #ffffff;
+    --background-opacity: rgba(0, 0, 0, .7);
+    --text-color-primary: #000000;
+    --text-color-secondary: #656a69;
+    --text-color-light: #ffffff;
+    --border-color: #e5e7e9;
+}

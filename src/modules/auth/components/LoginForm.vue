@@ -1,8 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {useRouter} from "vue-router";
-
-const router = useRouter();
+import {Button as FButton} from "@/uikit/index.js";
 
 const isShowPassword = ref(false);
 
@@ -21,15 +19,15 @@ const loginWithGoogle = () => {
             <h1>Welcome back</h1>
             <p>Log in to your account</p>
         </div>
-        <form class="auth-form" id="login-form">
-            <div class="form-group">
+        <form class="form-main" id="login-form">
+            <div class="form-field">
                 <label for="login-username">Username</label>
                 <div class="input-wrapper">
                     <div class="input-icon user-icon"></div>
                     <input type="text" id="login-username" name="username" placeholder="Enter your username" required>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-field">
                 <label for="login-password">Password</label>
                 <div class="input-wrapper">
                     <div class="input-icon password-icon"></div>
@@ -38,11 +36,12 @@ const loginWithGoogle = () => {
                     <div class="toggle-password" :class="{show: isShowPassword}" data-for="login-password" @click="showPassword"></div>
                 </div>
             </div>
+            <FButton class="full-w">Login</FButton>
             <button type="submit" class="btn-submit">Login</button>
             <div class="separator">
                 <span>Or continue with</span>
             </div>
-            <button type="button" class="google-btn" @click="loginWithGoogle">
+            <button class="google-btn" @click="loginWithGoogle">
                 <svg xmlns="http://www.w3.org/2000/svg" class="google-icon" viewBox="0 0 24 24">
                     <path fill="currentColor"
                           d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972a6.033 6.033 0 0 1 0-12.064c1.498 0 2.866.549 3.921 1.453l2.814-2.814A9.969 9.969 0 0 0 12.545 2C7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748l-9.426-.013z"/>
@@ -59,6 +58,9 @@ const loginWithGoogle = () => {
 }
 
 .form-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     margin-bottom: 1.5rem;
     width: 100%;
@@ -71,24 +73,13 @@ const loginWithGoogle = () => {
 }
 
 .form-header p {
-    color: var(--muted-foreground);
+    color: var(--text-color-secondary);
 }
 
-.auth-form {
+.form-main {
     width: 100%;
     max-width: 24rem;
     margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
 }
 
 .input-wrapper {
@@ -112,10 +103,6 @@ const loginWithGoogle = () => {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'%3E%3C/path%3E%3Ccircle cx='12' cy='7' r='4'%3E%3C/circle%3E%3C/svg%3E");
 }
 
-.email-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='20' height='16' x='2' y='4' rx='2'%3E%3C/rect%3E%3Cpath d='m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'%3E%3C/path%3E%3C/svg%3E");
-}
-
 .password-icon {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect width='18' height='11' x='3' y='11' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'%3E%3C/path%3E%3C/svg%3E");
 }
@@ -123,29 +110,7 @@ const loginWithGoogle = () => {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: 100%;
-    height: 2.5rem;
     padding: 0 0.75rem 0 2.5rem;
-    border: 1px solid var(--input);
-    border-radius: 0.375rem;
-    background-color: var(--background);
-    color: var(--foreground);
-    font-size: 1rem;
-    transition: border-color 0.15s ease;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    outline: none;
-    border-color: var(--ring);
-    box-shadow: 0 0 0 2px rgba(28, 138, 67, 0.1);
-}
-
-.dark input[type="text"]:focus,
-.dark input[type="email"]:focus,
-.dark input[type="password"]:focus {
-    box-shadow: 0 0 0 2px rgba(48, 212, 100, 0.1);
 }
 
 .toggle-password {
@@ -170,25 +135,14 @@ input[type="password"]:focus {
 .btn-submit {
     width: 100%;
     height: 2.5rem;
-    border: none;
-    border-radius: 0.375rem;
-    background-color: var(--primary);
-    color: var(--primary-foreground);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.btn-submit:hover {
-    background-color: rgba(28, 138, 67, 0.9);
-}
-
-.dark .btn-submit:hover {
-    background-color: rgba(48, 212, 100, 0.9);
+    max-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .separator {
+    width: 100%;
     position: relative;
     margin: 1.5rem 0;
     text-align: center;
@@ -201,84 +155,36 @@ input[type="password"]:focus {
     left: 0;
     width: 100%;
     height: 1px;
-    background-color: var(--border);
+    background-color: var(--color-secondary);
 }
 
 .separator span {
     position: relative;
     padding: 0 0.5rem;
-    background-color: var(--card);
-    color: var(--foreground);
+    background-color: var(--surface);
+    color: var(--color-secondary);
     font-size: 0.75rem;
     text-transform: uppercase;
 }
 
 .google-btn {
+    width: 100%;
+    max-width: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
     height: 2.5rem;
-    border: 1px solid var(--border);
-    border-radius: 0.375rem;
+    border: 1px solid var(--border-color);
     background-color: transparent;
-    color: var(--foreground);
-    font-size: 0.875rem;
-    font-weight: 500;
+    color: var(--text-color-secondary);
     cursor: pointer;
     transition: background-color 0.15s ease;
-}
-
-.google-btn:hover {
-    background-color: var(--secondary);
 }
 
 .google-icon {
     width: 1.25rem;
     height: 1.25rem;
     margin-right: 0.5rem;
-}
-
-.form-footer {
-    margin-top: 1rem;
-    text-align: center;
-    font-size: 0.875rem;
-    color: var(--foreground);
-}
-
-.switch-form-link {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.switch-form-link:hover {
-    text-decoration: underline;
-}
-
-.btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.5rem;
-    padding: 0 1rem;
-    border: none;
-    border-radius: 0.375rem;
-    background-color: var(--primary);
-    color: var(--primary-foreground);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.btn-primary:hover {
-    background-color: rgba(28, 138, 67, 0.9);
-}
-
-.dark .btn-primary:hover {
-    background-color: rgba(48, 212, 100, 0.9);
 }
 
 /* Media Queries */

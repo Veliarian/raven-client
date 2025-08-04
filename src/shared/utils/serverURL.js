@@ -4,4 +4,4 @@ const isLocal = () => {
 
 export const serverURL = isLocal()
     ? 'http://localhost:8080/v1'
-    : 'https://your-production-server.com/v1';
+    : 'http://192.168.1.129:8080/v1';

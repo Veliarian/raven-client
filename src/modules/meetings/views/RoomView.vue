@@ -9,6 +9,9 @@ import MonitorShareButton from "@/modules/meetings/components/buttons/MonitorSha
 import BoardButton from "@/modules/meetings/components/buttons/BoardButton.vue";
 import MainStage from "@/modules/meetings/components/MainStage.vue";
 import ParticipantStrip from "@/modules/meetings/components/ParticipantStrip.vue";
+import {serverURL} from "@/shared/utils/serverURL.js";
+import {authHeader} from "@/shared/utils/authHeader.js";
+import axios from "axios";
 
 const props = defineProps({
    roomName: String,
@@ -18,8 +21,8 @@ const props = defineProps({
 const emit = defineEmits(["leaveRoom"]);
 
 // 🔧 Конфіг
-const LIVEKIT_URL = 'ws://localhost:7880/';
-const SERVER_URL = 'http://localhost:8080/';
+const LIVEKIT_URL = 'https://livekit.veliar.keenetic.link';
+let SERVER_URL = serverURL + '/meetings';
 
 const room = ref(null);
 
@@ -222,18 +225,12 @@ const leaveRoom = () => {
 
 // 🔑 Отримати токен з бекенду
 async function getToken(roomName, participantName) {
-    const res = await fetch(SERVER_URL + 'token', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            roomName,
-            participantName
-        })
+    console.log(roomName + " " + participantName)
+    const res = await axios.post(SERVER_URL + "/token", {roomName, participantName}, {
+       headers: authHeader()
     });
 
-    const data = await res.json();
+    const data = res.data;
     return data.token;
 }
 </script>

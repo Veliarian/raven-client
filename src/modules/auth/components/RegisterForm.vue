@@ -10,32 +10,32 @@ const showPassword = () => {
 
 <template>
     <div class="register-form-template">
-        <div class="form-header">
+        <div class="form-title">
             <h1>Create an account</h1>
             <p>Sign up to get started</p>
         </div>
-        <form class="auth-form" id="register-form">
-            <div class="form-group">
+        <form class="form-main" id="register-form">
+            <div class="form-field">
                 <label for="register-username">Username</label>
                 <div class="input-wrapper">
                     <div class="input-icon user-icon"></div>
                     <input type="text" id="register-username" name="username" placeholder="Choose a username" required>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-field">
                 <label for="register-email">Email</label>
                 <div class="input-wrapper">
                     <div class="input-icon email-icon"></div>
                     <input type="email" id="register-email" name="email" placeholder="Enter your email" required>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-field">
                 <label for="register-password">Password</label>
                 <div class="input-wrapper">
                     <div class="input-icon password-icon"></div>
                     <input :type="isShowPassword ? 'text' : 'password'" id="register-password" name="password" placeholder="Create a password"
-                           required>
-                    <div class="toggle-password" data-for="register-password" @click="showPassword"></div>
+                           required autocomplete="off">
+                    <div class="toggle-password" :class="{show: isShowPassword}" data-for="register-password" @click="showPassword"></div>
                 </div>
             </div>
             <button type="submit" class="btn-submit">Register</button>
@@ -58,37 +58,16 @@ const showPassword = () => {
     width: 100%;
 }
 
-.form-header {
+.form-title {
     text-align: center;
     margin-bottom: 1.5rem;
     width: 100%;
 }
 
-.form-header h1 {
-    font-size: 1.875rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.form-header p {
-    color: var(--muted-foreground);
-}
-
-.auth-form {
+.form-main {
     width: 100%;
     max-width: 24rem;
     margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
 }
 
 .input-wrapper {
@@ -123,29 +102,7 @@ const showPassword = () => {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: 100%;
-    height: 2.5rem;
     padding: 0 0.75rem 0 2.5rem;
-    border: 1px solid var(--input);
-    border-radius: 0.375rem;
-    background-color: var(--background);
-    color: var(--foreground);
-    font-size: 1rem;
-    transition: border-color 0.15s ease;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    outline: none;
-    border-color: var(--ring);
-    box-shadow: 0 0 0 2px rgba(28, 138, 67, 0.1);
-}
-
-.dark input[type="text"]:focus,
-.dark input[type="email"]:focus,
-.dark input[type="password"]:focus {
-    box-shadow: 0 0 0 2px rgba(48, 212, 100, 0.1);
 }
 
 .toggle-password {
@@ -170,25 +127,14 @@ input[type="password"]:focus {
 .btn-submit {
     width: 100%;
     height: 2.5rem;
-    border: none;
-    border-radius: 0.375rem;
-    background-color: var(--primary);
-    color: var(--primary-foreground);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.btn-submit:hover {
-    background-color: rgba(28, 138, 67, 0.9);
-}
-
-.dark .btn-submit:hover {
-    background-color: rgba(48, 212, 100, 0.9);
+    max-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .separator {
+    width: 100%;
     position: relative;
     margin: 1.5rem 0;
     text-align: center;
@@ -201,84 +147,36 @@ input[type="password"]:focus {
     left: 0;
     width: 100%;
     height: 1px;
-    background-color: var(--border);
+    background-color: var(--color-secondary);
 }
 
 .separator span {
     position: relative;
     padding: 0 0.5rem;
-    background-color: var(--card);
-    color: var(--foreground);
+    background-color: var(--surface);
+    color: var(--color-secondary);
     font-size: 0.75rem;
     text-transform: uppercase;
 }
 
 .google-btn {
+    width: 100%;
+    max-width: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
     height: 2.5rem;
-    border: 1px solid var(--border);
-    border-radius: 0.375rem;
+    border: 1px solid var(--border-color);
     background-color: transparent;
-    color: var(--foreground);
-    font-size: 0.875rem;
-    font-weight: 500;
+    color: var(--text-color-secondary);
     cursor: pointer;
     transition: background-color 0.15s ease;
-}
-
-.google-btn:hover {
-    background-color: var(--secondary);
 }
 
 .google-icon {
     width: 1.25rem;
     height: 1.25rem;
     margin-right: 0.5rem;
-}
-
-.form-footer {
-    margin-top: 1rem;
-    text-align: center;
-    font-size: 0.875rem;
-    color: var(--foreground);
-}
-
-.switch-form-link {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.switch-form-link:hover {
-    text-decoration: underline;
-}
-
-.btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.5rem;
-    padding: 0 1rem;
-    border: none;
-    border-radius: 0.375rem;
-    background-color: var(--primary);
-    color: var(--primary-foreground);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.btn-primary:hover {
-    background-color: rgba(28, 138, 67, 0.9);
-}
-
-.dark .btn-primary:hover {
-    background-color: rgba(48, 212, 100, 0.9);
 }
 
 /* Media Queries */

@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from "pinia";
 import { createI18n } from "vue-i18n";
+import UiKit from "@/uikit";
 
 import App from "./App.vue";
 import piniaPersist from "pinia-plugin-persistedstate";
@@ -31,6 +32,7 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 app.use(i18n);
+app.use(UiKit);
 
 app.mount('#app');
 

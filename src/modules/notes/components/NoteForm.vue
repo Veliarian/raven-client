@@ -9,7 +9,7 @@ const props = defineProps({
    }
 });
 
-const emits = defineEmits(["saveNote"]);
+const emits = defineEmits(["closeForm"]);
 
 const notesStore = useNotesStore();
 
@@ -29,16 +29,14 @@ const saveNote = () => {
     let note = new Note();
     note.title = title.value;
     note.content = content.value;
-    note.creationTime = new Date().toISOString().slice(0, -1);
     note.reminderTime = props.note.reminderTime;
 
     if (props.note.id) {
-        note.id = props.note.id;
-
+        notesStore.updateNote(props.note.id, note);
     } else {
-        console.log(note);
-        notesStore.createRoom(note);
+        notesStore.createNote(note);
     }
+    emits("closeForm");
 }
 </script>
 

@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
     <div class="auth-background">
         <div class="gradient-bg"></div>

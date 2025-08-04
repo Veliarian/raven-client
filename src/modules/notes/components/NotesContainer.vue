@@ -13,22 +13,40 @@ const props = defineProps({
     }
 });
 
-const emits = defineEmits(["createNote"]);
+const emits = defineEmits(["createNote", "editNote", "closeForm"]);
 
 const createNote = () => {
     emits("createNote");
+}
+
+const handleEditNote = (note) => {
+    emits("editNote", note);
+}
+
+const closeForm = () => {
+    emits("closeForm");
 }
 
 </script>
 
 <template>
     <div v-if="notes?.length > 0 || editableNote" class="notes-container">
-        <NoteForm v-if="editableNote" :note="editableNote"/>
-        <NoteCard v-for="note in notes" :key="note.id"/>
+        <NoteForm v-if="editableNote"
+                  :note="editableNote"
+                  @close-form="closeForm"/>
+        <NoteCard v-for="note in notes.filter(n => !editableNote || n.id !== editableNote.id)"
+                  :key="note.id"
+                  :note="note"
+                  @edit-note="handleEditNote"
+        />
     </div>
     <EmptyNote v-else @create-note="createNote"/>
 </template>
 
 <style scoped>
-
+.notes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+}
 </style>

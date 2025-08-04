@@ -1,6 +1,6 @@
-@import "reset.css";
-@import "variables.css";
-@import "typography.css";
+/*@import "reset.css";*/
+/*@import "variables.css";*/
+/*@import "typography.css";*/
 
 @import "components/containers.css";
 @import "components/buttons.css";
@@ -8,4 +8,4 @@
 @import "components/links.css";
 @import "components/lists.css";
 
-@import "themes.css";
+/*@import "themes.css";*/
