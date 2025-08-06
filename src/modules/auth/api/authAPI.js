@@ -6,6 +6,24 @@ const URL = serverURL + "/auth"
 
 export const authApi = {
 
+    async login(username, password) {
+        try {
+            const res = await axios.post(URL + "/sign-in", {username, password});
+            return res.data.token;
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
+    async signUp(username, email, password) {
+        try {
+            const res = await axios.post(URL + "/sign-up", {username, email, password});
+            return res.data.token;
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
     async logout() {
         try {
             await axios.post(URL + "/logout", {

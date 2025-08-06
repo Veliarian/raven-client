@@ -1,6 +1,10 @@
 <script setup>
 import { computed } from 'vue';
 
+defineOptions({
+    name: "FIcon",
+});
+
 const props = defineProps({
     icon: { type: String, required: true },
     size: { type: [Number, String], default: 24 },

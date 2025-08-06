@@ -1,9 +1,9 @@
 <script setup>
-
-import SearchInput from "@/shared/components/SearchInput.vue"
+import {SearchInput as FSearchInput} from "@uikit";
 import ThemeSwitch from "@/shared/components/ThemeSwitch.vue";
 import NoticeButton from "@/shared/components/NoticeButton.vue";
 import ProfileDetails from "@/modules/index/components/ProfileDetails.vue";
+
 </script>
 
 <template>
@@ -14,7 +14,7 @@ import ProfileDetails from "@/modules/index/components/ProfileDetails.vue";
         </div>
         <div class="top-bar-content-box">
             <div class="top-bar-search-input">
-                <SearchInput/>
+                <f-search-input/>
             </div>
             <ThemeSwitch/>
             <div class="user-actions">

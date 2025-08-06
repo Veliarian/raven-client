@@ -1,46 +1,50 @@
 <script setup>
 import {useI18n} from "vue-i18n";
-import Icon from "@/shared/components/Icon.vue";
 import {
     mdiBookOpenBlankVariantOutline,
     mdiCalendarMonth,
     mdiFolderOutline,
-    mdiHomeOutline, mdiNoteOutline, mdiVideo, mdiVideoOutline
+    mdiHomeOutline,
+    mdiNoteOutline,
+    mdiVideoOutline
 } from "@mdi/js";
+import {Icon as FIcon} from "@uikit";
 
-const { t, locale } = useI18n();
-
+const {t, locale} = useI18n();
 
 </script>
 
 <template>
     <div class="sidebar">
         <div class="sidebar-content">
-            <div class="sidebar-header"></div>
+            <div class="sidebar-header">
+                <img src="/raven_logo.svg" alt="R" class="logo"/>
+                <h1 class="logo-text">aven</h1>
+            </div>
             <nav class="sidebar-body">
                 <div class="sidebar-list">
                     <router-link class="sidebar-list-item" exact-active-class="active" to="/">
-                        <Icon :icon="mdiHomeOutline"/>
+                        <f-icon :icon="mdiHomeOutline"/>
                         <span class="sidebar-list-item-text">{{ t("sidebar.dashboard") }}</span>
                     </router-link>
                     <router-link class="sidebar-list-item" exact-active-class="active" to="/schedule">
-                        <Icon :icon="mdiCalendarMonth"/>
+                        <f-icon :icon="mdiCalendarMonth"/>
                         <span class="sidebar-list-item-text">{{ t("sidebar.schedule") }}</span>
                     </router-link>
                     <router-link class="sidebar-list-item" exact-active-class="active" to="/lessons">
-                        <Icon :icon="mdiBookOpenBlankVariantOutline"/>
+                        <f-icon :icon="mdiBookOpenBlankVariantOutline"/>
                         <span class="sidebar-list-item-text">{{ t("sidebar.lessons") }}</span>
                     </router-link>
                     <router-link class="sidebar-list-item" exact-active-class="active" to="/materials">
-                        <Icon :icon="mdiFolderOutline"/>
+                        <f-icon :icon="mdiFolderOutline"/>
                         <span class="sidebar-list-item-text">{{ t("sidebar.materials") }}</span>
                     </router-link>
                     <router-link class="sidebar-list-item" exact-active-class="active" to="/meetings">
-                        <Icon :icon="mdiVideoOutline"/>
+                        <f-icon :icon="mdiVideoOutline"/>
                         <span class="sidebar-list-item-text">{{ t("sidebar.meetings") }}</span>
                     </router-link>
                     <router-link class="sidebar-list-item" exact-active-class="active" to="/notes">
-                        <Icon :icon="mdiNoteOutline"/>
+                        <f-icon :icon="mdiNoteOutline"/>
                         <span class="sidebar-list-item-text">{{ t("sidebar.notes") }}</span>
                     </router-link>
                 </div>
@@ -51,7 +55,7 @@ const { t, locale } = useI18n();
 </template>
 
 <style scoped>
-.sidebar{
+.sidebar {
     width: 16rem;
     height: 100vh;
     z-index: 50;
@@ -59,41 +63,58 @@ const { t, locale } = useI18n();
     border-right: 2px solid var(--border-color);
 }
 
-.sidebar-content{
+.sidebar-content {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.sidebar-header{
+.sidebar-header {
     padding: 1rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
 }
 
-.sidebar-body{
-    padding: 1.5rem .75rem;
+.logo {
+    height: 2.5rem;
+}
+
+.logo-text{
+    font-size: 2.5rem;
+    color: var(--color-primary);
+}
+
+.sidebar-body {
+    padding: 0 .75rem 1.5rem .75rem;
     flex: 1 1 0;
 }
 
-.sidebar-footer{
+.sidebar-footer {
     padding: 1rem;
 }
 
-.sidebar-list-item{
-    padding: .75rem;
+.sidebar-list{
+    display: flex;
+    flex-direction: column;
+    gap: .125rem;
+}
+
+.sidebar-list-item {
+    padding: .5rem .75rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    border-radius: 1.5rem;
+    border-radius: var(--radius-lg);
     color: var(--text-color-secondary);
-    margin-bottom: .2rem;
 }
 
-.sidebar-list-item:hover{
-    background: var(--color-green-light);
+.sidebar-list-item:hover {
+    background: var(--color-primary-light);
 }
 
-.sidebar-list-item.active{
-    background: var(--color-green);
-    color: var(--text-color-light);
+.sidebar-list-item.active {
+    background: var(--color-primary);
+    color: var(--control-color-light);
 }
 </style>

@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from "pinia";
 import { createI18n } from "vue-i18n";
-import UiKit from "@/uikit";
+import { UiKit }from "@/uikit";
 
 import App from "./App.vue";
 import piniaPersist from "pinia-plugin-persistedstate";

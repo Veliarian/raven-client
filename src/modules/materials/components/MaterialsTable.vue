@@ -11,7 +11,7 @@ import {
     mdiPresentation, mdiTrashCanOutline,
     mdiVideoOutline
 } from "@mdi/js";
-import Switch from "@/shared/components/Switch.vue";
+import Switch from "@uikit/components/Switch.vue";
 import {useColorUtils} from "@/shared/utils/colorUtils.js";
 import FileIcon from "@/shared/components/icons/FileIcon.vue";
 import OptionsButton from "@/shared/components/buttons/OptionsButton.vue";

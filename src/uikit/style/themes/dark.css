@@ -1,9 +1,7 @@
-:root.dark{
+:root.dark {
     --background: #1f1f1f;
     --surface: #1d1e1f;
-    --background-opacity: rgba(255, 255, 255, .7);
     --text-color-primary: #ffffff;
     --text-color-secondary: #e7e7e7;
-    --text-color-light: #ffffff;
-    --border-color: #e5e7e9;
+    --border-color: #3c3c3c;
 }

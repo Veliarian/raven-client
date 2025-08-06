@@ -1,9 +1,7 @@
 <script setup>
-
-import {mdiWeatherNight, mdiWhiteBalanceSunny} from "@mdi/js";
-import Icon from "./Icon.vue";
-import Switch from "./Switch.vue";
 import {onMounted, ref, watch} from "vue";
+import {mdiWeatherNight, mdiWhiteBalanceSunny} from "@mdi/js";
+import {Icon as FIcon, Switch as FSwitch} from "@uikit";
 import {useThemeStore} from "../store/themeStore.js";
 
 const themeStore = useThemeStore();
@@ -23,9 +21,9 @@ watch(isEnabled, (value) => {
 
 <template>
     <div class="theme-switch">
-        <Icon :icon="mdiWhiteBalanceSunny" class="theme-icon day" :class="{'active': !isEnabled}"/>
-        <Switch v-model="isEnabled"/>
-        <Icon :icon="mdiWeatherNight" class="theme-icon night" :class="{'active': isEnabled}"/>
+        <f-icon :icon="mdiWhiteBalanceSunny" class="theme-icon day" :class="isEnabled ? '' : 'active'"/>
+        <f-switch v-model="isEnabled"/>
+        <f-icon :icon="mdiWeatherNight" class="theme-icon night" :class="isEnabled ? 'active' : ''"/>
     </div>
 </template>
 
@@ -52,10 +50,10 @@ watch(isEnabled, (value) => {
 }
 
 .theme-icon.day {
-    color: var(--color-green);
+    color: var(--color-primary);
 }
 
 .theme-icon.night {
-    color: var(--color-green);
+    color: var(--color-primary);
 }
 </style>

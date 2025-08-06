@@ -3,6 +3,7 @@ import LoginForm from "./LoginForm.vue";
 import RegisterForm from "./RegisterForm.vue";
 import {ref} from "vue";
 import ThemeSwitch from "@/shared/components/ThemeSwitch.vue";
+import {Button as FButton} from "@uikit";
 
 const loginFormActive = ref(true);
 const registerFormActive = ref(false);
@@ -29,7 +30,7 @@ const switchForms = () => {
 <template>
     <div class="auth-layout-container">
         <!-- Theme Toggle -->
-        <ThemeSwitch class="theme-switch"/>
+        <theme-switch class="theme-switch"/>
 
         <!-- Mobile Layout -->
         <div class="auth-card mobile-layout">
@@ -37,8 +38,8 @@ const switchForms = () => {
                 <img src="/raven_logo.svg" alt="Education" class="logo-img"/>
             </div>
             <div class="auth-form-container" id="mobile-form-container">
-                <LoginForm v-if="loginFormActive"/>
-                <RegisterForm v-else/>
+                <login-form v-if="loginFormActive"/>
+                <register-form v-else/>
             </div>
         </div>
 
@@ -48,10 +49,10 @@ const switchForms = () => {
                 <!-- Forms Container -->
                 <div class="forms-section">
                     <div class="login-form-container" :class="{active: loginFormActive}" id="login-form-wrapper">
-                        <LoginForm/>
+                        <login-form/>
                     </div>
                     <div class="register-form-container" :class="{active: registerFormActive}" id="register-form-wrapper">
-                        <RegisterForm/>
+                        <register-form/>
                     </div>
                 </div>
                 <!-- Image Section -->
@@ -59,7 +60,7 @@ const switchForms = () => {
                     <div class="image-content">
                         <img src="/raven_logo.svg" alt="Education" class="logo-img"/>
                         <h2 id="cta-text">{{ message }}</h2>
-                        <button class="btn-primary" id="toggle-form-btn" @click="switchForms">{{ switchButtonText }}</button>
+                        <f-button class="login-switch" @click="switchForms">{{ switchButtonText }}</f-button>
                     </div>
                 </div>
             </div>
@@ -200,9 +201,10 @@ const switchForms = () => {
 }
 
 .image-content {
-    text-align: center;
-    padding: 1.5rem;
     max-width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .logo-img {
@@ -221,19 +223,6 @@ const switchForms = () => {
     margin-bottom: 1rem;
 }
 
-.btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.5rem;
-    padding: 0 1rem;
-    border: none;
-    border-radius: 0.375rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-}
-
 /* Media Queries */
 @media (max-width: 768px) {
     .mobile-layout {
@@ -242,10 +231,6 @@ const switchForms = () => {
 
     .desktop-layout {
         display: none;
-    }
-
-    .theme-toggle {
-        transform: scale(0.9);
     }
 
     .form-header h1 {

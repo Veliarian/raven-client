@@ -7,13 +7,11 @@ import {useUsersStore} from "@/modules/users/store/usersStore.js";
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
-const usersStore = useUsersStore();
 
 onMounted(() => {
     const token = route.query.token;
     if(token) {
         authStore.setToken(token);
-        usersStore.fetchCurrentUser();
         router.push("/");
     } else {
         router.push("/auth")

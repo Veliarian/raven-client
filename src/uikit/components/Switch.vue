@@ -1,4 +1,8 @@
 <script setup>
+defineOptions({
+    name: "FSwitch",
+});
+
 defineProps({
    checked: Boolean,
 });
@@ -46,13 +50,13 @@ defineEmits(["update:modelValue"]);
     width: 18px;
     left: 3px;
     bottom: 3px;
-    background-color: var(--color-green);
+    background-color: var(--color-primary);
     transition: 0.3s;
     border-radius: 50%;
 }
 
 input:checked + .slider {
-    background-color: var(--color-green);
+    background-color: var(--color-primary);
 }
 
 input:checked + .slider::before {
