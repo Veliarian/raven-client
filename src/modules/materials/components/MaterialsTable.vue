@@ -11,7 +11,7 @@ import {
     mdiPresentation, mdiTrashCanOutline,
     mdiVideoOutline
 } from "@mdi/js";
-import Switch from "@uikit/components/Switch.vue";
+import FSwitch from "@uikit/components/FSwitch.vue";
 import {useColorUtils} from "@/shared/utils/colorUtils.js";
 import FileIcon from "@/shared/components/icons/FileIcon.vue";
 import OptionsButton from "@/shared/components/buttons/OptionsButton.vue";
@@ -101,7 +101,7 @@ const deleteFile = (id) => {
                     <td class="size">{{ formatFileSize(file.size) }}</td>
                     <td class="date">{{ formatDate(file.uploadedAt) }}</td>
                     <td class="public">
-                        <Switch :checked="file.isPublick"/>
+                        <FSwitch :checked="file.isPublick"/>
                     </td>
                     <td class="options">
                         <options-button>

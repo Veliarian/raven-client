@@ -1,8 +1,8 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
 import {mdiWeatherNight, mdiWhiteBalanceSunny} from "@mdi/js";
-import {Icon as FIcon, Switch as FSwitch} from "@uikit";
 import {useThemeStore} from "../store/themeStore.js";
+import {FIcon, FSwitch} from "@uikit";
 
 const themeStore = useThemeStore();
 
@@ -13,8 +13,8 @@ onMounted(() => {
 });
 
 watch(isEnabled, (value) => {
-   const newTheme = value ? "dark" : "light";
-   themeStore.setTheme(newTheme);
+    const newTheme = value ? "dark" : "light";
+    themeStore.setTheme(newTheme);
 });
 
 </script>

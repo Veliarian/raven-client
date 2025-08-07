@@ -8,13 +8,19 @@
     /* TEXT COLORS */
     --control-color-light: #ffffff;
     --control-color-dark: #656a69;
+    --text-color-desabled: #9a9a9a;
+
+    /* BACKGROUND COLORS */
+    --bg-color-disabled: #eeffe3;
+    --bg-color-opacity: rgba(0, 0, 0, .7);
 
     /* FEEDBACK COLORS */
     --color-success: #10b981;
     --color-danger: #ef4444;
-    --color-danger-light: #f86a6a;
+    --color-danger-light: #fb7f7f;
     --color-warning: #fbbf24;
     --color-info: #0ea5e9;
+    --color-cancel: #d6cec5;
 
     /* FILE COLORS */
     --color-word: #2b579a;
@@ -24,14 +30,14 @@
     --color-image: #31A8FF;
     --color-video: #f5c518;
     --color-audio: #1DB954;
-    --color-paper: #EFE7D2;
     --color-zip: #f7cc4c;
     --color-other: #999999;
 
     /* TYPOGRAPHY */
     --font-family: "Roboto", sans-serif;
-    --font-size-base: 1rem;
+    --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
     --font-size-lg: 1.125rem;
     --font-weight-thin: 100;
     --font-weight-light: 300;
@@ -53,6 +59,7 @@
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
     --radius-xl: 1.25rem;
+    --radius-full: 9999px;
 
     /* SHADOWS */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);

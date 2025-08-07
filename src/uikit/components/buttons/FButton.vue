@@ -1,5 +1,5 @@
 <script setup>
-import Icon from "@/uikit/components/Icon.vue";
+import FIcon from "../FIcon.vue";
 
 defineOptions({
     name: "FButton",
@@ -9,12 +9,17 @@ defineProps({
     type: {
         type: String,
         default: "default",
-        validator: (value) => ["default", "light", "danger"].includes(value),
+        validator: (value) => ["default", "light", "danger", "cancel", "disabled", "transparent"].includes(value),
     },
     size: {
         type: String,
         default: "md",
         validator: (value) => ["sm", "md", "lg"].includes(value),
+    },
+    form: {
+        type: String,
+        default: "square",
+        validator: (value) => ["square", "circle"].includes(value),
     },
     icon: {
         type: String
@@ -24,8 +29,8 @@ defineProps({
 </script>
 
 <template>
-    <button class="f-button" :class="[type, size]">
-        <Icon v-if="icon" :icon="icon" :size="size === 'sm' ? 14 : (size === 'md' ? 16 : 18)"/>
+    <button class="f-button" :class="[type, size, form]">
+        <FIcon v-if="icon" :icon="icon" :size="size === 'sm' ? 16 : (size === 'md' ? 20 : 24)"/>
         <span><slot/></span>
     </button>
 </template>
@@ -75,14 +80,49 @@ defineProps({
 
 .f-button.danger:hover {
     cursor: pointer;
-    background-color: var();
+    background-color: var(--color-danger-light);
     color: var(--control-color-light);
+}
+
+.f-button.cancel {
+    background-color: var(--color-cancel);
+    border-color: var(--color-cancel);
+    color: var(--control-color-dark);
+}
+
+.f-button.cancel:hover {
+    cursor: pointer;
+    border-color: var(--control-color-dark);
+    color: #000000;
+}
+
+.f-button.disabled {
+    background-color: var(--bg-color-disabled);
+    color: var(--text-color-desabled);
+}
+
+.f-button.disabled:hover {
+    cursor: not-allowed;
+}
+
+.f-button.transparent {
+    background-color: transparent;
+    border: none;
+    padding: 0 !important;
+    color: var(--color-danger-light);
+    gap: 0;
+}
+
+.f-button.transparent:hover {
+    cursor: pointer;
+    color: var(--color-danger);
 }
 
 /* SIZES */
 .f-button.sm {
     padding: var(--spacing-xs) var(--spacing-sm);
     font-size: var(--font-size-sm);
+    border-radius: var(--radius-md);
 }
 
 .f-button.md {
@@ -94,5 +134,26 @@ defineProps({
 .f-button.lg {
     padding: var(--spacing-md) var(--spacing-lg);
     font-size: var(--font-size-lg);
+}
+
+/* FORMS */
+.f-button.circle {
+    border-radius: var(--radius-full);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+}
+
+.f-button.sm.circle {
+    padding: var(--spacing-xs);
+}
+
+.f-button.md.circle {
+    padding: var(--spacing-sm);
+}
+
+.f-button.lg.circle {
+    padding: var(--spacing-md);
 }
 </style>

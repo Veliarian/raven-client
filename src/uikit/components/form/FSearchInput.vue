@@ -1,6 +1,6 @@
 <script setup>
 import {mdiMagnify} from "@mdi/js";
-import {Input as FInput} from "@uikit";
+import {FInput as FFInput} from "@uikit";
 
 defineOptions({
     name: "FSearchInput",

@@ -7,6 +7,7 @@ import {useNotesStore} from "@/modules/notes/store/notesStore.js";
 import NotesContainer from "@/modules/notes/components/NotesContainer.vue";
 import Note from "@/modules/notes/models/Note.js";
 import FormContainer from "@/shared/components/FormContainer.vue";
+import {FButton, FTitle} from "@uikit";
 
 const i18n = useI18n();
 const {t} = i18n;
@@ -36,17 +37,12 @@ onMounted(() => {
 <template>
 <div class="full-view">
     <header class="view-header">
-        <div class="title-box">
-            <h3>Notes</h3>
-            <p class="subtitle">Keep track of important notes and reminders</p>
-        </div>
-        <button v-if="notes.length > 0" @click="createNote">
-            <Icon :icon="mdiNotePlusOutline"/>
-            <span>Add note</span>
-        </button>
+        <f-title title="Notes" subtitle="Keep track of important notes and reminders">
+            <f-button v-if="notes.length > 0" :icon="mdiNotePlusOutline" @click="createNote">Add note</f-button>
+        </f-title>
     </header>
     <main class="notes-main">
-        <NotesContainer :notes="notes"
+        <notes-container :notes="notes"
                         :editable-note="editableNote"
                         @create-note="createNote"
                         @edit-note="editNote"

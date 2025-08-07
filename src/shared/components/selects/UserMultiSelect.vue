@@ -86,7 +86,7 @@ const removeUser = (user) => {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    border: 1px solid var(--color-green-light);
+    border: 1px solid var(--color-primary);
     border-radius: .75rem;
     overflow: hidden;
     padding: .25rem;
@@ -100,7 +100,7 @@ const removeUser = (user) => {
 
 .selected-item {
     background: var(--surface);
-    border: 1px solid var(--color-green);
+    border: 1px solid var(--color-primary);
     padding: 0.25rem 0.5rem;
     border-radius: .5rem;
     font-size: 0.9rem;
@@ -113,7 +113,7 @@ const removeUser = (user) => {
     border: none;
     background: transparent;
     cursor: pointer;
-    color: var(--color-red);
+    color: var(--color-danger);
     padding: 0;
 }
 
@@ -138,7 +138,7 @@ const removeUser = (user) => {
 }
 
 .user-list-item:hover {
-    background-color: var(--color-green-light);
+    background-color: var(--color-primary-light);
 }
 
 .no-results {

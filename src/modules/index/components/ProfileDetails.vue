@@ -1,32 +1,36 @@
 <script setup>
-
-import ProfileImage from "../../../shared/components/ProfileImage.vue";
 import {computed, onMounted, onUnmounted, ref} from "vue";
+import ProfileImage from "../../../shared/components/ProfileImage.vue";
 import {useI18n} from "vue-i18n";
-import Icon from "../../../shared/components/Icon.vue";
-import {mdiAccount, mdiCog} from "@mdi/js";
+import {mdiAccount, mdiCog, mdiLogout} from "@mdi/js";
 import {useUsersStore} from "@/modules/users/store/usersStore.js";
+import {FIcon} from "@uikit";
+
 const {t} = useI18n();
 
 const usersStore = useUsersStore();
 
-const username = computed(() => usersStore.user?.username || "Username");
+const username = computed(() => usersStore.currentUser?.username || "Username");
 
 const isDisplayDrop = ref(false);
 const containerRef = ref(null);
+const profileBtnRef = ref(null);
 
 const displayDrop = () => {
     isDisplayDrop.value = !isDisplayDrop.value;
 }
 
 const handleClickOutside = (event) => {
-    if (containerRef.value && !containerRef.value.contains(event.target)) {
+    const clickedInsideContainer = containerRef.value?.contains(event.target);
+    const clickedOnButton = profileBtnRef.value?.contains(event.target);
+
+    if (!clickedInsideContainer && !clickedOnButton) {
         isDisplayDrop.value = false;
     }
 };
 
 onMounted(() => {
-   document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 });
 
 onUnmounted(() => {
@@ -36,26 +40,29 @@ onUnmounted(() => {
 
 <template>
     <div class="profile-details">
-        <div class="profile-details-btn" @click="displayDrop">
-            <ProfileImage class="profile-img"/>
+        <div class="profile-details-btn" ref="profileBtnRef" @click="displayDrop">
+            <ProfileImage/>
         </div>
         <div class="profile-details-drop" ref="containerRef" :class="{'active': isDisplayDrop}">
-            <header>
-                <h5>{{ username }}</h5>
-            </header>
-            <main>
+            <div class="username">
+                <h6>{{ username }}</h6>
+            </div>
+            <div class="controls">
                 <router-link class="details-item" to="/profile">
-                    <Icon :icon="mdiAccount" class="details-item-icon"/>
+                    <f-icon :icon="mdiAccount" size="16"/>
                     {{ t("topBar.profile") }}
                 </router-link>
                 <router-link class="details-item" to="/settings">
-                    <Icon :icon="mdiCog" class="details-item-icon"/>
+                    <f-icon :icon="mdiCog" size="16"/>
                     {{ t("topBar.settings") }}
                 </router-link>
-            </main>
-            <footer>
-                <router-link class="details-item" to="/logout">{{ t("topBar.logout") }}</router-link>
-            </footer>
+            </div>
+            <div class="logout">
+                <router-link class="details-item" to="/logout">
+                    <f-icon :icon="mdiLogout" size="16"/>
+                    {{ t("topBar.logout") }}
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -71,80 +78,64 @@ onUnmounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 9999px;
-    color: var(--color-green);
-    border: .15rem solid transparent;
-    transition: border-bottom-color .2s, border-left-color .2s, border-right-color .2s, border-top-color .2s;
+    border-radius: var(--radius-full);
+    color: var(--color-primary);
+    border: 2px solid transparent;
+    transition: all var(--transition-base);
 }
 
 .profile-details-btn:hover {
     cursor: pointer;
-    border: .15rem solid var(--color-green);
-    transition: border-bottom-color .2s, border-left-color .2s, border-right-color .2s, border-top-color .2s;
-}
-
-.profile-img {
-    width: 100%;
-    height: 100%;
+    border-color: var(--color-primary);
 }
 
 .profile-details-drop {
-    min-width: 240px;
+    min-width: 10rem;
     position: absolute;
     top: 44px;
     right: 0;
     display: none;
     flex-direction: column;
     background-color: var(--surface);
-    border-radius: var(---radius-lg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-primary);
 }
 
-.profile-details-drop.active{
+.profile-details-drop.active {
     display: flex;
 }
 
-header {
-    padding: .5rem .75rem;
+.username {
+    padding: var(--spacing-xs) var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
 }
 
-h5{
-    padding: .2rem;
-}
-
-main{
-    width: 100%;
+.controls {
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color-secondary);
     display: flex;
     flex-direction: column;
     gap: .2rem;
-    padding: .5rem;
+}
+
+.logout {
+    padding: var(--spacing-sm);
     color: var(--text-color-secondary);
 }
 
-footer{
-    width: 100%;
-    padding: .5rem;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-color-secondary);
-}
-
-.details-item{
+.details-item {
     display: flex;
     align-items: center;
+    padding: var(--spacing-xs) var(--spacing-sm);
     gap: .2rem;
     width: 100%;
-    padding: .2rem .5rem;
-    border-radius: var(---radius-lg);
+    border-radius: var(--radius-sm);
     transition: background-color .2s;
 }
 
-.details-item:hover{
-    background-color: var(--color-green-light);
+.details-item:hover {
+    background-color: var(--color-primary-light);
     transition: background-color .2s;
-}
-
-.details-item-icon{
-    width: 16px;
-    height: 16px;
 }
 </style>

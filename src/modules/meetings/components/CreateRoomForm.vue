@@ -1,9 +1,10 @@
 <script setup>
-import CloseButton from "@/shared/components/buttons/CloseButton.vue";
 import {computed, ref} from "vue";
 import {useRoomsStore} from "@/modules/meetings/store/roomsStore.js";
 import UserMultiSelect from "@/shared/components/selects/UserMultiSelect.vue";
 import {useUsersStore} from "@/modules/users/store/usersStore.js";
+import {FButton, FInput} from "@uikit";
+import {mdiClose} from "@mdi/js";
 
 const roomsStore = useRoomsStore();
 const usersStore = useUsersStore();
@@ -18,7 +19,7 @@ const selectedUserIds = ref([]);
 
 const createRoom = () => {
     roomsStore.createRoom(roomName.value, startTime.value, selectedUserIds.value);
-    closeForm();
+    emit("close");
 }
 
 const closeForm = () => {
@@ -27,15 +28,15 @@ const closeForm = () => {
 </script>
 
 <template>
-<form class="form create-room-form" @submit.prevent="createRoom">
+<form class="form" @submit.prevent="createRoom">
     <header class="form-header">
         <h3>Create new room</h3>
-        <CloseButton/>
+        <f-button :icon="mdiClose" type="transparent" @click.prevent="$emit('close')"/>
     </header>
     <main class="form-main">
         <div class="form-field">
             <label for="room-name">Room name</label>
-            <input type="text" v-model="roomName" placeholder="Enter room name">
+            <f-input type="text" v-model="roomName" placeholder="Enter room name"/>
         </div>
         <div class="form-field">
             <label for="start-time">Start time</label>

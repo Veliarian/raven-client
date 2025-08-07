@@ -1,45 +1,48 @@
 <script setup>
+import {computed, onMounted, ref} from "vue";
 import {useI18n} from "vue-i18n";
-import {mdiCalendarMonthOutline, mdiVideoOutline} from "@mdi/js";
-
-import Icon from "@/shared/components/icons/Icon.vue";
-import MultiButton from "@/shared/components/MultiButton.vue";
+import {useRoomsStore} from "@/modules/meetings/store/roomsStore.js";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
+import {mdiCalendarMonthOutline, mdiVideoCheckOutline, mdiVideoOutline} from "@mdi/js";
+import {FButton, FHorizontalSelect, FTitle} from "@uikit";
 import RoomsList from "@/modules/meetings/components/RoomsList.vue";
 import RoomCard from "@/modules/meetings/components/RoomCard.vue";
 import FormContainer from "@/shared/components/FormContainer.vue";
 import CreateRoomForm from "@/modules/meetings/components/CreateRoomForm.vue";
-import {computed, onMounted, ref} from "vue";
-import {useRoomsStore} from "@/modules/meetings/store/roomsStore.js";
 import RoomView from "@/modules/meetings/views/RoomView.vue";
-import {useUsersStore} from "@/modules/users/store/usersStore.js";
 
 const i18n = useI18n();
 const {t} = i18n;
 
-const roomsStore = useRoomsStore();
+
 const usersStore = useUsersStore();
 
+const roomsStore = useRoomsStore();
 const rooms = computed(() => roomsStore.rooms);
+const filterMeetingsStatus = ref("all");
 
-const filterMeetingsStatus = ref("active");
+const filteredRooms = computed(() => {
+    const status = filterMeetingsStatus.value;
+
+    if (status === "all") {
+        return rooms.value;
+    }
+
+    return rooms.value.filter(
+        (room) => room.status?.toLowerCase() === status
+    );
+});
+
 const isOpenedForm = ref(false);
 const isOpenedRoomForm = ref(false);
 const activeRoom = ref(null);
 
-const openRoomForm = () => {
-    isOpenedForm.value = true;
-    isOpenedRoomForm.value = true;
-}
+const openRoomForm = () => toggleRoomForm(true);
+const closeRoomForm = () => toggleRoomForm(false);
 
-const closeRoomForm = () => {
-    isOpenedForm.value = false;
-    isOpenedRoomForm.value = false;
-}
-
-const selectMeetingStatus = (status) => {
-    if(filterMeetingsStatus.value !== status) {
-        filterMeetingsStatus.value = status;
-    }
+const toggleRoomForm = (value) => {
+    isOpenedForm.value = value;
+    isOpenedRoomForm.value = value;
 }
 
 const joinRoom = (roomId) => {
@@ -57,53 +60,56 @@ onMounted(() => {
 
 <template>
     <div v-if="!activeRoom" class="full-view">
-        <header class="view-header">
-            <div class="title-box">
-                <h3>{{ t("pages.meetings.title") }}</h3>
-                <p class="subtitle">{{ t("pages.meetings.subtitle") }}</p>
-            </div>
-            <button @click="openRoomForm">
-                <Icon :icon="mdiVideoOutline"/>
-                <span>{{ t("pages.meetings.controls.createRoom") }}</span>
-            </button>
-        </header>
+        <f-title :title="t('pages.meetings.title')" :subtitle="t('pages.meetings.subtitle')">
+            <f-button :icon="mdiVideoOutline" @click="openRoomForm">
+                {{ t("pages.meetings.controls.createRoom") }}
+            </f-button>
+        </f-title>
         <main>
-            <multi-button>
-                <button :class="{'active': filterMeetingsStatus === 'active'}" @click="selectMeetingStatus('active')">
-                    <Icon :icon="mdiVideoOutline"/>
-                    <span>Active</span>
-                </button>
-                <button :class="{'active': filterMeetingsStatus === 'scheduled'}" @click="selectMeetingStatus('scheduled')">
-                    <Icon :icon="mdiCalendarMonthOutline"/>
-                    <span>Scheduled</span>
-                </button>
-            </multi-button>
-
+            <f-horizontal-select
+                v-model="filterMeetingsStatus"
+                :options="[
+                      { id: 'all', icon: mdiVideoOutline, label: 'All'},
+                      { id: 'active', icon: mdiVideoCheckOutline, label: 'Active' },
+                      { id: 'scheduled', icon: mdiCalendarMonthOutline, label: 'Scheduled' },
+                ]"
+            />
             <rooms-list>
-                <RoomCard v-for="room in rooms"
-                          :name="room.name"
-                          :status="room.status"
-                          :participant-ids="room.participantIds"
-                          @join-room="joinRoom(room.id)"
+                <room-card v-for="room in filteredRooms"
+                           :key="room.id"
+                           :name="room.name"
+                           :status="room.status"
+                           :participant-ids="room.participantIds"
+                           @join-room="joinRoom(room.id)"
                 />
             </rooms-list>
         </main>
     </div>
 
-    <RoomView v-if="activeRoom"
-              :room-name="activeRoom.name"
-              :participant-name="usersStore.currentUser.username"
-              @leave-room="leaveRoom"/>
+    <room-view v-if="activeRoom"
+               :room-name="activeRoom?.name"
+               :participant-name="usersStore.currentUser?.username"
+               @leave-room="leaveRoom"/>
 
-    <form-container v-if="isOpenedForm">
-        <CreateRoomForm v-if="isOpenedRoomForm" @close="closeRoomForm"/>
-    </form-container>
+    <transition name="fade">
+        <form-container v-if="isOpenedForm">
+            <create-room-form v-if="isOpenedRoomForm" @close="closeRoomForm"/>
+        </form-container>
+    </transition>
 </template>
 
 <style scoped>
-main{
+main {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-4);
+    gap: var(--spacing-md);
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
 }
 </style>

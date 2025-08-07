@@ -8,7 +8,7 @@ import {
     mdiNoteOutline,
     mdiVideoOutline
 } from "@mdi/js";
-import {Icon as FIcon} from "@uikit";
+import {FIcon} from "@uikit";
 
 const {t, locale} = useI18n();
 
@@ -80,7 +80,7 @@ const {t, locale} = useI18n();
     height: 2.5rem;
 }
 
-.logo-text{
+.logo-text {
     font-size: 2.5rem;
     color: var(--color-primary);
 }
@@ -94,7 +94,7 @@ const {t, locale} = useI18n();
     padding: 1rem;
 }
 
-.sidebar-list{
+.sidebar-list {
     display: flex;
     flex-direction: column;
     gap: .125rem;

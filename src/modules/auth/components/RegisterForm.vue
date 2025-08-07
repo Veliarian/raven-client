@@ -1,9 +1,9 @@
 <script setup>
-import {Button as FButton, Input as FInput, Separator as FSeparator} from "@uikit";
-import {mdiAccountOutline, mdiEmailOutline, mdiGoogle, mdiLockOutline} from "@mdi/js";
 import {ref} from "vue";
-import {useAuthStore} from "@/modules/auth/store/authStore.js";
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/modules/auth/store/authStore.js";
+import {FButton, FInput, FSeparator} from "@uikit";
+import {mdiAccountOutline, mdiEmailOutline, mdiGoogle, mdiLockOutline} from "@mdi/js";
 
 const loginWithGoogle = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/google";
@@ -69,7 +69,7 @@ const register = async () => {
 </template>
 
 <style scoped>
-.register-form-template{
+.register-form-template {
     width: 100%;
 }
 

@@ -5,6 +5,7 @@ import {mdiClock, mdiPencil, mdiTrashCan} from "@mdi/js";
 import ConfirmDialog from "@/shared/components/modals/ConfirmDialog.vue";
 import {ref} from "vue";
 import {useNotesStore} from "@/modules/notes/store/notesStore.js";
+import {FButton, FIcon} from "@uikit";
 
 const props = defineProps({
     note: Note
@@ -43,15 +44,9 @@ const convertDate = (dateString) => {
         </div>
 
         <div class="note-controls">
-            <button class="small circle" title="Add schedule">
-                <Icon :icon="mdiClock"/>
-            </button>
-            <button class="small circle" title="Edit" @click="handleEdit">
-                <Icon :icon="mdiPencil"/>
-            </button>
-            <button class="small circle delete" title="Delete" @click="handleDelete">
-                <Icon :icon="mdiTrashCan"/>
-            </button>
+            <f-button size="sm" form="circle" :icon="mdiClock"/>
+            <f-button size="sm" form="circle" :icon="mdiPencil" @click="handleEdit"/>
+            <f-button size="sm" form="circle" :icon="mdiTrashCan" type="danger" @click="handleDelete"/>
         </div>
     </div>
 
@@ -76,10 +71,10 @@ const convertDate = (dateString) => {
     height: 1.5rem;
     border: none;
     border-radius: 0;
-    border-bottom: 2px solid var(--color-gray-400);
+    border-bottom: 2px solid var(--text-color-secondary);
     background-color: transparent;
     padding: 0;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
 }
 
@@ -91,13 +86,16 @@ const convertDate = (dateString) => {
     background-color: transparent;
     padding: 0;
     line-height: 2rem;
-    background-image: repeating-linear-gradient(
+    font-size: 1rem;
+
+    background-image: linear-gradient(
         to bottom,
-        transparent,
-        transparent 1.9rem,
-        var(--color-gray-300) 1.9rem,
-        var(--color-gray-300) 2rem
+        var(--text-color-secondary) 0.05rem,
+        transparent 0.05rem
     );
+    background-size: 100% 2rem;
+    background-repeat: repeat-y;
+    background-position-y: 1.8rem;
 }
 
 .creation-time{

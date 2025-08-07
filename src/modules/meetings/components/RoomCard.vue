@@ -1,9 +1,10 @@
 <script setup>
-import {mdiAccountPlusOutline, mdiTrayArrowDown} from "@mdi/js";
-import Icon from "@/shared/components/icons/Icon.vue";
-import ProfileImage from "@/shared/components/ProfileImage.vue";
-import {useUsersStore} from "@/modules/users/store/usersStore.js";
 import {computed} from "vue";
+import {useUsersStore} from "@/modules/users/store/usersStore.js";
+import {mdiAccountPlusOutline, mdiArrowCollapseRight} from "@mdi/js";
+import ProfileImage from "@/shared/components/ProfileImage.vue";
+import {FButton} from "@uikit";
+import {capitalize} from "@/shared/utils/string.js";
 
 const props = defineProps({
     name: String,
@@ -11,50 +12,40 @@ const props = defineProps({
         type: String,
         default: "active"
     },
-    participantIds: Array
+    participantIds: {
+        type: Array,
+        default: () => []
+    }
 });
 
+defineEmits(["joinRoom"]);
+const statusClass = computed(() => props.status.toLowerCase());
 const usersStore = useUsersStore();
-
-const emit = defineEmits(["joinRoom"]);
-
-const joinRoom = () => {
-    emit("joinRoom");
-}
-
-const firstLetterToUpperCase = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
-console.log(props.participantIds)
 </script>
 
 <template>
-<div class="room-card">
-    <header class="room-card-header">
-        <h6>{{ name }}</h6>
-        <span class="status" :class="status.toLowerCase()">{{ firstLetterToUpperCase(status) }}</span>
-    </header>
-    <main>
-        <div class="participants-list">
-            <ProfileImage
-                v-for="participantId in participantIds"
-                :profile-picture="usersStore.getProfilePictureByUserId(participantId)"
-                class="participant-image"
-            />
+    <div class="room-card">
+        <div class="room-card-header">
+            <h6>{{ name }}</h6>
+            <span class="status" :class="statusClass">{{ capitalize(status) }}</span>
         </div>
-        <div class="actions-box">
-            <button>
-                <Icon :icon="mdiAccountPlusOutline"/>
-                <span>Invite</span>
-            </button>
-            <button @click="joinRoom" :disabled="status.toLowerCase() === 'scheduled'">
-                <Icon :icon="mdiTrayArrowDown" class="join-icon"/>
-                <span>Join</span>
-            </button>
+        <div class="room-card-body">
+            <div class="participants-list">
+                <profile-image
+                    v-for="participantId in participantIds"
+                    :key="participantId"
+                    :profile-picture="usersStore.getProfilePictureByUserId(participantId)"
+                    class="participant-image"
+                />
+            </div>
+            <div class="actions-box">
+                <f-button :icon="mdiAccountPlusOutline" size="sm">Invite</f-button>
+                <f-button :icon="mdiArrowCollapseRight" size="sm" @click="$emit('joinRoom')"
+                          :type="statusClass === 'scheduled' ? 'disabled' : 'default'">Join
+                </f-button>
+            </div>
         </div>
-    </main>
-</div>
+    </div>
 </template>
 
 <style scoped>
@@ -62,7 +53,7 @@ console.log(props.participantIds)
     flex: 1 1 calc(33.333% - 1rem);
     min-width: 16rem;
     max-width: calc(33.333% - 1rem);
-    padding: var(--spacing-4);
+    padding: var(--spacing-s-m);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
     background-color: var(--surface);
@@ -79,49 +70,47 @@ console.log(props.participantIds)
 }
 
 .status {
-    padding: var(--spacing-1) var(--spacing-2);
-    color: var(--text-color-light);
+    padding: var(--spacing-xs) var(--spacing-xs);
+    color: var(--control-color-light);
     font-size: var(--font-size-xs);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-bold);
 }
 
 .status.active {
-    background-color: var(--color-green);
+    background-color: var(--color-primary);
 }
 
 .status.scheduled {
-    background-color: var(--color-yellow);
+    background-color: var(--color-accent);
 }
 
-main{
+.room-card-body {
     display: flex;
     flex-direction: column;
     gap: .75rem;
 }
 
-.participants-list{
+.participants-list {
     width: 100%;
     max-width: 100%;
     display: flex;
 }
 
-.participant-image{
+.participant-image {
     width: 3rem;
     height: 3rem;
-    border: 2px solid var(--color-green);
+    border: 2px solid var(--color-primary);
 }
 
-.participants-list .participant-image:not(:first-child){
+.participants-list .participant-image:not(:first-child) {
     transform: translateX(-1.5rem);
 }
 
-.actions-box{
+.actions-box {
     width: 100%;
     display: flex;
     justify-content: space-between;
-}
-
-.join-icon{
-    transform: rotate(270deg);
+    align-items: flex-end;
 }
 </style>

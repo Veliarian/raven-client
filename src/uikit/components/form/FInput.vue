@@ -1,5 +1,5 @@
 <script setup>
-import Icon from "../Icon.vue";
+import FIcon from "../FIcon.vue";
 import {ref} from "vue";
 import {mdiEyeOffOutline, mdiEyeOutline} from "@mdi/js";
 
@@ -35,12 +35,12 @@ const showPassword = () => {
 
 <template>
     <div class="f-input-wrapper">
-        <icon v-if="icon"
+        <f-icon v-if="icon"
               :icon="icon"
               class="f-input-icon"
               size="20"
         />
-        <icon v-if="type === 'password'"
+        <f-icon v-if="type === 'password'"
               :icon="isShowPassword ? mdiEyeOutline : mdiEyeOffOutline"
               class="f-input-show"
               size="20"

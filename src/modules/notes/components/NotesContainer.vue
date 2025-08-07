@@ -31,16 +31,16 @@ const closeForm = () => {
 
 <template>
     <div v-if="notes?.length > 0 || editableNote" class="notes-container">
-        <NoteForm v-if="editableNote"
+        <note-form v-if="editableNote"
                   :note="editableNote"
                   @close-form="closeForm"/>
-        <NoteCard v-for="note in notes.filter(n => !editableNote || n.id !== editableNote.id)"
+        <note-card v-for="note in notes.filter(n => !editableNote || n.id !== editableNote.id)"
                   :key="note.id"
                   :note="note"
                   @edit-note="handleEditNote"
         />
     </div>
-    <EmptyNote v-else @create-note="createNote"/>
+    <empty-note v-else @create-note="createNote"/>
 </template>
 
 <style scoped>

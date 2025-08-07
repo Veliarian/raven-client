@@ -1,9 +1,9 @@
 <script setup>
+import {ref} from "vue";
 import LoginForm from "./LoginForm.vue";
 import RegisterForm from "./RegisterForm.vue";
-import {ref} from "vue";
 import ThemeSwitch from "@/shared/components/ThemeSwitch.vue";
-import {Button as FButton} from "@uikit";
+import {FButton} from "@uikit";
 
 const loginFormActive = ref(true);
 const registerFormActive = ref(false);
@@ -15,11 +15,11 @@ const switchForms = () => {
     loginFormActive.value = !loginFormActive.value;
     registerFormActive.value = !registerFormActive.value;
 
-    if(loginFormActive.value){
+    if (loginFormActive.value) {
         slideSectionSide.value = "right";
         switchButtonText.value = "Register now";
         message.value = "Don't have an account?";
-    }else{
+    } else {
         slideSectionSide.value = "left";
         switchButtonText.value = "Login now";
         message.value = "Already have an account?";
@@ -51,7 +51,8 @@ const switchForms = () => {
                     <div class="login-form-container" :class="{active: loginFormActive}" id="login-form-wrapper">
                         <login-form/>
                     </div>
-                    <div class="register-form-container" :class="{active: registerFormActive}" id="register-form-wrapper">
+                    <div class="register-form-container" :class="{active: registerFormActive}"
+                         id="register-form-wrapper">
                         <register-form/>
                     </div>
                 </div>
@@ -77,7 +78,7 @@ const switchForms = () => {
     padding: 1rem;
 }
 
-.theme-switch{
+.theme-switch {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -214,7 +215,7 @@ const switchForms = () => {
     margin-bottom: 2rem;
 }
 
-.dark .logo-img{
+.dark .logo-img {
     filter: invert(100%) sepia(100%) saturate(10%) hue-rotate(201deg) brightness(103%) contrast(102%);
 }
 

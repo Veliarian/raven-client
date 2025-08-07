@@ -1,9 +1,9 @@
 <script setup>
 import {ref} from "vue";
-import {Button as FButton, Input as FInput, Separator as FSeparator} from "@uikit";
 import {mdiAccountOutline, mdiGoogle, mdiLockOutline} from "@mdi/js";
 import {useAuthStore} from "@/modules/auth/store/authStore.js";
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
+import {FButton, FInput, FSeparator} from "@uikit";
 
 const loginWithGoogle = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/google";
