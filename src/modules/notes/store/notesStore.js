@@ -34,6 +34,14 @@ export const useNotesStore = defineStore("notes", {
             }
         },
 
+        async updateReminderTime(noteId, reminderTime) {
+            const note = await notesApi.updateReminderTime(noteId, reminderTime);
+            if(note) {
+                this.notes = this.notes.filter(note => note.id !== noteId);
+                this.notes = [Note.fromObject(note), ...this.notes];
+            }
+        },
+
         async deleteNote(noteId) {
             const deleted = await notesApi.deleteNote(noteId);
             if (deleted) {

@@ -1,6 +1,6 @@
 <script setup>
 import {LocalVideoTrack, RemoteVideoTrack} from 'livekit-client';
-import {onMounted, onUnmounted, ref, watch} from 'vue';
+import {onMounted, onUnmounted, ref} from 'vue';
 
 const props = defineProps({
     track: {
@@ -29,7 +29,7 @@ onUnmounted(() => {
 video {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* або cover, якщо хочеш заповнити */
+    object-fit: cover; /* або cover, якщо хочеш заповнити */
     max-width: 100%;
     max-height: 100%;
 }

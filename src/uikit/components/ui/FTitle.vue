@@ -25,7 +25,11 @@ defineProps({
     align-items: center;
 }
 
+.f-title-h{
+    color: var(--text-color-primary);
+}
+
 .f-title-sub{
-    color: var(--color-secondary);
+    color: var(--text-color-secondary);
 }
 </style>

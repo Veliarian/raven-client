@@ -1,21 +1,28 @@
 <script setup>
-import {ref, watch, onBeforeUnmount, onMounted} from 'vue';
+import {onBeforeUnmount, onMounted, ref} from 'vue';
 import {createLocalTracks, Room, RoomEvent} from 'livekit-client';
-import ResizableSplit from "@/shared/components/ResizableSplit.vue";
-import MicrophoneButton from "@/modules/meetings/components/buttons/MicrophoneButton.vue";
-import CameraButton from "@/modules/meetings/components/buttons/CameraButton.vue";
-import LeaveButton from "@/modules/meetings/components/buttons/LeaveButton.vue";
-import MonitorShareButton from "@/modules/meetings/components/buttons/MonitorShareButton.vue";
-import BoardButton from "@/modules/meetings/components/buttons/BoardButton.vue";
 import MainStage from "@/modules/meetings/components/MainStage.vue";
 import ParticipantStrip from "@/modules/meetings/components/ParticipantStrip.vue";
 import {serverURL} from "@/shared/utils/serverURL.js";
 import {authHeader} from "@/shared/utils/authHeader.js";
 import axios from "axios";
+import {FButton, FResizableSplit, FTitle} from "@uikit";
+import {
+    mdiCamera,
+    mdiCameraOff,
+    mdiMicrophone,
+    mdiMicrophoneOff,
+    mdiMonitorOff,
+    mdiMonitorShare,
+    mdiPencil,
+    mdiPencilOff,
+    mdiPhoneHangup
+} from "@mdi/js";
+import RoomControlButton from "@/modules/meetings/components/RoomControlButton.vue";
 
 const props = defineProps({
-   roomName: String,
-   participantName: String,
+    roomName: String,
+    participantName: String,
 });
 
 const emit = defineEmits(["leaveRoom"]);
@@ -36,6 +43,7 @@ const mainContent = ref(null);
 const isCameraOn = ref(true);
 const isMicrophoneOn = ref(true);
 const isScreenShareOn = ref(false);
+const isBoardOpened = ref(false);
 
 const toggleCamera = async () => {
     if (!room.value) return;
@@ -51,7 +59,7 @@ const toggleCamera = async () => {
         localTrack.value = null;
     } else {
         // Увімкнути камеру
-        const [videoTrack] = await createLocalTracks({ video: true });
+        const [videoTrack] = await createLocalTracks({video: true});
         await participant.publishTrack(videoTrack);
         localTrack.value = videoTrack;
     }
@@ -84,8 +92,8 @@ const toggleMicrophone = async () => {
 
     // Якщо не знайшли трек — створюємо й вмикаємо
     if (!found) {
-        const [audioTrack] = await createLocalTracks({ audio: true });
-        await participant.publishTrack(audioTrack, { source: 'microphone' });
+        const [audioTrack] = await createLocalTracks({audio: true});
+        await participant.publishTrack(audioTrack, {source: 'microphone'});
         isMicrophoneOn.value = true;
     }
 };
@@ -158,7 +166,7 @@ const joinRoom = async () => {
             current.audioTrack = track;
         }
 
-        remoteParticipantsMap.value.set(identity, { ...current });
+        remoteParticipantsMap.value.set(identity, {...current});
     });
 
     room.value.on(RoomEvent.ParticipantDisconnected, (participant) => {
@@ -181,24 +189,24 @@ const joinRoom = async () => {
         if (!current) return;
 
         if (publication.kind === 'video') {
-            if(publication.source === "screen_share"){
+            if (publication.source === "screen_share") {
                 current.screenTrack = null;
                 mainContent.value = null;
                 isActiveMainStage.value = false;
-            }else {
+            } else {
                 current.videoTrack = null;
             }
         } else if (publication.kind === 'audio') {
             current.audioTrack = null;
         }
 
-        remoteParticipantsMap.value.set(identity, { ...current });
+        remoteParticipantsMap.value.set(identity, {...current});
     });
 
     const token = await getToken(props.roomName, props.participantName);
     await room.value.connect(LIVEKIT_URL, token);
 
-    const tracks = await createLocalTracks({ audio: true, video: true });
+    const tracks = await createLocalTracks({audio: true, video: true});
 
     for (let track of tracks) {
         await room.value.localParticipant.publishTrack(track);
@@ -223,11 +231,9 @@ const leaveRoom = () => {
     emit("leaveRoom");
 }
 
-// 🔑 Отримати токен з бекенду
 async function getToken(roomName, participantName) {
-    console.log(roomName + " " + participantName)
     const res = await axios.post(SERVER_URL + "/token", {roomName, participantName}, {
-       headers: authHeader()
+        headers: authHeader()
     });
 
     const data = res.data;
@@ -237,20 +243,18 @@ async function getToken(roomName, participantName) {
 
 <template>
     <div class="room">
-        <div id="room-header">
-            <h2 id="room-title">{{ roomName }}</h2>
-        </div>
+        <f-title :title="roomName"/>
 
-        <ResizableSplit>
+        <f-resizable-split>
             <template #left>
                 <div class="layout-container">
                     <div class="videos-container">
-                        <MainStage
+                        <main-stage
                             v-if="mainContent"
                             :content-type="mainContent.type"
                             :content-data="mainContent.data"
                         />
-                        <ParticipantStrip
+                        <participant-strip
                             :participant-name="participantName"
                             :local-track="localTrack"
                             :remote-tracks="remoteParticipantsMap"
@@ -258,11 +262,16 @@ async function getToken(roomName, participantName) {
                         />
                     </div>
                     <div class="room-controls">
-                        <MicrophoneButton :microphone-publish="isMicrophoneOn" @click="toggleMicrophone"/>
-                        <CameraButton :camera-publish="isCameraOn" @click="toggleCamera"/>
-                        <LeaveButton @click="leaveRoom"/>
-                        <MonitorShareButton @click="toggleScreenShare"/>
-                        <BoardButton/>
+                        <room-control-button :parameter="isMicrophoneOn" :enabled-icon="mdiMicrophone"
+                                             :disabled-icon="mdiMicrophoneOff" @click="toggleMicrophone"/>
+                        <room-control-button :parameter="isCameraOn" :enabled-icon="mdiCamera"
+                                             :disabled-icon="mdiCameraOff" @click="toggleCamera"/>
+                        <f-button form="circle" type="danger"
+                                  :icon="mdiPhoneHangup" @click="leaveRoom"/>
+                        <room-control-button :parameter="isScreenShareOn" :enabled-icon="mdiMonitorOff"
+                                             :disabled-icon="mdiMonitorShare" @click="toggleScreenShare"/>
+                        <room-control-button :parameter="isBoardOpened" :enabled-icon="mdiPencilOff"
+                                             :disabled-icon="mdiPencil"/>
                     </div>
                 </div>
             </template>
@@ -270,19 +279,19 @@ async function getToken(roomName, participantName) {
             <template #right>
 
             </template>
-        </ResizableSplit>
+        </f-resizable-split>
     </div>
 </template>
 
 <style scoped>
-.room{
+.room {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.layout-container{
+.layout-container {
     width: 100%;
     height: 100%;
     display: flex;
@@ -292,18 +301,19 @@ async function getToken(roomName, participantName) {
     gap: .5rem;
 }
 
-.videos-container{
+.videos-container {
     width: 100%;
     height: 100%;
     position: relative;
 }
 
-.room-controls{
+.room-controls {
     min-width: fit-content;
-    padding: var(--spacing-3);
+    padding: var(--spacing-xs);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-full);
     display: flex;
-    gap: var(--spacing-3);
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 </style>

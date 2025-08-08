@@ -60,7 +60,7 @@ defineEmits(['update:modelValue'])
 }
 
 .select-option:hover {
-    background-color: var(--color-primary-light);
+    background-color: var(--bg-color-hover);
 }
 
 .select-option.active {

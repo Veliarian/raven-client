@@ -80,6 +80,10 @@ const {t, locale} = useI18n();
     height: 2.5rem;
 }
 
+.dark .logo {
+    filter: invert(100%) sepia(100%) saturate(10%) hue-rotate(201deg) brightness(103%) contrast(102%);
+}
+
 .logo-text {
     font-size: 2.5rem;
     color: var(--color-primary);
@@ -110,7 +114,7 @@ const {t, locale} = useI18n();
 }
 
 .sidebar-list-item:hover {
-    background: var(--color-primary-light);
+    background: var(--bg-color-hover);
 }
 
 .sidebar-list-item.active {

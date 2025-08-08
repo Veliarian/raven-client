@@ -39,6 +39,17 @@ export const notesApi = {
         }
     },
 
+    async updateReminderTime(noteId, reminderTime) {
+        try {
+            const response = await axios.put(URL + "/" + noteId + "/reminderTime", {reminderTime}, {
+                headers: authHeader()
+            });
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
     async deleteNote(noteId) {
         try {
             const response = await axios.delete(URL + "/" + noteId, {
@@ -49,5 +60,5 @@ export const notesApi = {
         } catch (e) {
             console.log(e);
         }
-    }
+    },
 }

@@ -1,20 +1,14 @@
 <script setup>
-import {onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {mdiWeatherNight, mdiWhiteBalanceSunny} from "@mdi/js";
 import {useThemeStore} from "../store/themeStore.js";
 import {FIcon, FSwitch} from "@uikit";
 
 const themeStore = useThemeStore();
 
-const isEnabled = ref(false);
-
-onMounted(() => {
-    isEnabled.value = themeStore.theme === "dark";
-});
-
-watch(isEnabled, (value) => {
-    const newTheme = value ? "dark" : "light";
-    themeStore.setTheme(newTheme);
+const isEnabled = computed({
+    get: () => themeStore.theme === "dark",
+    set: (val) => themeStore.setTheme(val ? "dark" : "light")
 });
 
 </script>

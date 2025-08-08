@@ -50,7 +50,7 @@ const login = async () => {
             </div>
             <f-button class="full-w" @click.prevent="login">Login</f-button>
             <f-separator>Or continue with</f-separator>
-            <f-button class="full-w" type="light" :icon="mdiGoogle" @click="loginWithGoogle">
+            <f-button class="full-w" type="light" :icon="mdiGoogle" @click.prevent="loginWithGoogle">
                 Login with Google
             </f-button>
         </form>

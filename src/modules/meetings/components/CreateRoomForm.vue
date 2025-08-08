@@ -6,29 +6,24 @@ import {useUsersStore} from "@/modules/users/store/usersStore.js";
 import {FButton, FInput} from "@uikit";
 import {mdiClose} from "@mdi/js";
 
-const roomsStore = useRoomsStore();
-const usersStore = useUsersStore();
-
-const allUsers = computed(() => usersStore.allUsers);
-
 const emit = defineEmits(["close"]);
 
 const roomName = ref("");
 const startTime = ref();
 const selectedUserIds = ref([]);
 
+const usersStore = useUsersStore();
+const allUsers = computed(() => usersStore.allUsers);
+
+const roomsStore = useRoomsStore();
 const createRoom = () => {
     roomsStore.createRoom(roomName.value, startTime.value, selectedUserIds.value);
-    emit("close");
-}
-
-const closeForm = () => {
     emit("close");
 }
 </script>
 
 <template>
-<form class="form" @submit.prevent="createRoom">
+<form class="form">
     <header class="form-header">
         <h3>Create new room</h3>
         <f-button :icon="mdiClose" type="transparent" @click.prevent="$emit('close')"/>
@@ -40,7 +35,7 @@ const closeForm = () => {
         </div>
         <div class="form-field">
             <label for="start-time">Start time</label>
-            <input type="datetime-local" v-model="startTime">
+            <f-input type="datetime-local" v-model="startTime"/>
         </div>
         <div class="form-field">
             <label for="users">Select users</label>
@@ -49,7 +44,7 @@ const closeForm = () => {
                 v-model="selectedUserIds"
             />
         </div>
-        <button type="submit">Create</button>
+        <f-button size="sm" @click.prevent="createRoom">Create</f-button>
     </main>
 </form>
 </template>

@@ -14,10 +14,13 @@ defineProps({
     type: {
         type: String,
         default: "text",
-        validator: (value) => ["text", "email", "password", "number", "search", "hidden"].includes(value),
+        validator: (value) => ["text", "email", "password", "number", "search", "hidden", "datetime-local"].includes(value),
     },
     placeholder: {
         type: String
+    },
+    error: {
+        type: Boolean
     },
     icon: {
         type: String
@@ -51,7 +54,7 @@ const showPassword = () => {
                @input="$emit('update:modelValue', $event.target.value)"
                :placeholder="placeholder"
                class="f-input"
-               :class="[icon ? 'icon' : '', type === 'password' ? 'pass' : '']"
+               :class="[icon ? 'icon' : '', type === 'password' ? 'pass' : '', error ? 'error' : '']"
         />
     </div>
 </template>
@@ -86,11 +89,11 @@ const showPassword = () => {
     width: 100%;
     font-size: var(--font-size-base);
     padding: var(--spacing-sm) var(--spacing-s-m);
-    border: 1px solid var(--color-primary-light);
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     color: var(--text-color-secondary);
     background-color: var(--surface);
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s var(--transition-base);
 }
 
 .f-input.icon {
@@ -102,6 +105,7 @@ const showPassword = () => {
 }
 
 .f-input:hover {
+    cursor: text;
     outline: none;
     border-color: var(--color-primary);
 }
@@ -109,5 +113,9 @@ const showPassword = () => {
 .f-input:focus {
     outline: none;
     border-color: var(--color-primary);
+}
+
+.f-input.error {
+    border-color: var(--color-danger);
 }
 </style>

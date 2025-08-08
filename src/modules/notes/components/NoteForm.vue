@@ -74,6 +74,7 @@ const saveNote = () => {
     padding: 0;
     font-size: 1.1rem;
     font-weight: bold;
+    color: var(--text-color-primary);
 }
 
 .note-content {
@@ -94,6 +95,7 @@ const saveNote = () => {
     background-size: 100% 2rem;
     background-repeat: repeat-y;
     background-position-y: 1.8rem;
+    color: var(--text-color-primary);
 }
 
 .note-controls {

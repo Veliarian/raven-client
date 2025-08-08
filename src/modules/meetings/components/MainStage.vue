@@ -44,7 +44,7 @@ function getComponentForType(type) {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* ❗ Обмеження */
+    overflow: hidden;
 }
 
 .main-stage-inner {

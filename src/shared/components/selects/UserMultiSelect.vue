@@ -2,6 +2,7 @@
 import {computed, ref} from 'vue';
 import Icon from "@/shared/components/icons/Icon.vue";
 import {mdiClose} from "@mdi/js";
+import {FInput} from "@uikit";
 
 const props = defineProps({
     users: Array, // всі доступні користувачі
@@ -59,11 +60,10 @@ const removeUser = (user) => {
             </span>
         </div>
 
-        <input
+        <f-input
             v-model="searchQuery"
             type="text"
             placeholder="Search"
-            class="search-input"
         />
 
         <ul v-if="filteredUsers.length" class="user-list">
@@ -87,9 +87,9 @@ const removeUser = (user) => {
     flex-direction: column;
     gap: 0.5rem;
     border: 1px solid var(--color-primary);
-    border-radius: .75rem;
+    border-radius: calc(var(--radius-lg) + var(--spacing-xs));
     overflow: hidden;
-    padding: .25rem;
+    padding: var(--spacing-xs);
 }
 
 .selected-items {
@@ -102,7 +102,7 @@ const removeUser = (user) => {
     background: var(--surface);
     border: 1px solid var(--color-primary);
     padding: 0.25rem 0.5rem;
-    border-radius: .5rem;
+    border-radius: var(--radius-lg);
     font-size: 0.9rem;
     display: flex;
     align-items: center;
@@ -117,16 +117,11 @@ const removeUser = (user) => {
     padding: 0;
 }
 
-:deep(.selected-item button svg){
-    width: 1rem;
-    height: 1rem;
-}
-
 .user-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     max-height: 150px;
     overflow-y: auto;
 }
@@ -134,11 +129,11 @@ const removeUser = (user) => {
 .user-list-item {
     padding: 0.5rem;
     cursor: pointer;
-    border-radius: .5rem;
+    border-radius: var(--radius-lg);
 }
 
 .user-list-item:hover {
-    background-color: var(--color-primary-light);
+    background-color: var(--bg-color-hover);
 }
 
 .no-results {

@@ -13,36 +13,28 @@ const props = defineProps({
 
 <template>
     <div class="participant-strip" :class="activeMainStage ? '' : 'full'">
-        <UserVideo
+        <user-video
             :track="localTrack"
             :participantIdentity="participantName"
             :local="true"
             class="local"
         />
         <template v-for="[identity, participant] of remoteTracks" :key="identity">
-            <UserVideo
+            <user-video
                 :track="participant.videoTrack"
                 :participantIdentity="identity"
             />
-            <AudioComponent
+            <audio-component
                 v-if="participant.audioTrack"
                 :track="participant.audioTrack"
                 hidden
             />
         </template>
-<!--        <template v-for="remoteTrack of remoteTracks.values()" :key="remoteTrack.trackPublication.trackSid">-->
-<!--            <UserVideo-->
-<!--                v-if="remoteTrack.trackPublication.kind === 'video'"-->
-<!--                :track="remoteTrack.trackPublication.videoTrack || null"-->
-<!--                :participantIdentity="remoteTrack.participantIdentity"-->
-<!--            />-->
-<!--            <AudioComponent v-if="remoteTrack.trackPublication.kind !== 'video'" :track="remoteTrack.trackPublication.audioTrack" hidden />-->
-<!--        </template>-->
     </div>
 </template>
 
 <style scoped>
-.participant-strip{
+.participant-strip {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -50,7 +42,7 @@ const props = defineProps({
     height: 8rem;
     display: flex;
     justify-content: flex-start;
-    gap: var(--spacing-4);
+    gap: var(--spacing-sm);
 }
 
 .participant-strip > * {
@@ -58,13 +50,13 @@ const props = defineProps({
     height: 100%;
 }
 
-.participant-strip.full{
+.participant-strip.full {
     width: 100%;
     height: 100%;
     align-items: center;
 }
 
-.participant-strip.full > *{
+.participant-strip.full > * {
     flex: 1 1 0;
     height: auto;
 }

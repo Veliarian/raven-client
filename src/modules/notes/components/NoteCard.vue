@@ -1,17 +1,21 @@
 <script setup>
+import {ref} from "vue";
 import Note from "@/modules/notes/models/Note.js";
-import Icon from "@/shared/components/icons/Icon.vue";
 import {mdiClock, mdiPencil, mdiTrashCan} from "@mdi/js";
 import ConfirmDialog from "@/shared/components/modals/ConfirmDialog.vue";
-import {ref} from "vue";
 import {useNotesStore} from "@/modules/notes/store/notesStore.js";
-import {FButton, FIcon} from "@uikit";
+import {FButton} from "@uikit";
+import NoteRemindForm from "@/modules/notes/components/NoteRemindForm.vue";
 
 const props = defineProps({
     note: Note
 });
 
-const emits = defineEmits(["editNote"])
+const isShowRemindForm = ref(false);
+
+const editableNote = ref(props.note);
+
+const emits = defineEmits(["editNote"]);
 
 const notesStore = useNotesStore();
 
@@ -28,6 +32,10 @@ const handleEdit = () => {
     emits("editNote", props.note);
 }
 
+const handleShowRemindForm = () => {
+    isShowRemindForm.value = !isShowRemindForm.value;
+}
+
 const convertDate = (dateString) => {
     return new Date(dateString).toLocaleString([],
         {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'}
@@ -37,20 +45,26 @@ const convertDate = (dateString) => {
 
 <template>
     <div class="note-card">
-        <h6 class="note-title">{{note?.title}}</h6>
+        <h6 class="note-title">{{ note?.title }}</h6>
         <textarea class="note-content" readonly :value="note?.content"></textarea>
         <div class="creation-time">
-            <p>{{convertDate(note?.creationTime)}}</p>
+            <p>{{ convertDate(note?.creationTime) }}</p>
         </div>
 
         <div class="note-controls">
-            <f-button size="sm" form="circle" :icon="mdiClock"/>
+            <f-button size="sm" form="circle" :icon="mdiClock" @click="handleShowRemindForm"/>
             <f-button size="sm" form="circle" :icon="mdiPencil" @click="handleEdit"/>
             <f-button size="sm" form="circle" :icon="mdiTrashCan" type="danger" @click="handleDelete"/>
         </div>
     </div>
 
-    <ConfirmDialog ref="confirmDialog"/>
+    <confirm-dialog ref="confirmDialog"/>
+    <note-remind-form
+        v-if="isShowRemindForm"
+        @close="handleShowRemindForm"
+        :time="note.reminderTime"
+        :note-id="note.id"
+    />
 </template>
 
 <style scoped>
@@ -76,9 +90,10 @@ const convertDate = (dateString) => {
     padding: 0;
     font-size: 1.1rem;
     font-weight: bold;
+    color: var(--text-color-primary);
 }
 
-.note-content{
+.note-content {
     flex: 1;
     resize: none;
     border: none;
@@ -96,14 +111,15 @@ const convertDate = (dateString) => {
     background-size: 100% 2rem;
     background-repeat: repeat-y;
     background-position-y: 1.8rem;
+    color: var(--text-color-primary);
 }
 
-.creation-time{
+.creation-time {
     display: flex;
     justify-content: flex-end;
 }
 
-.note-controls{
+.note-controls {
     position: absolute;
     top: -10px;
     right: 10px;
@@ -113,7 +129,7 @@ const convertDate = (dateString) => {
     justify-content: flex-end;
 }
 
-.note-card:hover > .note-controls{
+.note-card:hover > .note-controls {
     display: flex;
 }
 </style>

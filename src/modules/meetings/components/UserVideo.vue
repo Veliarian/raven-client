@@ -20,8 +20,8 @@ const props = defineProps({
         <div class="participant-data">
             <p>{{ participantIdentity + (local ? ' (You)' : '') }}</p>
         </div>
-        <VideoComponent v-if="track" :track="track"/>
-        <EmptyVideo v-else/>
+        <video-component v-if="track" :track="track"/>
+        <empty-video v-else/>
     </div>
 </template>
 
@@ -31,7 +31,7 @@ const props = defineProps({
     max-height: 100%;
     aspect-ratio: 16/9;
     background: #3b3b3b;
-    border-radius: 6px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     display: flex;
     justify-content: center;

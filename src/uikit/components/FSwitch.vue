@@ -1,24 +1,24 @@
 <script setup>
-defineOptions({
-    name: "FSwitch",
-});
-
 defineProps({
-   checked: Boolean,
+    modelValue: Boolean,
 });
 
 defineEmits(["update:modelValue"]);
 </script>
 
 <template>
-<label class="switch">
-    <input type="checkbox" :checked="checked" @change="$emit('update:modelValue', $event.target.checked)"/>
-    <span class="slider"></span>
-</label>
+    <label class="switch">
+        <input
+            type="checkbox"
+            :checked="modelValue"
+            @change="$emit('update:modelValue', $event.target.checked)"
+        />
+        <span class="slider"></span>
+    </label>
 </template>
 
 <style scoped>
-.switch{
+.switch {
     position: relative;
     display: inline-block;
     width: 44px;
@@ -31,7 +31,7 @@ defineEmits(["update:modelValue"]);
     height: 0;
 }
 
-.slider{
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
