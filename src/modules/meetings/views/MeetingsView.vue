@@ -3,11 +3,10 @@ import {computed, onMounted, ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {useRoomsStore} from "@/modules/meetings/store/roomsStore.js";
 import {useUsersStore} from "@/modules/users/store/usersStore.js";
-import {mdiCalendarMonthOutline, mdiVideoCheckOutline, mdiVideoOutline} from "@mdi/js";
+import {mdiVideoOutline} from "@mdi/js";
 import {FButton, FHorizontalSelect, FTitle} from "@uikit";
 import RoomsList from "@/modules/meetings/components/RoomsList.vue";
 import RoomCard from "@/modules/meetings/components/RoomCard.vue";
-import FormContainer from "@/shared/components/FormContainer.vue";
 import CreateRoomForm from "@/modules/meetings/components/CreateRoomForm.vue";
 import RoomView from "@/modules/meetings/views/RoomView.vue";
 
@@ -92,9 +91,7 @@ onMounted(() => {
                @leave-room="leaveRoom"/>
 
     <transition name="fade">
-        <form-container v-if="isOpenedForm">
-            <create-room-form v-if="isOpenedRoomForm" @close="closeRoomForm"/>
-        </form-container>
+        <create-room-form v-if="isOpenedRoomForm" @close="closeRoomForm"/>
     </transition>
 </template>
 
@@ -106,7 +103,7 @@ main {
 }
 
 .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-fast) ease;
 }
 
 .fade-enter-from, .fade-leave-to {

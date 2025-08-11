@@ -1,10 +1,9 @@
 <script setup>
 import {ref} from "vue";
-import {mdiTrayArrowUp} from "@mdi/js";
-import Icon from "@/shared/components/Icon.vue";
 import {useI18n} from "vue-i18n";
 import {useMediaFilesStore} from "@/modules/materials/store/mediaFilesStore.js";
 import UploadFileItem from "@/modules/materials/components/UploadFileItem.vue";
+import {FButton, FFormContainer, FTitle} from "@uikit";
 
 const {t} = useI18n();
 const mediaFilesStore = useMediaFilesStore();
@@ -87,47 +86,42 @@ const closeForm = () => {
 </script>
 
 <template>
-    <div class="upload-file-form">
-        <header class="form-header">
-            <h3>Upload Files</h3>
-            <p class="subtitle">Upload files to your learning materials collection</p>
-        </header>
-        <div class="dropzone"
-             @click="triggerFileInput"
-             @dragover.prevent
-             @drop.prevent="handleDrop"
-             @dragenter="handleDragEnter"
-             @dragleave="handleDragLeave"
-             :class="{ 'active': isDragging }"
-        >
-            <div v-if="selectedFiles.length === 0" class="dropzone-title">
-                <p>Drag & drop your files here, or click to select</p>
-            </div>
-            <div v-else class="files-list-box">
-                <div class="files-list-header">
-                    <p>{{`${selectedFiles.length} file(s) selected`}}</p>
-                    <button class="cancel" @click.stop="deleteAllFiles">Clear All</button>
+    <f-form-container>
+        <form class="upload-file-form">
+            <f-title size="md" title="Upload Files" subtitle="Upload files to your learning materials collection"/>
+            <div class="dropzone"
+                 @click="triggerFileInput"
+                 @dragover.prevent
+                 @drop.prevent="handleDrop"
+                 @dragenter="handleDragEnter"
+                 @dragleave="handleDragLeave"
+                 :class="{ 'active': isDragging }"
+            >
+                <div v-if="selectedFiles.length === 0" class="dropzone-title">
+                    <p>Drag & drop your files here, or click to select</p>
                 </div>
-                <div class="files-list">
-                    <UploadFileItem v-for="file in selectedFiles"
-                                    :file-name="file.name"
-                                    :size="file.size"
-                                    :progress="getProgressByFileName(file.name).progress"
-                                    @delete-file="deleteFile"
-                    />
+                <div v-else class="files-list-box">
+                    <div class="files-list-header">
+                        <p>{{ `${selectedFiles.length} file(s) selected` }}</p>
+                        <f-button size="sm" type="danger" @click.stop="deleteAllFiles">Clear all</f-button>
+                    </div>
+                    <div class="files-list">
+                        <upload-file-item v-for="file in selectedFiles"
+                                        :file-name="file.name"
+                                        :size="file.size"
+                                        :progress="getProgressByFileName(file.name).progress"
+                                        @delete-file="deleteFile"
+                        />
+                    </div>
                 </div>
+                <input type="file" multiple ref="fileInput" @change="handleFiles" class="file-input"/>
             </div>
-            <input type="file" multiple ref="fileInput" @change="handleFiles" class="file-input"/>
-        </div>
-        <div class="controls">
-            <button class="cancel" @click="closeForm">
-                {{ t("materials.controls.cancel") }}
-            </button>
-            <button class="upload" @click="processFiles">
-                {{ t("materials.controls.upload") }}
-            </button>
-        </div>
-    </div>
+            <div class="controls">
+                <f-button size="sm" type="cancel" @click="closeForm">Cancel</f-button>
+                <f-button size="sm" @click.prevent="processFiles">Upload</f-button>
+            </div>
+        </form>
+    </f-form-container>
 </template>
 
 <style scoped>
@@ -139,7 +133,7 @@ const closeForm = () => {
     gap: 3rem;
     background-color: var(--background);
     padding: 1.5rem;
-    border-radius: var(---radius-lg);
+    border-radius: var(--radius-lg);
 }
 
 .file-input {
@@ -157,8 +151,8 @@ const closeForm = () => {
 }
 
 .dropzone.active {
-    border-color: var(--color-green);
-    background-color: var(--color-green-light);
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
 }
 
 .dropzone p {
@@ -176,25 +170,25 @@ const closeForm = () => {
     cursor: pointer;
 }
 
-.files-list-box{
+.files-list-box {
     display: flex;
     flex-direction: column;
     gap: .75rem;
 }
 
-.files-list-header{
+.files-list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.files-list{
+.files-list {
     display: flex;
     flex-direction: column;
     gap: .5rem;
 }
 
-.controls{
+.controls {
     display: flex;
     justify-content: flex-end;
     gap: .75rem;

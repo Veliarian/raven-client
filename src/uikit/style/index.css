@@ -1,6 +1,7 @@
 @import "reset.css";
 @import "typography.css";
 @import "variables.css";
+@import "animation.css";
 
 @import "classes/containers.css";
 @import "classes/size.css";

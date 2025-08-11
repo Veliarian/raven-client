@@ -1,7 +1,6 @@
 <script setup>
-
-import Icon from "@/shared/components/Icon.vue";
-import {mdiCheck, mdiFileDocumentOutline, mdiWindowClose} from "@mdi/js";
+import {mdiCheck, mdiClose, mdiFileDocumentOutline} from "@mdi/js";
+import {FButton, FIcon} from "@uikit";
 
 const emit = defineEmits(["deleteFile"]);
 
@@ -32,21 +31,20 @@ const formatFileSize = (bytes) => {
 <template>
     <div class="upload-file-item">
         <div class="file-info">
-            <Icon :icon="mdiFileDocumentOutline" :size="16" color="#7dae78"/>
+            <f-icon :icon="mdiFileDocumentOutline" :size="20" color="#7dae78"/>
             <p class="subtitle">{{ fileName }}</p>
             <p class="subtitle">{{ `(${formatFileSize(size)})` }}</p>
         </div>
-        <button class="delete small" v-if="progress === 0" @click.stop="deleteFile(fileName)">
-            <Icon :icon="mdiWindowClose"/>
-        </button>
+        <f-button v-if="progress === 0" type="transparent" form="circle" size="sm" @click.stop="deleteFile(fileName)"
+                  :icon="mdiClose"/>
 
         <div class="progress-bar" :style="{width: progress + '%'}">
             <div class="file-info">
-                <Icon :icon="mdiFileDocumentOutline" :size="16" color="#ffffff"/>
+                <f-icon :icon="mdiFileDocumentOutline" :size="16" color="#ffffff"/>
                 <p class="subtitle">{{ fileName }}</p>
                 <p class="subtitle">{{ `(${formatFileSize(size)})` }}</p>
             </div>
-            <Icon class="progress-icon" :icon="mdiCheck" v-if="progress === 100"/>
+            <f-icon class="progress-icon" :icon="mdiCheck" v-if="progress === 100"/>
         </div>
     </div>
 </template>
@@ -58,7 +56,7 @@ const formatFileSize = (bytes) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--color-green-light);
+    background-color: var(--color-primary-light);
     border-radius: .75rem;
     position: relative;
     overflow: hidden;
@@ -66,13 +64,13 @@ const formatFileSize = (bytes) => {
 
 .file-info {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: .5rem;
     position: relative;
     white-space: nowrap;
 }
 
-.subtitle{
+.subtitle {
     max-width: 12rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -87,7 +85,7 @@ const formatFileSize = (bytes) => {
     top: 0;
     bottom: 0;
     left: 0;
-    background-color: var(--color-green);
+    background-color: var(--color-primary);
     z-index: 1;
     overflow: hidden;
     display: flex;
@@ -103,7 +101,7 @@ const formatFileSize = (bytes) => {
     margin-left: .5rem;
 }
 
-.progress-icon{
+.progress-icon {
     margin-right: .5rem;
     color: white;
 }

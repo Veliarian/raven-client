@@ -11,7 +11,7 @@ const props = defineProps({
     color: { type: String, default: 'currentColor' },
     enableBackground: { type: Boolean, default: false },
     backgroundOpacity: { type: Number, default: 0.2 },
-    padding: { type: Number, default: 0 },
+    padding: { type: [Number, String], default: 0 },
     backgroundShape: { type: String, default: 'square' } // 'circle' | 'square' | 'none'
 });
 

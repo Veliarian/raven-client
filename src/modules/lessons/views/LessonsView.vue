@@ -7,7 +7,6 @@ import SearchInput from "@/shared/components/SearchInput.vue";
 import MultiButton from "@/shared/components/MultiButton.vue";
 import {computed, onMounted, ref} from "vue";
 import {useLessonsStore} from "@/modules/lessons/store/lessonsStore.js";
-import FormContainer from "@/shared/components/FormContainer.vue";
 import CreateLessonForm from "@/modules/lessons/components/CreateLessonForm.vue";
 
 const {t} = useI18n();
@@ -29,7 +28,7 @@ const selectLessonsType = (type) => {
 
 function startEditing(lesson) {
     editingLessonId.value = lesson.id;
-    editableLesson.value = { ...lesson };
+    editableLesson.value = {...lesson};
 }
 
 function cancelEditing() {
@@ -38,7 +37,7 @@ function cancelEditing() {
 }
 
 onMounted(() => {
-   lessonsStore.fetchLessonsIfNeeded();
+    lessonsStore.fetchLessonsIfNeeded();
 });
 </script>
 
@@ -76,9 +75,7 @@ onMounted(() => {
         </main>
     </div>
 
-    <form-container>
-        <CreateLessonForm/>
-    </form-container>
+    <create-lesson-form/>
 </template>
 
 <style scoped>
@@ -96,22 +93,22 @@ onMounted(() => {
     justify-content: space-between;
 }
 
-.lessons-main{
+.lessons-main {
     display: flex;
     flex-direction: column;
 }
 
-.lessons-filters{
+.lessons-filters {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.lessons-filters-item{
+.lessons-filters-item {
     display: flex;
 }
 
-.lessons-list{
+.lessons-list {
     display: flex;
 }
 </style>

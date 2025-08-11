@@ -3,10 +3,6 @@ import FIcon from "../FIcon.vue";
 import {ref} from "vue";
 import {mdiEyeOffOutline, mdiEyeOutline} from "@mdi/js";
 
-defineOptions({
-    name: "FInput",
-});
-
 defineProps({
     modelValue: {
         type: [String, Number]
@@ -39,15 +35,15 @@ const showPassword = () => {
 <template>
     <div class="f-input-wrapper">
         <f-icon v-if="icon"
-              :icon="icon"
-              class="f-input-icon"
-              size="20"
+                :icon="icon"
+                class="f-input-icon"
+                size="20"
         />
         <f-icon v-if="type === 'password'"
-              :icon="isShowPassword ? mdiEyeOutline : mdiEyeOffOutline"
-              class="f-input-show"
-              size="20"
-              @click="showPassword"
+                :icon="isShowPassword ? mdiEyeOutline : mdiEyeOffOutline"
+                class="f-input-show"
+                size="20"
+                @click="showPassword"
         />
         <input :type="isShowPassword ? 'text' : type"
                :value="modelValue"

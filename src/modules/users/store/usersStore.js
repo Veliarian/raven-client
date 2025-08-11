@@ -42,9 +42,15 @@ export const useUsersStore = defineStore("users", {
         getProfilePictureByUserId(state) {
             return (userId) => {
                 const user = state.allUsers.find(user => user.id === userId);
-                return user ? user.profilePicture : null; // або дефолтне зображення
+                return user ? user.profilePicture : null;
             };
         },
+        getFirstLetterOfUsername(state) {
+            return (userId) => {
+                const user = state.allUsers.find(user => user.id === userId);
+                return user ? user.username[0] : state.currentUser.username[0];
+            };
+        }
     },
 
     persist: {

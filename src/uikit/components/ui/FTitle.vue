@@ -2,14 +2,20 @@
 defineProps({
     title: String,
     subtitle: String,
+    size: {
+        type: String,
+        default: "lg"
+    }
 });
 </script>
 
 <template>
     <header class="f-title">
         <div class="f-title-header">
-            <h1 v-if="title" class="f-title-h">{{ title }}</h1>
-            <p v-if="subtitle" class="f-title-sub">{{ subtitle }}</p>
+            <h1 v-if="title && size === 'lg'" class="f-title-h">{{ title }}</h1>
+            <h3 v-if="title && size === 'md'" class="f-title-h">{{ title }}</h3>
+            <h5 v-if="title && size === 'sm'" class="f-title-h">{{ title }}</h5>
+            <p v-if="subtitle" class="f-title-sub" :class="{'subtitle' : size !== 'lg'}">{{ subtitle }}</p>
         </div>
         <div v-if="$slots" class="f-title-control">
             <slot/>

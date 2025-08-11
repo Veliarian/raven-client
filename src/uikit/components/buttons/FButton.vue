@@ -88,6 +88,7 @@ defineProps({
     background-color: var(--color-cancel);
     border-color: var(--color-cancel);
     color: var(--control-color-dark);
+    font-weight: var(--font-weight-bold);
 }
 
 .f-button.cancel:hover {

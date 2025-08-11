@@ -35,6 +35,7 @@ const usersStore = useUsersStore();
                     v-for="participantId in participantIds"
                     :key="participantId"
                     :profile-picture="usersStore.getProfilePictureByUserId(participantId)"
+                    :alt="usersStore.getFirstLetterOfUsername(participantId)"
                     class="participant-image"
                 />
             </div>

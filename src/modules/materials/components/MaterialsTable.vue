@@ -1,20 +1,9 @@
 <script setup>
 import {computed, ref} from "vue";
-import SortIcon from "@/shared/components/SortIcon.vue";
-import Icon from "@/shared/components/icons/Icon.vue";
-import {
-    mdiDotsVertical,
-    mdiFileDocumentOutline,
-    mdiFileOutline,
-    mdiImageOutline,
-    mdiMusicNoteOutline, mdiPencil,
-    mdiPresentation, mdiTrashCanOutline,
-    mdiVideoOutline
-} from "@mdi/js";
 import FSwitch from "@uikit/components/FSwitch.vue";
 import {useColorUtils} from "@/shared/utils/colorUtils.js";
 import FileIcon from "@/shared/components/icons/FileIcon.vue";
-import OptionsButton from "@/shared/components/buttons/OptionsButton.vue";
+import {FTable} from "@uikit";
 
 const props = defineProps({
     files: {
@@ -23,28 +12,13 @@ const props = defineProps({
     }
 });
 
-const colorUtils = useColorUtils()
+const columns = [
+    {key: 'originalName', label: 'Name', sortable: true, class: 'col-name'},
+    {key: 'size', label: 'Size', sortable: true},
+    {key: 'uploadedAt', label: 'Last Modified', sortable: true},
+    {key: 'isPublic', label: 'Public', sortable: false}
+];
 
-const sort = ref({key: "name", asc: true});
-
-const sortedFiles = computed(() => {
-    return [...props.files].sort((a, b) => {
-        const aVal = a[sort.value.key]
-        const bVal = b[sort.value.key]
-        if (aVal < bVal) return sort.value.asc ? -1 : 1
-        if (aVal > bVal) return sort.value.asc ? 1 : -1
-        return 0
-    })
-})
-
-const sortBy = (key) => {
-    if (sort.value.key === key) {
-        sort.value.asc = !sort.value.asc
-    } else {
-        sort.value.key = key
-        sort.value.asc = true
-    }
-}
 
 const formatFileSize = (bytes) => {
     const sizes = ['B', 'KB', 'MB', 'GB']
@@ -52,6 +26,7 @@ const formatFileSize = (bytes) => {
     const i = Math.floor(Math.log(bytes) / Math.log(1024))
     return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i]
 }
+
 
 function formatDate(date) {
     const d = new Date(date);
@@ -65,64 +40,31 @@ function formatDate(date) {
 
     return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
-
-const editFile = (id) => {
-    console.log(id);
-}
-
-const deleteFile = (id) => {
-
-}
 </script>
 
 <template>
-    <div class="materials-table">
-        <div class="scroll-box">
-            <table class="files-table">
-                <thead>
-                <tr>
-                    <th>Name
-                        <SortIcon :asc="sort.asc" :active="sort.key === 'originalName'"/>
-                    </th>
-                    <th>Size</th>
-                    <th>Last Modified</th>
-                    <th>Public</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="file in sortedFiles" :key="file.id">
-                    <td class="name">
-                        <div class="file-info">
-                            <FileIcon :type="file.mediaType"/>
-                            <span class="file-name">{{ file.originalName }}</span>
-                        </div>
-                    </td>
-                    <td class="size">{{ formatFileSize(file.size) }}</td>
-                    <td class="date">{{ formatDate(file.uploadedAt) }}</td>
-                    <td class="public">
-                        <FSwitch :checked="file.isPublick"/>
-                    </td>
-                    <td class="options">
-                        <options-button>
-                            <button class="" @click="editFile(file.id)">
-                                <Icon :icon="mdiPencil" :size="16"/>
-                                Edit
-                            </button>
-                            <button class="delete" @click="deleteFile(file.id)">
-                                <Icon :icon="mdiTrashCanOutline" :size="16"/>
-                                Delete
-                            </button>
-                        </options-button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <f-table :columns="columns" :rows="files">
+        <template #cell-originalName="{ row }">
+            <file-icon :type="row.mediaType"/>
+            <span>{{ row.originalName }}</span>
+        </template>
+        <template #cell-size="{ row }">
+            {{ formatFileSize(row.size) }}
+        </template>
+        <template #cell-uploadedAt="{ row }">
+            {{ formatDate(row.uploadedAt) }}
+        </template>
+        <template #cell-isPublic="{ row }">
+            <f-switch :checked="row.isPublic"/>
+        </template>
+    </f-table>
 </template>
 
 <style scoped>
+.col-name {
+    max-width: 20rem;
+}
+
 .materials-table {
     max-height: 24rem;
     border: 2px solid var(--border-color);

@@ -1,13 +1,11 @@
 <script setup>
 import {mdiMagnify} from "@mdi/js";
-import {FInput as FFInput} from "@uikit";
-
-defineOptions({
-    name: "FSearchInput",
-});
+import {FInput} from "@uikit";
 
 defineProps({
-    checked: String,
+    modelValue: {
+        type: [String, Number]
+    },
     placeholder: {
         type: String,
         default: "Search...",
@@ -19,7 +17,14 @@ defineEmits(["update:modelValue"]);
 
 <template>
     <div class="search-input">
-        <f-input type="text" :placeholder="placeholder" :icon="mdiMagnify" class="full-w"/>
+        <f-input
+            type="text"
+            :placeholder="placeholder"
+            :icon="mdiMagnify"
+            class="full-w"
+            :model-value="modelValue"
+            @update:model-value="$emit('update:modelValue', $event)"
+        />
     </div>
 </template>
 

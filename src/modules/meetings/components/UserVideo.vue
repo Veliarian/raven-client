@@ -21,7 +21,7 @@ const props = defineProps({
             <p>{{ participantIdentity + (local ? ' (You)' : '') }}</p>
         </div>
         <video-component v-if="track" :track="track"/>
-        <empty-video v-else/>
+        <empty-video v-else :participant-name="participantIdentity"/>
     </div>
 </template>
 

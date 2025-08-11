@@ -1,11 +1,15 @@
 <script setup>
 import ProfileImage from "@/shared/components/ProfileImage.vue";
+
+defineProps({
+   participantName: String
+});
 </script>
 
 <template>
     <div class="empty-video">
         <div class="profile-image-container">
-            <ProfileImage class="profile-image"/>
+            <profile-image class="profile-image" :alt="participantName[0]"/>
         </div>
     </div>
 </template>
@@ -21,6 +25,7 @@ import ProfileImage from "@/shared/components/ProfileImage.vue";
 
 .profile-image-container {
     width: 10%;
+    aspect-ratio: 1/1;
 }
 
 /* Media Queries */

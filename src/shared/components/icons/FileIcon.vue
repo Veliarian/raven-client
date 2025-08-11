@@ -7,6 +7,7 @@ import {
     mdiFileWordOutline, mdiImage, mdiMusicBox
 } from "@mdi/js";
 import Icon from "@/shared/components/icons/Icon.vue";
+import {FIcon} from "@uikit";
 
 const props = defineProps({
     type: {
@@ -55,7 +56,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <Icon :icon="iconStyle.icon"
+    <f-icon :icon="iconStyle.icon"
           :color="iconStyle.color"
           :enable-background="true"
           :size="30"

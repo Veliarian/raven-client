@@ -2,17 +2,21 @@
 import {computed, onMounted, ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {
+    mdiClock,
     mdiFileDocumentOutline,
+    mdiFileMultiple,
     mdiFileOutline,
-    mdiImageOutline, mdiTrayArrowUp,
+    mdiFilter,
+    mdiImageOutline,
+    mdiShare,
+    mdiTrayArrowUp,
     mdiVideoOutline
 } from "@mdi/js";
-import SearchInput from "@/shared/components/SearchInput.vue";
-import MultiButton from "@/shared/components/MultiButton.vue";
-import MiniCard from "@/shared/components/MiniCard.vue";
 import {useMediaFilesStore} from "@/modules/materials/store/mediaFilesStore.js";
 import UploadFileForm from "@/modules/materials/components/UploadFileForm.vue";
-import Icon from "@/shared/components/Icon.vue";
+import {FButton, FCard, FFilterParamsContainer, FHorizontalSelect, FSearchInput, FTable, FTitle} from "@uikit";
+import FSwitch from "../../../uikit/components/FSwitch.vue";
+import FileIcon from "@/shared/components/icons/FileIcon.vue";
 import MaterialsTable from "@/modules/materials/components/MaterialsTable.vue";
 
 const {t} = useI18n();
@@ -20,24 +24,34 @@ const {t} = useI18n();
 const mediaFilesStore = useMediaFilesStore();
 const mediaFiles = computed(() => mediaFilesStore.mediaFiles);
 
-const materialsType = ref("all");
-const isOpenForms = ref(false);
-const isOpenUploadFileForm = ref(false);
-
-const selectMaterialsType = (type) => {
-    if (materialsType.value !== type) {
-        materialsType.value = type;
-    }
-};
-
-const openUploadFileForm = () => {
-    isOpenForms.value = true;
-    isOpenUploadFileForm.value = true;
+const formatFileSize = (bytes) => {
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    if (bytes === 0) return '0 B'
+    const i = Math.floor(Math.log(bytes) / Math.log(1024))
+    return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i]
 }
 
-const closeUploadFileForm = () => {
-    isOpenForms.value = false;
-    isOpenUploadFileForm.value = false;
+const fileFilters = ref({
+    name: "",
+    type: [],
+    viewType: "all",
+    storedDate: null,
+});
+
+const handleAddFilter = (filter) => {
+    if (!fileFilters.value.type.find(f => f === filter)) {
+        fileFilters.value.type = [...fileFilters.value.type, filter];
+    }
+}
+
+const handleDeleteFilterType = (filter) => {
+    fileFilters.value.type = fileFilters.value.type.filter(f => f !== filter);
+}
+
+const isOpenUploadFileForm = ref(false);
+
+const handleShowUploadFileForm = () => {
+    isOpenUploadFileForm.value = !isOpenUploadFileForm.value;
 }
 
 onMounted(() => {
@@ -47,72 +61,75 @@ onMounted(() => {
 
 <template>
     <div class="materials-view">
-        <header class="materials-header">
-            <div class="materials-header-title-box">
-                <h1 class="header-title">{{ t("materials.title") }}</h1>
-                <p class="header-subtitle">{{ t("materials.subtitle") }}</p>
-            </div>
-            <button @click="openUploadFileForm">
-                <Icon :icon="mdiTrayArrowUp"/>
+        <f-title :title="t('materials.title')" :subtitle="t('materials.subtitle')">
+            <f-button :icon="mdiTrayArrowUp" @click="handleShowUploadFileForm">
                 {{ t("materials.controls.upload") }}
-            </button>
-        </header>
+            </f-button>
+        </f-title>
         <main class="materials-main">
-            <div class="materials-filters">
-                <div class="materials-filters-item">
-                    <SearchInput :placeholder="t('materials.controls.search')"/>
+            <div class="material-filters">
+                <div class="material-filters-item">
+                    <f-search-input placeholder="Type for search your files..." v-model="fileFilters.name"/>
+                    {{ fileFilters.name }}
+                    <f-button :icon="mdiFilter">Filter</f-button>
                 </div>
 
-                <div class="materials-filters-item">
-                    <multi-button>
-                        <button :class="{'active': materialsType === 'all'}" @click="selectMaterialsType('all')">
-                            {{ t('materials.controls.all') }}
-                        </button>
-                        <button :class="{'active': materialsType === 'rec'}" @click="selectMaterialsType('rec')">
-                            {{ t('materials.controls.recent') }}
-                        </button>
-                    </multi-button>
+                <div v-if="fileFilters.type.length > 0" class="material-filters-item">
+                    <f-filter-params-container :filters="fileFilters.type" @delete="handleDeleteFilterType"/>
+                </div>
+
+                <div class="material-filters-item">
+                    <f-horizontal-select
+                        v-model="fileFilters.viewType"
+                        :options="[
+                          { id: 'all', icon: mdiFileMultiple, label: 'All'},
+                          { id: 'rec', icon: mdiClock, label: 'Recent' },
+                          { id: 'share', icon: mdiShare, label: 'Share with me'}
+                        ]"
+                    />
                 </div>
 
                 <h4>{{ t("materials.overview") }}</h4>
 
-                <div class="materials-filters-item cards-box">
-                    <MiniCard class="type-card"
-                              :icon="mdiImageOutline"
-                              :title="t('materials.controls.images')"
-                              sub="123 files"
-                              color="#ffcf47"
+                <div class="material-filters-item cards-box">
+                    <f-card
+                        title="Images"
+                        sub="123 files"
+                        :icon="mdiImageOutline"
+                        color="#31A8FF"
+                        @click="handleAddFilter('Images')"
                     />
-                    <MiniCard class="type-card"
-                              :icon="mdiVideoOutline"
-                              :title="t('materials.controls.videos')"
-                              sub="123 files"
-                              color="#edaaca"
+                    <f-card
+                        title="Videos"
+                        sub="123 files"
+                        :icon="mdiVideoOutline"
+                        color="#f5c518"
+                        @click="handleAddFilter('Videos')"
                     />
-                    <MiniCard class="type-card"
-                              :icon="mdiFileDocumentOutline"
-                              :title="t('materials.controls.documents')"
-                              sub="123 files"
-                              color="#7dae78"
+                    <f-card
+                        title="Documents"
+                        sub="123 files"
+                        :icon="mdiFileDocumentOutline"
+                        color="#2b579a"
+                        @click="handleAddFilter('Documents')"
                     />
-                    <MiniCard class="type-card"
-                              :icon="mdiFileOutline"
-                              :title="t('materials.controls.others')"
-                              sub="123 files"
-                              color="#b0ceea"
+                    <f-card
+                        title="Others"
+                        sub="123 files"
+                        :icon="mdiFileOutline"
+                        color="#999999"
+                        @click="handleAddFilter('Others')"
                     />
                 </div>
             </div>
 
             <h4>{{ t("materials.all") }}</h4>
 
-            <MaterialsTable :files="mediaFiles"/>
+            <materials-table :files="mediaFiles"/>
         </main>
     </div>
 
-    <div class="forms-container" v-if="isOpenForms">
-        <UploadFileForm v-if="isOpenUploadFileForm" @close-form="closeUploadFileForm"/>
-    </div>
+    <upload-file-form v-if="isOpenUploadFileForm" @close-form="handleShowUploadFileForm"/>
 </template>
 
 <style scoped>
@@ -121,54 +138,32 @@ onMounted(() => {
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-}
-
-.materials-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.header-subtitle {
-    color: var(--text-color-secondary);
+    gap: var(--spacing-lg);
 }
 
 .materials-main {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: var(--spacing-lg);
 }
 
-.materials-filters {
+.material-filters {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--spacing-lg);
 }
 
-.materials-filters-item {
+.material-filters-item {
     display: flex;
+    gap: var(--spacing-md);
 }
 
-.materials-filters-item.cards-box {
+.material-filters-item.cards-box {
     gap: 1rem;
 }
 
 .type-card {
     width: 100%;
     height: 100%;
-}
-
-.forms-container{
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--background-opacity);
 }
 </style>

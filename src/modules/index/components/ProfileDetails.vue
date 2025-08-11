@@ -41,7 +41,7 @@ onUnmounted(() => {
 <template>
     <div class="profile-details">
         <div class="profile-details-btn" ref="profileBtnRef" @click="displayDrop">
-            <ProfileImage/>
+            <profile-image :alt="username[0]"/>
         </div>
         <div class="profile-details-drop" ref="containerRef" :class="{'active': isDisplayDrop}">
             <div class="username">
