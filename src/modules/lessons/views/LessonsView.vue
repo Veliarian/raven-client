@@ -2,19 +2,18 @@
 
 import {useI18n} from "vue-i18n";
 import Icon from "@/shared/components/Icon.vue";
-import {mdiPlus} from "@mdi/js";
+import {mdiClock, mdiEarth, mdiPen, mdiPlus, mdiPublish, mdiShare, mdiTextBoxMultiple} from "@mdi/js";
 import SearchInput from "@/shared/components/SearchInput.vue";
 import MultiButton from "@/shared/components/MultiButton.vue";
 import {computed, onMounted, ref} from "vue";
 import {useLessonsStore} from "@/modules/lessons/store/lessonsStore.js";
 import CreateLessonForm from "@/modules/lessons/components/CreateLessonForm.vue";
+import {FButton, FHorizontalSelect, FSearchInput, FTitle} from "@uikit";
 
 const {t} = useI18n();
 const lessonsStore = useLessonsStore();
 
 const lessons = computed(() => lessonsStore.lessons);
-
-console.log(lessons[0]);
 
 const lessonsType = ref("all");
 const editingLessonId = ref(null);
@@ -43,30 +42,23 @@ onMounted(() => {
 
 <template>
     <div class="lessons-view">
-        <header class="lessons-header">
-            <h1>{{ t("lessons.header") }}</h1>
-            <button>
-                <Icon :icon="mdiPlus"/>
-                {{ t("lessons.createLessonBtn") }}
-            </button>
-        </header>
+        <f-title :title="t('lessons.header')">
+            <f-button :icon="mdiPlus">{{ t("lessons.createLessonBtn") }}</f-button>
+        </f-title>
         <main class="lessons-main">
             <div class="lessons-filters">
                 <div class="lessons-filters-item">
-                    <SearchInput :placeholder="t('lessons.search')"/>
+                    <f-search-input :placeholder="t('lessons.search')"/>
                 </div>
                 <div class="lessons-filters-item">
-                    <multi-button>
-                        <button :class="{'active': lessonsType === 'all'}" @click="selectLessonsType('all')">
-                            {{ t('lessons.filters.all') }}
-                        </button>
-                        <button :class="{'active': lessonsType === 'pub'}" @click="selectLessonsType('pub')">
-                            {{ t('lessons.filters.publish') }}
-                        </button>
-                        <button :class="{'active': lessonsType === 'dr'}" @click="selectLessonsType('dr')">
-                            {{ t('lessons.filters.draft') }}
-                        </button>
-                    </multi-button>
+                    <f-horizontal-select
+                        v-model="lessonsType"
+                        :options="[
+                          { id: 'all', icon: mdiTextBoxMultiple, label: 'All'},
+                          { id: 'pub', icon: mdiEarth, label: 'Published' },
+                          { id: 'draft', icon: mdiPen, label: 'Drafts'}
+                        ]"
+                    />
                 </div>
             </div>
             <div class="lessons-list">
@@ -75,7 +67,7 @@ onMounted(() => {
         </main>
     </div>
 
-    <create-lesson-form/>
+<!--    <create-lesson-form/>-->
 </template>
 
 <style scoped>

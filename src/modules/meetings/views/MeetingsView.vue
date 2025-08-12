@@ -3,7 +3,7 @@ import {computed, onMounted, ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {useRoomsStore} from "@/modules/meetings/store/roomsStore.js";
 import {useUsersStore} from "@/modules/users/store/usersStore.js";
-import {mdiVideoOutline} from "@mdi/js";
+import {mdiVideoOutline, mdiVideoCheckOutline, mdiCalendarMonthOutline} from "@mdi/js";
 import {FButton, FHorizontalSelect, FTitle} from "@uikit";
 import RoomsList from "@/modules/meetings/components/RoomsList.vue";
 import RoomCard from "@/modules/meetings/components/RoomCard.vue";

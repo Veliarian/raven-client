@@ -27,7 +27,7 @@ const createRoom = () => {
             <form class="form">
                 <header class="form-header">
                     <h3>Create new room</h3>
-                    <f-button :icon="mdiClose" type="transparent" @click.prevent="$emit('close')"/>
+                    <f-button :icon="mdiClose" type="close" @click.prevent="$emit('close')"/>
                 </header>
                 <main class="form-main">
                     <div class="form-field">

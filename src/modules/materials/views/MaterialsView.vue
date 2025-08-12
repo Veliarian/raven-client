@@ -1,35 +1,16 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useI18n} from "vue-i18n";
-import {
-    mdiClock,
-    mdiFileDocumentOutline,
-    mdiFileMultiple,
-    mdiFileOutline,
-    mdiFilter,
-    mdiImageOutline,
-    mdiShare,
-    mdiTrayArrowUp,
-    mdiVideoOutline
-} from "@mdi/js";
+import {mdiClock, mdiFileDocumentOutline, mdiFileOutline, mdiFilter, mdiImageOutline, mdiShare, mdiTrayArrowUp, mdiVideoOutline, mdiFileMultiple} from "@mdi/js";
 import {useMediaFilesStore} from "@/modules/materials/store/mediaFilesStore.js";
 import UploadFileForm from "@/modules/materials/components/UploadFileForm.vue";
-import {FButton, FCard, FFilterParamsContainer, FHorizontalSelect, FSearchInput, FTable, FTitle} from "@uikit";
-import FSwitch from "../../../uikit/components/FSwitch.vue";
-import FileIcon from "@/shared/components/icons/FileIcon.vue";
+import {FButton, FCard, FFilterParamsContainer, FHorizontalSelect, FSearchInput, FTitle} from "@uikit";
 import MaterialsTable from "@/modules/materials/components/MaterialsTable.vue";
 
 const {t} = useI18n();
 
 const mediaFilesStore = useMediaFilesStore();
 const mediaFiles = computed(() => mediaFilesStore.mediaFiles);
-
-const formatFileSize = (bytes) => {
-    const sizes = ['B', 'KB', 'MB', 'GB']
-    if (bytes === 0) return '0 B'
-    const i = Math.floor(Math.log(bytes) / Math.log(1024))
-    return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i]
-}
 
 const fileFilters = ref({
     name: "",
@@ -48,6 +29,53 @@ const handleDeleteFilterType = (filter) => {
     fileFilters.value.type = fileFilters.value.type.filter(f => f !== filter);
 }
 
+const fileTypes = ref([]); // [{type: "Document", count: 7}]
+const typeMap = {
+    IMAGE: "Images",
+    VIDEO: "Videos",
+    AUDIO: "Others",
+    WORD: "Documents",
+    EXCEL: "Documents",
+    POWERPOINT: "Documents",
+    PDF: "Documents",
+    DOCUMENT: "Documents",
+    RECORDING: "Others",
+    AVATAR: "Others",
+    OTHER: "Others"
+};
+
+const updateFileTypes = () => {
+    const counts = {};
+
+    for (const file of mediaFiles.value) {
+        const category = typeMap[file.mediaType] || "Others";
+        counts[category] = (counts[category] || 0) + 1;
+    }
+
+    fileTypes.value = Object.entries(counts).map(([type, count]) => ({
+        type,
+        count
+    }));
+}
+
+watch(mediaFiles, updateFileTypes, { deep: true });
+
+const filteredFiles = computed(() => {
+    return mediaFiles.value.filter(file => {
+        // Фільтр по назві
+        const matchName = fileFilters.value.name
+            ? file.originalName.toLowerCase().includes(fileFilters.value.name.toLowerCase())
+            : true;
+
+        // Фільтр по типу
+        const matchType = fileFilters.value.type.length
+            ? fileFilters.value.type.includes(typeMap[file.mediaType] || "Others")
+            : true;
+
+        return matchName && matchType;
+    });
+});
+
 const isOpenUploadFileForm = ref(false);
 
 const handleShowUploadFileForm = () => {
@@ -60,7 +88,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="materials-view">
+    <div class="full-view">
         <f-title :title="t('materials.title')" :subtitle="t('materials.subtitle')">
             <f-button :icon="mdiTrayArrowUp" @click="handleShowUploadFileForm">
                 {{ t("materials.controls.upload") }}
@@ -94,28 +122,28 @@ onMounted(() => {
                 <div class="material-filters-item cards-box">
                     <f-card
                         title="Images"
-                        sub="123 files"
+                        :sub="`${fileTypes.find(t => t.type === 'Images')?.count || 0} files`"
                         :icon="mdiImageOutline"
                         color="#31A8FF"
                         @click="handleAddFilter('Images')"
                     />
                     <f-card
                         title="Videos"
-                        sub="123 files"
+                        :sub="`${fileTypes.find(t => t.type === 'Videos')?.count || 0} files`"
                         :icon="mdiVideoOutline"
                         color="#f5c518"
                         @click="handleAddFilter('Videos')"
                     />
                     <f-card
                         title="Documents"
-                        sub="123 files"
+                        :sub="`${fileTypes.find(t => t.type === 'Documents')?.count || 0} files`"
                         :icon="mdiFileDocumentOutline"
                         color="#2b579a"
                         @click="handleAddFilter('Documents')"
                     />
                     <f-card
                         title="Others"
-                        sub="123 files"
+                        :sub="`${fileTypes.find(t => t.type === 'Others')?.count || 0} files`"
                         :icon="mdiFileOutline"
                         color="#999999"
                         @click="handleAddFilter('Others')"
@@ -125,7 +153,7 @@ onMounted(() => {
 
             <h4>{{ t("materials.all") }}</h4>
 
-            <materials-table :files="mediaFiles"/>
+            <materials-table :files="filteredFiles"/>
         </main>
     </div>
 
@@ -133,14 +161,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.materials-view {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-}
-
 .materials-main {
     display: flex;
     flex-direction: column;
@@ -150,7 +170,7 @@ onMounted(() => {
 .material-filters {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
 }
 
 .material-filters-item {

@@ -9,7 +9,7 @@ defineProps({
     type: {
         type: String,
         default: "default",
-        validator: (value) => ["default", "light", "danger", "cancel", "disabled", "transparent"].includes(value),
+        validator: (value) => ["default", "light", "danger", "close", "cancel", "disabled", "option"].includes(value),
     },
     size: {
         type: String,
@@ -30,7 +30,7 @@ defineProps({
 
 <template>
     <button class="f-button" :class="[type, size, form]">
-        <FIcon v-if="icon" :icon="icon" :size="size === 'sm' ? 16 : (size === 'md' ? 20 : 24)"/>
+        <f-icon v-if="icon" :icon="icon" :size="size === 'sm' ? 16 : (size === 'md' ? 20 : 24)"/>
         <span><slot/></span>
     </button>
 </template>
@@ -106,7 +106,18 @@ defineProps({
     cursor: not-allowed;
 }
 
-.f-button.transparent {
+.f-button:disabled {
+    background-color: var(--bg-color-disabled);
+    color: var(--text-color-desabled);
+}
+
+.f-button:disabled:hover {
+    background-color: var(--bg-color-disabled);
+    color: var(--text-color-desabled);
+    cursor: not-allowed;
+}
+
+.f-button.close {
     background-color: transparent;
     border: none;
     padding: 0 !important;
@@ -114,9 +125,21 @@ defineProps({
     gap: 0;
 }
 
-.f-button.transparent:hover {
+.f-button.close:hover {
     cursor: pointer;
     color: var(--color-danger);
+}
+
+.f-button.option {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--text-color-secondary);
+    justify-content: flex-start;
+}
+
+.f-button.option:hover {
+    cursor: pointer;
+    background-color: var(--bg-color-hover);
 }
 
 /* SIZES */

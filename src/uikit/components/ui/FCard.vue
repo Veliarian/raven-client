@@ -28,7 +28,7 @@ defineProps({
     display: flex;
     flex-direction: column;
     gap: var(--spacing-s-m);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     transition: all var(--transition-fast);

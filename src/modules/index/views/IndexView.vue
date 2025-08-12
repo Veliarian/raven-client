@@ -22,6 +22,7 @@ import TopBar from "../components/TopBar.vue";
         width: 100%;
         height: 100%;
         display: flex;
+        overflow: hidden;
     }
 
     .content-box{
@@ -36,5 +37,6 @@ import TopBar from "../components/TopBar.vue";
         padding: 2rem;
         margin-left: auto;
         margin-right: auto;
+        overflow-x: auto;
     }
 </style>

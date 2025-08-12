@@ -15,7 +15,7 @@ defineEmits(["delete"]);
     <div class="f-filter-params-item">
         <div class="filter-name">{{ filter }}</div>
         <f-button
-            type="transparent"
+            type="close"
             :icon="mdiClose"
             size="sm"
             @click="$emit('delete')"

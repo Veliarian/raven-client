@@ -1,10 +1,11 @@
 <script setup>
 import {mdiCheck, mdiClose, mdiFileDocumentOutline} from "@mdi/js";
 import {FButton, FIcon} from "@uikit";
+import {ref, watch} from "vue";
 
 const emit = defineEmits(["deleteFile"]);
 
-defineProps({
+const props = defineProps({
     fileName: String,
     size: Number,
     progress: {
@@ -12,10 +13,6 @@ defineProps({
         default: 0
     }
 });
-
-const deleteFile = (fileName) => {
-    emit("deleteFile", fileName)
-}
 
 const formatFileSize = (bytes) => {
     if (bytes < 1024) {
@@ -26,27 +23,54 @@ const formatFileSize = (bytes) => {
         return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
     }
 }
+
+const deleteFile = (fileName) => {
+    emit("deleteFile", fileName)
+}
+
+const isVisible = ref(true);
+
+watch(
+    () => props.progress,
+    (newVal) => {
+        if (newVal === 100) {
+            setTimeout(() => {
+                isVisible.value = false;
+                setTimeout(() => {
+                    deleteFile(props.fileName);
+                }, 300);
+            }, 500);
+        }
+    }
+);
 </script>
 
 <template>
-    <div class="upload-file-item">
-        <div class="file-info">
-            <f-icon :icon="mdiFileDocumentOutline" :size="20" color="#7dae78"/>
-            <p class="subtitle">{{ fileName }}</p>
-            <p class="subtitle">{{ `(${formatFileSize(size)})` }}</p>
-        </div>
-        <f-button v-if="progress === 0" type="transparent" form="circle" size="sm" @click.stop="deleteFile(fileName)"
-                  :icon="mdiClose"/>
-
-        <div class="progress-bar" :style="{width: progress + '%'}">
+    <transition name="fade-slide">
+        <div v-if="isVisible" class="upload-file-item">
             <div class="file-info">
-                <f-icon :icon="mdiFileDocumentOutline" :size="16" color="#ffffff"/>
+                <f-icon :icon="mdiFileDocumentOutline" :size="20" color="#7dae78"/>
                 <p class="subtitle">{{ fileName }}</p>
                 <p class="subtitle">{{ `(${formatFileSize(size)})` }}</p>
             </div>
-            <f-icon class="progress-icon" :icon="mdiCheck" v-if="progress === 100"/>
+            <f-button
+                v-if="progress === 0"
+                type="close"
+                form="circle"
+                size="sm"
+                @click.stop="deleteFile(fileName)"
+                :icon="mdiClose"
+            />
+            <div class="progress-bar" :style="{width: progress + '%'}">
+                <div class="file-info">
+                    <f-icon :icon="mdiFileDocumentOutline" :size="16" color="#ffffff"/>
+                    <p class="subtitle">{{ fileName }}</p>
+                    <p class="subtitle">{{ `(${formatFileSize(size)})` }}</p>
+                </div>
+                <f-icon class="progress-icon" :icon="mdiCheck" v-if="progress === 100"/>
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <style scoped>
@@ -76,10 +100,6 @@ const formatFileSize = (bytes) => {
     text-overflow: ellipsis;
 }
 
-.delete {
-    position: relative;
-}
-
 .progress-bar {
     position: absolute;
     top: 0;
@@ -92,7 +112,7 @@ const formatFileSize = (bytes) => {
     align-items: center;
     justify-content: space-between;
     pointer-events: none;
-    transition: width 0.3s ease;
+    transition: width var(--transition-fast);
 }
 
 .progress-bar .file-info {
@@ -111,5 +131,15 @@ const formatFileSize = (bytes) => {
     overflow: hidden;
     text-overflow: ellipsis;
     color: white;
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
 }
 </style>

@@ -89,7 +89,7 @@ const showPassword = () => {
     border-radius: var(--radius-lg);
     color: var(--text-color-secondary);
     background-color: var(--surface);
-    transition: border-color 0.2s var(--transition-base);
+    transition: border-color var(--transition-fast);
 }
 
 .f-input.icon {

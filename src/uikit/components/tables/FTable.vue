@@ -1,5 +1,6 @@
 <script setup>
-import {ref, computed, toRaw} from 'vue'
+import {computed, ref, toRaw} from 'vue'
+import {FButton} from "@uikit";
 
 /**
  * columns: [
@@ -164,7 +165,7 @@ function goToPage(n) {
 
             <tbody>
             <tr v-for="(row, idx) in paginatedRows" :key="row.id ?? idx">
-                <td v-for="col in columns" :key="col.key" :class="col.class">
+                <td v-for="col in columns" :key="col.key" :style="{width: col.width}">
                     <!-- specific cell slot: cell-{key} -->
                     <slot :name="'cell-' + col.key" :row="row" :col="col">
                         <!-- fallback universal cell slot -->
@@ -185,102 +186,36 @@ function goToPage(n) {
 
         <!-- pagination -->
         <div v-if="pageSize && pageSize > 0" class="pagination">
-            <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Prev</button>
+            <f-button size="sm" @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Prev</f-button>
             <span>Page {{ currentPage }} / {{ totalPages }}</span>
-            <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next</button>
+            <f-button size="sm" @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next</f-button>
         </div>
     </div>
 </template>
 
 <style scoped>
-.materials-table {
-    max-height: 24rem;
-    border: 2px solid var(--border-color);
-    border-radius: .75rem;
-    overflow: hidden;
-}
-
-.scroll-box {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-}
-
-.files-table {
-    width: 100%;
-    text-indent: 0;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-thead {
-    position: sticky;
-    top: 0;
-    background-color: var(--background);
-    z-index: 1;
-}
-
-th {
-    font-weight: 500;
-    text-align: start;
-    padding: .75rem 1rem;
-}
-
-tr {
-    border-bottom: 1px solid var(--border-color);
-}
-
-td {
-    padding: .75rem 1rem;
-}
-
-tbody tr:last-child td {
-    border-bottom: none;
-}
-
-td.name {
-    max-width: 20rem;
-}
-
-.file-info {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-}
-
-.file-name {
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .f-table {
-    max-height: 24rem;
-    border: 2px solid var(--border-color);
-    border-radius: .75rem;
-    overflow: hidden;
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
 }
 
 table {
     width: 100%;
-    text-indent: 0;
     border-collapse: collapse;
-    border-spacing: 0;
 }
 
 th, td {
     padding: 0.6rem 0.75rem;
-    border-bottom: var(--border-color);
+    border-bottom: 1px solid var(--border-color);
     text-align: left;
     vertical-align: middle;
     font-size: 0.95rem;
 }
 
 th {
-    background: var(--surface, #fff);
-    font-weight: 600;
+    font-weight: var(--font-weight-medium);
     cursor: default;
     user-select: none;
 }
@@ -310,20 +245,15 @@ tbody tr:hover {
 
 .empty {
     text-align: center;
-    color: var(--text-color-secondary, #6b7280);
+    color: var(--text-color-secondary);
     padding: 1.2rem;
 }
 
 .pagination {
-    margin-top: 0.5rem;
+    padding: var(--spacing-s-m);
     display: flex;
     gap: 0.5rem;
     align-items: center;
     justify-content: flex-end;
-}
-
-button[disabled] {
-    opacity: 0.5;
-    cursor: not-allowed;
 }
 </style>

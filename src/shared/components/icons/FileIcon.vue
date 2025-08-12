@@ -1,12 +1,15 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {
-    mdiFileExcelOutline, mdiFileOutline,
+    mdiFileExcelOutline,
+    mdiFileOutline,
     mdiFilePdfBox,
-    mdiFilePowerpointOutline, mdiFileVideoOutline,
-    mdiFileWordOutline, mdiImage, mdiMusicBox
+    mdiFilePowerpointOutline,
+    mdiFileVideoOutline,
+    mdiFileWordOutline,
+    mdiImage,
+    mdiMusicBox
 } from "@mdi/js";
-import Icon from "@/shared/components/icons/Icon.vue";
 import {FIcon} from "@uikit";
 
 const props = defineProps({
@@ -57,10 +60,10 @@ onMounted(() => {
 
 <template>
     <f-icon :icon="iconStyle.icon"
-          :color="iconStyle.color"
-          :enable-background="true"
-          :size="30"
-          :padding="4"
+            :color="iconStyle.color"
+            :enable-background="true"
+            :size="30"
+            :padding="4"
     />
 </template>
 

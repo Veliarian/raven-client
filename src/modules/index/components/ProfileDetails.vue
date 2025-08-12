@@ -9,16 +9,17 @@ import {FIcon} from "@uikit";
 const {t} = useI18n();
 
 const usersStore = useUsersStore();
-
 const username = computed(() => usersStore.currentUser?.username || "Username");
 
+
 const isDisplayDrop = ref(false);
-const containerRef = ref(null);
-const profileBtnRef = ref(null);
 
 const displayDrop = () => {
     isDisplayDrop.value = !isDisplayDrop.value;
 }
+
+const containerRef = ref(null);
+const profileBtnRef = ref(null);
 
 const handleClickOutside = (event) => {
     const clickedInsideContainer = containerRef.value?.contains(event.target);
@@ -99,6 +100,7 @@ onUnmounted(() => {
     background-color: var(--surface);
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-primary);
+    z-index: 1;
 }
 
 .profile-details-drop.active {

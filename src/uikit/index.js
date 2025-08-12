@@ -3,6 +3,7 @@ import "./style/index.css";
 import FButton from "./components/buttons/FButton.vue";
 import FHorizontalSelect from "./components/buttons/FHorizontalSelect.vue";
 import FSwitch from "./components/FSwitch.vue";
+import FActionsButton from "./components/buttons/FActionsButton.vue";
 
 import FIcon from "./components/FIcon.vue";
 import FSeparator from "./components/ui/FSeparator.vue";
@@ -24,6 +25,7 @@ export const UiKit = {
         app.component("FButton", FButton);
         app.component("FHorizontalSelect", FHorizontalSelect);
         app.component("FSwitch", FSwitch);
+        app.component("FActionsButton", FActionsButton);
 
         app.component("FIcon", FIcon);
         app.component("FSeparator", FSeparator);
@@ -56,5 +58,6 @@ export {
     FCard,
     FFilterParamsContainer,
     FFilterParamsItem,
-    FTable
+    FTable,
+    FActionsButton
 };
