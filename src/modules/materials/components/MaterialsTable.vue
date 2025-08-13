@@ -1,10 +1,12 @@
 <script setup>
 import FSwitch from "@uikit/components/FSwitch.vue";
 import FileIcon from "@/shared/components/icons/FileIcon.vue";
-import {FButton, FTable} from "@uikit";
+import {FButton, FConfirmDialog, FTable} from "@uikit";
 import FActionsButton from "@uikit/components/buttons/FActionsButton.vue";
-import {mdiPencil, mdiShare, mdiTrashCan} from "@mdi/js";
+import {mdiLink, mdiPencil, mdiShare, mdiTrashCan} from "@mdi/js";
 import {capitalize} from "@/shared/utils/string.js";
+import {useMediaFilesStore} from "@/modules/materials/store/mediaFilesStore.js";
+import {ref} from "vue";
 
 const props = defineProps({
     files: {
@@ -29,7 +31,7 @@ const formatFileSize = (bytes) => {
     return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i]
 }
 
-function formatDate(date) {
+const formatDate = (date) => {
     const d = new Date(date);
 
     const day = String(d.getDate()).padStart(2, '0');
@@ -41,6 +43,22 @@ function formatDate(date) {
 
     return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
+
+const mediaFilesStore = useMediaFilesStore();
+const confirmDialog = ref(null);
+
+const handleMoveToTrash = async (id, inTrash) => {
+    const message = inTrash
+        ? "Remove from basket permanently?"
+        : "Move file to trash?";
+
+    if (await confirmDialog.value.show(message)) {
+        return inTrash
+            ? mediaFilesStore.deleteFile(id)
+            : mediaFilesStore.moveToTrash(id);
+    }
+};
+
 </script>
 
 <template>
@@ -66,11 +84,14 @@ function formatDate(date) {
         <template #cell-actions="{ row }">
             <f-actions-button>
                 <f-button size="sm" type="option" :icon="mdiPencil">Edit</f-button>
+                <f-button size="sm" type="option" :icon="mdiLink">Attach</f-button>
                 <f-button size="sm" type="option" :icon="mdiShare">Share</f-button>
-                <f-button size="sm" type="option" :icon="mdiTrashCan">Delete</f-button>
+                <f-button size="sm" type="option" :icon="mdiTrashCan" @click="handleMoveToTrash(row.id, row.inTrash)">Delete</f-button>
             </f-actions-button>
         </template>
     </f-table>
+
+    <f-confirm-dialog ref="confirmDialog"/>
 </template>
 
 

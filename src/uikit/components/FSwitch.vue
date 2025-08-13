@@ -38,7 +38,7 @@ defineEmits(["update:modelValue"]);
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--surface);
+    background-color: var(--bg-color-hover);
     transition: .2s;
     border-radius: 24px;
 }

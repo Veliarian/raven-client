@@ -55,8 +55,8 @@ defineProps({
 
 .f-button.default:hover {
     cursor: pointer;
-    background-color: var(--color-primary-light);
-    color: var(--control-color-dark);
+    background-color: var(--bg-color-hover);
+    color: var(--text-color-secondary);
 }
 
 .f-button.light {
@@ -98,7 +98,7 @@ defineProps({
 }
 
 .f-button.disabled {
-    background-color: var(--bg-color-disabled);
+    background-color: var(--bg-color-hover);
     color: var(--text-color-desabled);
 }
 
@@ -107,12 +107,12 @@ defineProps({
 }
 
 .f-button:disabled {
-    background-color: var(--bg-color-disabled);
+    background-color: var(--bg-color-hover);
     color: var(--text-color-desabled);
 }
 
 .f-button:disabled:hover {
-    background-color: var(--bg-color-disabled);
+    background-color: var(--bg-color-hover);
     color: var(--text-color-desabled);
     cursor: not-allowed;
 }
@@ -135,6 +135,7 @@ defineProps({
     border-color: transparent;
     color: var(--text-color-secondary);
     justify-content: flex-start;
+    text-wrap: nowrap;
 }
 
 .f-button.option:hover {

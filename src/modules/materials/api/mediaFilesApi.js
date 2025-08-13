@@ -17,23 +17,24 @@ export const mediaFilesApi = {
         }
     },
 
-    async uploadFile(file) {
-        const formData = new FormData();
-        formData.append("file", file);
+    // async uploadFile(file) {
+    //     const formData = new FormData();
+    //     formData.append("file", file);
+    //
+    //     try {
+    //         const response = await axios.post(URL, formData, {
+    //                 headers: {
+    //                     ...authHeader(),
+    //                     "Content-Type": "multipart/form-data",
+    //                 },
+    //             }
+    //         );
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error("Upload failed:", error.response?.data?.message || error.message);
+    //     }
+    // },
 
-        try {
-            const response = await axios.post(URL, formData, {
-                    headers: {
-                        ...authHeader(),
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-            return response.data;
-        } catch (error) {
-            console.error("Upload failed:", error.response?.data?.message || error.message);
-        }
-    },
     async uploadFileWithProgress(file, progress) {
         const formData = new FormData()
         formData.append('file', file)
@@ -55,21 +56,25 @@ export const mediaFilesApi = {
         } catch (error) {
             console.error("Upload failed:", error.response?.data?.message || error.message);
         }
-        // axios.post(URL, formData, {
-        //     headers: {
-        //         ...authHeader(),
-        //         'Content-Type': 'multipart/form-data'
-        //     },
-        //     onUploadProgress: (event) => {
-        //         if (event.total) {
-        //             progress.progress = Math.round((event.loaded * 100) / event.total)
-        //         }
-        //     },
-        // }).then((res) => {
-        //     progress.progress = 100;
-        //     return res.data;
-        // }).catch(() => {
-        //     progress.progress = 0;
-        // })
+    },
+
+    async moveFileToTrash(mediaFileId) {
+        try {
+            await axios.put(`${URL}/${mediaFileId}/trash`, null, {
+                headers: authHeader()
+            });
+        } catch (e) {
+            console.error('Помилка при переміщенні в корзину:', e);
+        }
+    },
+
+    async deleteFile(mediaFileId) {
+        try {
+            await axios.delete(`${URL}/${mediaFileId}`, {
+               headers: authHeader()
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
 }

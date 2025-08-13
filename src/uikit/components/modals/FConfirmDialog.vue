@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import {FButton, FFormContainer} from "@uikit";
 
 const visible = ref(false);
 const message = ref("Are you sure?");
@@ -13,12 +14,12 @@ function show(msg = "Are you sure?") {
     });
 }
 
-function confirm() {
+function handleConfirm() {
     visible.value = false;
     if (resolvePromise) resolvePromise(true);
 }
 
-function cancel() {
+function handleCancel() {
     visible.value = false;
     if (resolvePromise) resolvePromise(false);
 }
@@ -27,38 +28,30 @@ defineExpose({ show });
 </script>
 
 <template>
-    <div v-if="visible" class="f-confirm-dialog">
+    <f-form-container v-if="visible">
         <div class="confirm-content">
             <p>{{ message }}</p>
             <div class="buttons">
-                <button class="cancel" @click="cancel">Cancel</button>
-                <button class="delete" @click="confirm">Confirm</button>
+                <f-button size="sm" type="cancel" @click="handleCancel">Cancel</f-button>
+                <f-button size="sm" @click="handleConfirm">Confirm</f-button>
             </div>
         </div>
-    </div>
+    </f-form-container>
 </template>
 
 <style scoped>
-.f-confirm-dialog {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
 .confirm-content {
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    text-align: center;
+    background: var(--surface);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
 }
+
 .buttons {
     display: flex;
-    margin-top: 1rem;
-}
-.buttons button {
-    margin: 0 0.5rem;
+    gap: var(--spacing-md);
 }
 </style>

@@ -16,23 +16,35 @@ export const useMediaFilesStore = defineStore("mediaFiles", {
             this.setMediaFiles(mediaFiles);
         },
 
-        async uploadFile(file){
-            const mediaFile = await mediaFilesApi.uploadFile(file);
-            if(mediaFile !== null) {
-                this.mediaFiles = [...this.mediaFiles, mediaFile];
-            }
-        },
+        // async uploadFile(file){
+        //     const mediaFile = await mediaFilesApi.uploadFile(file);
+        //     if(mediaFile !== null) {
+        //         this.mediaFiles = [...this.mediaFiles, mediaFile];
+        //     }
+        // },
 
         async uploadFileWithProgress(file, progress) {
             const mediaFile = await mediaFilesApi.uploadFileWithProgress(file, progress);
             if(mediaFile !== null){
                 this.mediaFiles = [...this.mediaFiles, mediaFile];
             }
+        },
+
+        async moveToTrash(mediaFileId) {
+            await mediaFilesApi.moveFileToTrash(mediaFileId);
+            this.mediaFiles = this.mediaFiles.map(file =>
+                file.id === mediaFileId ? { ...file, inTrash: true } : file
+            );
+        },
+
+        async deleteFile(mediaFileId) {
+            await mediaFilesApi.deleteFile(mediaFileId);
+            this.mediaFiles = this.mediaFiles.filter(f => f.id !== mediaFileId);
         }
     },
 
     persist: {
-        enable: true,
+        enabled: true,
         strategies: [
             {
                 key: "mediaFiles",

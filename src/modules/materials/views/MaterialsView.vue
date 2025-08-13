@@ -1,13 +1,27 @@
 <script setup>
 import {computed, onMounted, ref, watch} from "vue";
 import {useI18n} from "vue-i18n";
-import {mdiClock, mdiFileDocumentOutline, mdiFileOutline, mdiFilter, mdiImageOutline, mdiShare, mdiTrayArrowUp, mdiVideoOutline, mdiFileMultiple} from "@mdi/js";
+import {
+    mdiClock,
+    mdiFileDocumentOutline,
+    mdiFileOutline,
+    mdiFilter,
+    mdiImageOutline,
+    mdiShare,
+    mdiTrayArrowUp,
+    mdiVideoOutline,
+    mdiFileMultiple, mdiTrashCan
+} from "@mdi/js";
 import {useMediaFilesStore} from "@/modules/materials/store/mediaFilesStore.js";
 import UploadFileForm from "@/modules/materials/components/UploadFileForm.vue";
 import {FButton, FCard, FFilterParamsContainer, FHorizontalSelect, FSearchInput, FTitle} from "@uikit";
 import MaterialsTable from "@/modules/materials/components/MaterialsTable.vue";
 
 const {t} = useI18n();
+
+const tableTitle = computed(() => {
+    return fileFilters.value.inTrash ? "Trash" : "Files";
+});
 
 const mediaFilesStore = useMediaFilesStore();
 const mediaFiles = computed(() => mediaFilesStore.mediaFiles);
@@ -16,20 +30,9 @@ const fileFilters = ref({
     name: "",
     type: [],
     viewType: "all",
-    storedDate: null,
+    inTrash: false,
 });
 
-const handleAddFilter = (filter) => {
-    if (!fileFilters.value.type.find(f => f === filter)) {
-        fileFilters.value.type = [...fileFilters.value.type, filter];
-    }
-}
-
-const handleDeleteFilterType = (filter) => {
-    fileFilters.value.type = fileFilters.value.type.filter(f => f !== filter);
-}
-
-const fileTypes = ref([]); // [{type: "Document", count: 7}]
 const typeMap = {
     IMAGE: "Images",
     VIDEO: "Videos",
@@ -44,40 +47,57 @@ const typeMap = {
     OTHER: "Others"
 };
 
-const updateFileTypes = () => {
+// [{type: "Document", count: 7}]
+const fileTypes = computed(() => {
     const counts = {};
-
     for (const file of mediaFiles.value) {
         const category = typeMap[file.mediaType] || "Others";
         counts[category] = (counts[category] || 0) + 1;
     }
-
-    fileTypes.value = Object.entries(counts).map(([type, count]) => ({
-        type,
-        count
-    }));
-}
-
-watch(mediaFiles, updateFileTypes, { deep: true });
-
-const filteredFiles = computed(() => {
-    return mediaFiles.value.filter(file => {
-        // Фільтр по назві
-        const matchName = fileFilters.value.name
-            ? file.originalName.toLowerCase().includes(fileFilters.value.name.toLowerCase())
-            : true;
-
-        // Фільтр по типу
-        const matchType = fileFilters.value.type.length
-            ? fileFilters.value.type.includes(typeMap[file.mediaType] || "Others")
-            : true;
-
-        return matchName && matchType;
-    });
+    return Object.entries(counts).map(([type, count]) => ({type, count}));
 });
 
-const isOpenUploadFileForm = ref(false);
+const handleAddFilter = (filter) => {
+    if (!fileFilters.value.type.find(f => f === filter)) {
+        fileFilters.value.type = [...fileFilters.value.type, filter];
+    }
+}
 
+const handleDeleteFilterType = (filter) => {
+    fileFilters.value.type = fileFilters.value.type.filter(f => f !== filter);
+}
+
+const matchesTrash = (file) =>
+    fileFilters.value.inTrash ? file.inTrash : !file.inTrash;
+
+const matchesViewType = (file) => {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 30);
+    if (fileFilters.value.viewType === 'rec') return new Date(file.uploadedAt) >= cutoff;
+    if (fileFilters.value.viewType === 'share') return !!file.isPublic;
+    return true;
+};
+
+const matchesName = (file) => {
+    const query = fileFilters.value.name.trim().toLowerCase();
+    return !query || (file.originalName || '').toLowerCase().includes(query);
+};
+
+const matchesType = (file) => {
+    return !fileFilters.value.type.length ||
+        fileFilters.value.type.includes(typeMap[file.mediaType] || 'Others');
+};
+
+const filteredFiles = computed(() =>
+    mediaFiles.value.filter(file =>
+        matchesTrash(file) &&
+        matchesViewType(file) &&
+        matchesName(file) &&
+        matchesType(file)
+    )
+);
+
+const isOpenUploadFileForm = ref(false);
 const handleShowUploadFileForm = () => {
     isOpenUploadFileForm.value = !isOpenUploadFileForm.value;
 }
@@ -151,9 +171,22 @@ onMounted(() => {
                 </div>
             </div>
 
-            <h4>{{ t("materials.all") }}</h4>
+            <h4>{{ tableTitle }}</h4>
 
             <materials-table :files="filteredFiles"/>
+
+            <div class="material-filters">
+                <div class="material-filters-item cards-box">
+                    <f-card
+                        class="f-card"
+                        title="Trash"
+                        :sub="`${mediaFiles.filter(f => f.inTrash)?.length || 0} files`"
+                        :icon="mdiTrashCan"
+                        color="#fbbf24"
+                        @click="fileFilters.inTrash = !fileFilters.inTrash"
+                    />
+                </div>
+            </div>
         </main>
     </div>
 
@@ -176,14 +209,11 @@ onMounted(() => {
 .material-filters-item {
     display: flex;
     gap: var(--spacing-md);
-}
-
-.material-filters-item.cards-box {
-    gap: 1rem;
-}
-
-.type-card {
     width: 100%;
-    height: 100%;
+}
+
+.material-filters-item .f-card {
+    flex: 1 1 0;
+    max-width: 25%;
 }
 </style>

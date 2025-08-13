@@ -19,6 +19,7 @@ import FSearchInput from "./components/form/FSearchInput.vue";
 import FTitle from "./components/ui/FTitle.vue";
 
 import FTable from "./components/tables/FTable.vue";
+import FConfirmDialog from "./components/modals/FConfirmDialog.vue";
 
 export const UiKit = {
     install(app) {
@@ -41,6 +42,8 @@ export const UiKit = {
         app.component("FTitle", FTitle);
 
         app.component("FTable", FTable);
+
+        app.component("FConfirmDialog", FConfirmDialog);
     },
 };
 
@@ -59,5 +62,6 @@ export {
     FFilterParamsContainer,
     FFilterParamsItem,
     FTable,
-    FActionsButton
+    FActionsButton,
+    FConfirmDialog,
 };
