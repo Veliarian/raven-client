@@ -62,7 +62,6 @@ onMounted(() => {
                 </div>
             </div>
             <div class="lessons-list">
-
             </div>
         </main>
     </div>

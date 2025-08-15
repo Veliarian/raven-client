@@ -137,7 +137,7 @@ onUnmounted(() => {
 }
 
 .details-item:hover {
-    background-color: var(--color-primary-light);
+    background-color: var(--bg-color-hover);
     transition: background-color .2s;
 }
 </style>

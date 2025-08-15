@@ -19,6 +19,7 @@ export const usersApi = {
 
     async updateCurrentUser(userId, newUser) {
         try {
+
             const response = await axios.put(URL + "/" + userId, newUser, {
                 headers: authHeader(),
             });

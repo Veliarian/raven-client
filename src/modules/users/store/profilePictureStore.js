@@ -16,7 +16,7 @@ export const useProfilePictureStore = defineStore("profilePicture", {
 
         async uploadProfilePicture(file) {
             const usersStore = useUsersStore();
-            const picture = await profilePictureApi.uploadPicture(usersStore.user.id, file);
+            const picture = await profilePictureApi.uploadPicture(usersStore.currentUser.id, file);
             this.setPicture(picture);
         }
     },

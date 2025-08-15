@@ -24,7 +24,7 @@ export const useUsersStore = defineStore("users", {
         },
 
         async updateCurrentUser(newUser){
-            const user = await usersApi.updateCurrentUser(this.user.id, newUser);
+            const user = await usersApi.updateCurrentUser(this.currentUser.id, newUser);
             this.setCurrentUser(user);
         },
 

@@ -9,43 +9,41 @@ export const useNotesStore = defineStore("notes", {
 
     actions: {
         setNotes(notes) {
-            this.notes = notes;
+            this.notes = notes.map(n => n instanceof Note ? n : Note.fromObject(n));
         },
 
-        async fetchNotes(){
+        async fetchNotes() {
             const notes = await notesApi.fetchNotes();
-            if(notes) {
-                notes.value = notes.map(Note.fromObject);
-            }
+            if (notes) this.setNotes(notes);
         },
 
-        async createNote(newNote){
+        async createNote(newNote) {
             const note = await notesApi.createNote(newNote);
-            if(note) {
-                this.setNotes([Note.fromObject(note), ...this.notes]);
+            if (note) {
+                this.setNotes([note, ...this.notes]);
             }
         },
 
         async updateNote(noteId, newNote) {
             const note = await notesApi.updateNote(noteId, newNote);
-            if(note) {
-                this.notes = this.notes.filter(note => note.id !== noteId);
-                this.notes = [Note.fromObject(note), ...this.notes];
+            if (note) {
+                const filtered = this.notes.filter(n => n.id !== noteId);
+                this.setNotes([note, ...filtered]);
             }
         },
 
         async updateReminderTime(noteId, reminderTime) {
             const note = await notesApi.updateReminderTime(noteId, reminderTime);
-            if(note) {
-                this.notes = this.notes.filter(note => note.id !== noteId);
-                this.notes = [Note.fromObject(note), ...this.notes];
+            if (note) {
+                const filtered = this.notes.filter(n => n.id !== noteId);
+                this.setNotes([note, ...filtered]);
             }
         },
 
         async deleteNote(noteId) {
             const deleted = await notesApi.deleteNote(noteId);
             if (deleted) {
-                this.notes = this.notes.filter(note => note.id !== noteId);
+                this.notes = this.notes.filter(n => n.id !== noteId);
             }
         }
     },
@@ -56,6 +54,9 @@ export const useNotesStore = defineStore("notes", {
             {
                 key: "notes",
                 storage: localStorage,
+                afterRestore: (ctx) => {
+                    ctx.store.setNotes(ctx.store.notes);
+                }
             },
         ],
     },

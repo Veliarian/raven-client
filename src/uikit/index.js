@@ -20,6 +20,7 @@ import FTitle from "./components/ui/FTitle.vue";
 
 import FTable from "./components/tables/FTable.vue";
 import FConfirmDialog from "./components/modals/FConfirmDialog.vue";
+import FTextArea from "@uikit/components/form/FTextArea.vue";
 
 export const UiKit = {
     install(app) {
@@ -38,6 +39,7 @@ export const UiKit = {
         app.component("FFormContainer", FFormContainer);
         app.component("FInput", FInput);
         app.component("FSearchInput", FSearchInput);
+        app.component("FTextArea", FTextArea);
 
         app.component("FTitle", FTitle);
 
@@ -64,4 +66,5 @@ export {
     FTable,
     FActionsButton,
     FConfirmDialog,
+    FTextArea
 };
