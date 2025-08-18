@@ -9,6 +9,7 @@ import {computed, onMounted, ref} from "vue";
 import {useLessonsStore} from "@/modules/lessons/store/lessonsStore.js";
 import CreateLessonForm from "@/modules/lessons/components/CreateLessonForm.vue";
 import {FButton, FHorizontalSelect, FSearchInput, FTitle} from "@uikit";
+import Notifications from "@/modules/notifications/Notifications.vue";
 
 const {t} = useI18n();
 const lessonsStore = useLessonsStore();
@@ -62,6 +63,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="lessons-list">
+                <notifications/>
             </div>
         </main>
     </div>
