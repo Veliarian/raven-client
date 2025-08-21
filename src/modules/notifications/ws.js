@@ -1,35 +1,22 @@
 import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+import { Client } from "@stomp/stompjs";
 
-let stompClient = null;
+const socket = new SockJS("http://localhost:8080/ws");
+const stompClient = new Client({
+    webSocketFactory: () => socket,
+    reconnectDelay: 5000,
+});
 
-export function connectWithJwt(jwt, onNotification, onConnected = () => {}) {
-    const socket = new SockJS("http://localhost:8080/ws");
-    stompClient = Stomp.over(socket);
+stompClient.onConnect = () => {
+    console.log("Connected!");
 
-    stompClient.connect(
-        { Authorization: `Bearer ${jwt}` },
-        () => {
-            console.log("✅ STOMP connected");
+    // підписка на повідомлення
+    stompClient.subscribe("/topic/greetings", (msg) => {
+        console.log("Отримано:", msg.body);
+    });
 
-            // персональні повідомлення
-            stompClient.subscribe("/user/queue/notifications", (msg) => {
-                onNotification(JSON.parse(msg.body));
-            });
+    // відправка повідомлення
+    stompClient.publish({ destination: "/app/hello", body: "Vue каже привіт!" });
+};
 
-            // глобальні повідомлення
-            stompClient.subscribe("/topic/notifications", (msg) => {
-                onNotification(JSON.parse(msg.body));
-            });
-
-            onConnected();
-        },
-        (err) => {
-            console.error("❌ STOMP error:", err);
-        }
-    );
-}
-
-export function disconnect() {
-    if (stompClient) stompClient.disconnect(() => console.log("🔌 Disconnected"));
-}
+stompClient.activate();
