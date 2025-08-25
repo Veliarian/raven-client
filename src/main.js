@@ -42,6 +42,7 @@ themeStore.initTheme();
 
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import {authHeader} from "@/shared/utils/authHeader.js";
 
 const socket = new SockJS("http://localhost:8080/ws");
 const stompClient = new Client({
@@ -52,13 +53,21 @@ const stompClient = new Client({
 stompClient.onConnect = () => {
     console.log("Connected!");
 
-    // підписка на повідомлення
-    stompClient.subscribe("/topic/greetings", (msg) => {
-        console.log("Отримано:", msg.body);
+    // stompClient.subscribe('/user/queue/notifications', function(message) {
+    //     console.log('Private notification:', JSON.parse(message.body));
+    // });
+
+    stompClient.subscribe("/topic/notifications", msg => {
+        console.log("Notification:", msg.body);
     });
 
+    // підписка на повідомлення
+    // stompClient.subscribe("/topic/greetings", (msg) => {
+    //     console.log("Отримано:", msg.body);
+    // });
+
     // відправка повідомлення
-    stompClient.publish({ destination: "/app/hello", body: "Vue каже привіт!" });
+    // stompClient.publish({ destination: "/app/hello", body: "Vue каже привіт!" });
 };
 
 stompClient.activate();
