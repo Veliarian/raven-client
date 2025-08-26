@@ -42,7 +42,6 @@ themeStore.initTheme();
 
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import {authHeader} from "@/shared/utils/authHeader.js";
 
 const socket = new SockJS("http://localhost:8080/ws");
 const stompClient = new Client({

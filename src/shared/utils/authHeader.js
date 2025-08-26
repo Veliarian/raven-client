@@ -1,7 +1,7 @@
-import {useAuthStore} from "@/modules/auth/store/authStore.js";
+import { useAuthStore } from "@/modules/auth/store/authStore.js";
 
 export const authHeader = () => {
-    const authStore = useAuthStore();
+    const authStore = useAuthStore(); // виклик всередині функції
     const token = authStore.token;
 
     return {
@@ -9,5 +9,6 @@ export const authHeader = () => {
         "Content-Type": "application/json",
     };
 };
+
 
 

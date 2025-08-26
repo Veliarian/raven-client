@@ -1,8 +1,14 @@
 <script setup>
-
+import {onMounted} from "vue";
 import Sidebar from "../components/Sidebar.vue";
 import TopBar from "../components/TopBar.vue";
+import {useNotificationsStore} from "@/modules/notifications/storage/notificationsStore.js";
 
+const notificationsStore = useNotificationsStore();
+
+onMounted(() => {
+    notificationsStore.fetchNotifications();
+});
 </script>
 
 <template>
