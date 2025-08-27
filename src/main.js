@@ -42,11 +42,20 @@ themeStore.initTheme();
 
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import {authHeader} from "@/shared/utils/authHeader.js";
+import {useAuthStore} from "@/modules/auth/store/authStore.js";
+
+const authStore = useAuthStore(); // виклик всередині функції
+const token = authStore.token;
 
 const socket = new SockJS("http://localhost:8080/ws");
 const stompClient = new Client({
     webSocketFactory: () => socket,
     reconnectDelay: 5000,
+    connectHeaders: {
+        Authorization: `Bearer ${token}` // тільки токен
+    },
+    debug: (str) => console.log(str)
 });
 
 stompClient.onConnect = () => {
@@ -56,7 +65,7 @@ stompClient.onConnect = () => {
     //     console.log('Private notification:', JSON.parse(message.body));
     // });
 
-    stompClient.subscribe("/topic/notifications", msg => {
+    stompClient.subscribe("/queue/notifications", msg => {
         console.log("Notification:", msg.body);
     });
 
