@@ -11,7 +11,6 @@ const {t} = useI18n();
 const usersStore = useUsersStore();
 const username = computed(() => usersStore.currentUser?.username || "Username");
 
-
 const isDisplayDrop = ref(false);
 
 const displayDrop = () => {

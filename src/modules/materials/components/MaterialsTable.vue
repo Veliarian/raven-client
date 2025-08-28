@@ -7,6 +7,7 @@ import {mdiLink, mdiPencil, mdiShare, mdiTrashCan} from "@mdi/js";
 import {capitalize} from "@/shared/utils/string.js";
 import {useMediaFilesStore} from "@/modules/materials/store/mediaFilesStore.js";
 import {ref} from "vue";
+import {formatDate} from "../../../shared/utils/dateUtils.js";
 
 const props = defineProps({
     files: {
@@ -29,19 +30,6 @@ const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 B'
     const i = Math.floor(Math.log(bytes) / Math.log(1024))
     return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i]
-}
-
-const formatDate = (date) => {
-    const d = new Date(date);
-
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0'); // Місяці від 0 до 11
-    const year = d.getFullYear();
-
-    const hours = String(d.getHours()).padStart(2, '0');
-    const minutes = String(d.getMinutes()).padStart(2, '0');
-
-    return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
 
 const mediaFilesStore = useMediaFilesStore();

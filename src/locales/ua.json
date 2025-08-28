@@ -94,5 +94,15 @@
     "delete": "Видалити",
     "upload": "Завантажити",
     "save": "Зберегти"
+  },
+  "meetings": {
+    "ui": {
+
+    },
+    "notifications": {
+      "room": {
+        "activated": "Зустріч {roomName} почалася"
+      }
+    }
   }
 }

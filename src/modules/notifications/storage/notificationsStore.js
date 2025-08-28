@@ -11,5 +11,9 @@ export const useNotificationsStore = defineStore('notifications', {
             this.notifications = await notificationsApi.fetchNotifications();
             this.unreadCount = this.notifications.length;
         },
+
+        addNotification(notification) {
+            this.unreadCount = this.notifications.unshift(notification);
+        }
     }
 });

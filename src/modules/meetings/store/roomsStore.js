@@ -24,6 +24,13 @@ export const useRoomsStore = defineStore("rooms", {
                 this.setRooms([...this.rooms, room]);
             }
         },
+
+        setRoomStatus(roomId, status){
+            const index = this.rooms.findIndex(r => r.id === roomId);
+            if (index !== -1) {
+                this.rooms[index] = { ...this.rooms[index], status };
+            }
+        }
     },
 
     persist: {

@@ -9,6 +9,7 @@ import RoomsList from "@/modules/meetings/components/RoomsList.vue";
 import RoomCard from "@/modules/meetings/components/RoomCard.vue";
 import CreateRoomForm from "@/modules/meetings/components/CreateRoomForm.vue";
 import RoomView from "@/modules/meetings/views/RoomView.vue";
+import {subscribeWebsocket} from "@/modules/notifications/services/websocketService.js";
 
 const i18n = useI18n();
 const {t} = i18n;
@@ -52,8 +53,18 @@ const leaveRoom = () => {
     activeRoom.value = null;
 }
 
+const initMeetingsNotifications = () => {
+    subscribeWebsocket("/user/queue/meetings", (msg) => {
+        console.log(msg);
+        if (msg.status === "ACTIVE") {
+            roomsStore.setRoomStatus(msg.roomId, msg.status);
+        }
+    })
+}
+
 onMounted(() => {
     roomsStore.fetchRooms();
+    initMeetingsNotifications();
 })
 </script>
 

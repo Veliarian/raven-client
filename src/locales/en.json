@@ -94,5 +94,15 @@
     "delete": "Delete",
     "upload": "Upload",
     "save": "Save"
+  },
+  "meeting": {
+    "ui": {
+
+    },
+    "notification": {
+      "room": {
+        "activated": "Meeting {roomName} started"
+      }
+    }
   }
 }
