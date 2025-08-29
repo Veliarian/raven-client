@@ -1,13 +1,10 @@
 <script setup>
-import {mdiBellOutline, mdiCamera, mdiVideo, mdiVideoOutline} from "@mdi/js";
-import {FActionsButton, FButton, FIcon} from "@uikit";
+import {mdiBellOutline} from "@mdi/js";
+import {FIcon} from "@uikit";
 import {useNotificationsStore} from "@/modules/notifications/storage/notificationsStore.js";
 import {computed, onMounted, onUnmounted, ref} from "vue";
-import {useI18n} from "vue-i18n";
-import {formatDate} from "../utils/dateUtils.js";
 import {subscribeWebsocket} from "@/modules/notifications/services/websocketService.js";
-
-const {t} = useI18n();
+import NotificationsDrop from "@/modules/notifications/components/NotificationsDrop.vue";
 
 const isDisplayDrop = ref(false);
 
@@ -21,18 +18,12 @@ const notificationsBtnRef = ref(null);
 const handleClickOutside = (event) => {
     const clickedInsideContainer = containerRef.value?.contains(event.target);
     const clickedOnButton = notificationsBtnRef.value?.contains(event.target);
+    const clickedOnActionButton = event.target.closest('.action-button');
 
-    if (!clickedInsideContainer && !clickedOnButton) {
+    if (!clickedInsideContainer && !clickedOnButton && !clickedOnActionButton) {
         isDisplayDrop.value = false;
     }
 };
-
-const iconFromType = (type) => {
-    switch (type) {
-        case "MEETING":
-            return mdiVideoOutline;
-    }
-}
 
 const notificationsStore = useNotificationsStore();
 const notifications = computed(() => notificationsStore.getLastNotifications);
@@ -52,11 +43,12 @@ const initNotifications = () => {
 }
 
 const isBellAnimating = ref(false);
+
 const triggerBellAnimation = () => {
     isBellAnimating.value = true;
     setTimeout(() => {
         isBellAnimating.value = false;
-    }, 3000); // тривалість анімації
+    }, 3000);
 }
 
 onMounted(() => {
@@ -76,23 +68,8 @@ onUnmounted(() => {
             <f-icon :icon="mdiBellOutline" size="26"/>
             <span v-if="unreadCount > 0" class="notice-mark"></span>
         </div>
-        <div class="notifications-drop" ref="containerRef" v-if="isDisplayDrop">
-            <div v-if="unreadCount === 0" class="empty-notifications">No notifications</div>
-            <div v-else class="notifications">
-                <div class="notifications-list">
-                    <div class="notification-item" v-for="notification in notifications" :key="notification.id">
-                        <f-icon :icon="iconFromType(notification.type)" color="#31A8FF" size="30" padding="4"
-                                enable-background/>
-                        <div class="notification-content">
-                            <p>{{ t(notification.code, notification.params) }}</p>
-                            <p class="subtitle">{{ formatDate(notification.createdAt) }}</p>
-                        </div>
-                        <f-actions-button class="action-button"/>
-                    </div>
-                </div>
-                <f-button class="full-w" size="sm" type="light">View all</f-button>
-            </div>
-        </div>
+        <notifications-drop v-show="isDisplayDrop" :container-ref="containerRef" :notifications="notifications"
+                            :unread-count="unreadCount"/>
     </div>
 </template>
 
@@ -155,62 +132,5 @@ onUnmounted(() => {
     padding: 4px;
     background-color: var(--color-danger);
     border-radius: 9999px;
-}
-
-.notifications-drop {
-    position: absolute;
-    top: 44px;
-    right: 0;
-    background-color: var(--surface);
-    padding: var(--spacing-xs);
-    border: 1px solid var(--color-primary);
-    border-radius: var(--radius-lg);
-    z-index: 1;
-}
-
-.notifications {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
-.notifications-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-.notification-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-xs);
-    border-radius: var(--radius-md);
-    transition: background-color var(--transition-base);
-}
-
-.notification-item:hover {
-    background-color: var(--bg-color-hover);
-    cursor: default;
-}
-
-.notification-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    text-wrap: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 200px;
-}
-
-.empty-notifications {
-    padding: var(--spacing-sm);
-    text-wrap: nowrap;
-    font-size: .875rem;
-    color: var(--text-color-secondary);
 }
 </style>

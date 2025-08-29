@@ -1,7 +1,7 @@
 <script setup>
 import {FSearchInput} from "@uikit";
 import ThemeSwitch from "@/shared/components/ThemeSwitch.vue";
-import NoticeButton from "@/shared/components/NoticeButton.vue";
+import NoticeButton from "@/modules/notifications/components/NoticeButton.vue";
 import ProfileDetails from "@/modules/index/components/ProfileDetails.vue";
 </script>
 
