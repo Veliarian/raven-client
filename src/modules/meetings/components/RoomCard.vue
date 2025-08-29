@@ -51,7 +51,7 @@ const usersStore = useUsersStore();
 
 <style scoped>
 .room-card {
-    flex: 1 1 calc(33.333% - 1rem);
+    flex: 1 1 calc(25% - 1rem);
     min-width: 16rem;
     max-width: calc(33.333% - 1rem);
     padding: var(--spacing-s-m);

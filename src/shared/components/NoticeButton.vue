@@ -35,7 +35,7 @@ const iconFromType = (type) => {
 }
 
 const notificationsStore = useNotificationsStore();
-const notifications = computed(() => notificationsStore.notifications);
+const notifications = computed(() => notificationsStore.getLastNotifications);
 const unreadCount = computed(() => notificationsStore.unreadCount);
 
 const initNotifications = () => {
@@ -44,10 +44,19 @@ const initNotifications = () => {
     ];
 
     channels.forEach(channel => {
-       subscribeWebsocket(channel, (notif) => {
-           notificationsStore.addNotification(notif);
-       });
+        subscribeWebsocket(channel, (notif) => {
+            notificationsStore.addNotification(notif);
+            triggerBellAnimation();
+        });
     });
+}
+
+const isBellAnimating = ref(false);
+const triggerBellAnimation = () => {
+    isBellAnimating.value = true;
+    setTimeout(() => {
+        isBellAnimating.value = false;
+    }, 3000); // тривалість анімації
 }
 
 onMounted(() => {
@@ -61,36 +70,38 @@ onUnmounted(() => {
 </script>
 
 <template>
-<div class="notice-box">
-    <div class="notice-button" ref="notificationsBtnRef" @click="displayDrop">
-        <f-icon :icon="mdiBellOutline" size="26"/>
-        <span v-if="unreadCount > 0" class="notice-mark"></span>
-    </div>
-    <div class="notifications-drop" ref="containerRef" v-if="isDisplayDrop">
-        <div v-if="unreadCount === 0" class="empty-notifications">No notifications</div>
-        <div v-else class="notifications">
-            <div class="notifications-list">
-                <div class="notification-item" v-for="notification in notifications" :key="notification.id">
-                    <f-icon :icon="iconFromType(notification.type)" color="#31A8FF" size="30" padding="4" enable-background/>
-                    <div class="notification-content">
-                        <p>{{ t(notification.code, notification.params) }}</p>
-                        <p class="subtitle">{{ formatDate(notification.createdAt) }}</p>
+    <div class="notice-box">
+        <div class="notice-button" :class="{ 'bell-animate': isBellAnimating }" ref="notificationsBtnRef"
+             @click="displayDrop">
+            <f-icon :icon="mdiBellOutline" size="26"/>
+            <span v-if="unreadCount > 0" class="notice-mark"></span>
+        </div>
+        <div class="notifications-drop" ref="containerRef" v-if="isDisplayDrop">
+            <div v-if="unreadCount === 0" class="empty-notifications">No notifications</div>
+            <div v-else class="notifications">
+                <div class="notifications-list">
+                    <div class="notification-item" v-for="notification in notifications" :key="notification.id">
+                        <f-icon :icon="iconFromType(notification.type)" color="#31A8FF" size="30" padding="4"
+                                enable-background/>
+                        <div class="notification-content">
+                            <p>{{ t(notification.code, notification.params) }}</p>
+                            <p class="subtitle">{{ formatDate(notification.createdAt) }}</p>
+                        </div>
+                        <f-actions-button class="action-button"/>
                     </div>
-                    <f-actions-button class="action-button"/>
                 </div>
+                <f-button class="full-w" size="sm" type="light">View all</f-button>
             </div>
-            <f-button class="full-w" size="sm" type="light">View all</f-button>
         </div>
     </div>
-</div>
 </template>
 
 <style scoped>
-.notice-box{
+.notice-box {
     position: relative;
 }
 
-.notice-button{
+.notice-button {
     width: 40px;
     height: 40px;
     display: flex;
@@ -103,13 +114,41 @@ onUnmounted(() => {
     transition: all var(--transition-base);
 }
 
-.notice-button:hover{
+.notice-button.bell-animate {
+    animation: bell-shake 1s ease;
+}
+
+@keyframes bell-shake {
+    0% {
+        transform: rotate(0);
+    }
+    15% {
+        transform: rotate(15deg);
+    }
+    30% {
+        transform: rotate(-15deg);
+    }
+    45% {
+        transform: rotate(10deg);
+    }
+    60% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(5deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+.notice-button:hover {
     cursor: pointer;
     border-color: var(--color-primary);
     transition: border-bottom-color .2s, border-left-color .2s, border-right-color .2s, border-top-color .2s;
 }
 
-.notice-mark{
+.notice-mark {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -166,5 +205,12 @@ onUnmounted(() => {
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 200px;
+}
+
+.empty-notifications {
+    padding: var(--spacing-sm);
+    text-wrap: nowrap;
+    font-size: .875rem;
+    color: var(--text-color-secondary);
 }
 </style>

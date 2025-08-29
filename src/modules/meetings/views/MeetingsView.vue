@@ -56,8 +56,8 @@ const leaveRoom = () => {
 const initMeetingsNotifications = () => {
     subscribeWebsocket("/user/queue/meetings", (msg) => {
         console.log(msg);
-        if (msg.status === "ACTIVE") {
-            roomsStore.setRoomStatus(msg.roomId, msg.status);
+        if (msg.payload.status === "ACTIVE") {
+            roomsStore.setRoomStatus(msg.payload.roomId, msg.payload.status);
         }
     })
 }

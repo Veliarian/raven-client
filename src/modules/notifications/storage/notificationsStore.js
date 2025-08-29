@@ -13,7 +13,13 @@ export const useNotificationsStore = defineStore('notifications', {
         },
 
         addNotification(notification) {
-            this.unreadCount = this.notifications.unshift(notification);
+            this.notifications.unshift(notification);
+            this.unreadCount++;
+        }
+    },
+    getters: {
+        getLastNotifications (state) {
+            return state.notifications.slice(0, 5);
         }
     }
 });
