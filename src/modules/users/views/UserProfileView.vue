@@ -1,17 +1,7 @@
 <script setup>
 import {useI18n} from "vue-i18n";
 import {useRouter} from "vue-router";
-import Icon from "@/shared/components/Icon.vue";
-import {
-    mdiAccount,
-    mdiAccountOutline,
-    mdiArrowLeft, mdiBell,
-    mdiBellOutline, mdiKey,
-    mdiKeyOutline,
-    mdiTrashCanOutline,
-    mdiTrayArrowUp
-} from "@mdi/js";
-import MultiButton from "@/shared/components/MultiButton.vue";
+import {mdiArrowLeft} from "@mdi/js";
 import {ref} from "vue";
 import ProfileImageForm from "@/modules/users/components/forms/ProfileImageForm.vue";
 import ProfileInformationForm from "@/modules/users/components/forms/ProfileInformationForm.vue";

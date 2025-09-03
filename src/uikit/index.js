@@ -20,7 +20,13 @@ import FTitle from "./components/ui/FTitle.vue";
 
 import FTable from "./components/tables/FTable.vue";
 import FConfirmDialog from "./components/modals/FConfirmDialog.vue";
-import FTextArea from "@uikit/components/form/FTextArea.vue";
+import FTextArea from "./components/form/FTextArea.vue";
+import FSelect from "./components/form/FSelect.vue";
+import FFileInputItem from "@uikit/components/form/FFileInputItem.vue";
+import FFileInput from "@uikit/components/form/FFileInput.vue";
+import FTextEditor from "@uikit/components/FTextEditor.vue";
+import FContainer from "@uikit/components/ui/FContainer.vue";
+import FColorPicker from "@uikit/components/ui/FColorPicker.vue";
 
 export const UiKit = {
     install(app) {
@@ -28,6 +34,7 @@ export const UiKit = {
         app.component("FHorizontalSelect", FHorizontalSelect);
         app.component("FSwitch", FSwitch);
         app.component("FActionsButton", FActionsButton);
+        app.component("FContainer", FContainer);
 
         app.component("FIcon", FIcon);
         app.component("FSeparator", FSeparator);
@@ -40,12 +47,18 @@ export const UiKit = {
         app.component("FInput", FInput);
         app.component("FSearchInput", FSearchInput);
         app.component("FTextArea", FTextArea);
+        app.component("FSelect", FSelect);
+        app.component("FFileInputItem", FFileInputItem);
+        app.component("FFileInput", FFileInput);
 
         app.component("FTitle", FTitle);
 
         app.component("FTable", FTable);
 
         app.component("FConfirmDialog", FConfirmDialog);
+
+        app.component("FTextEditor", FTextEditor);
+        app.component("FColorPicker", FColorPicker);
     },
 };
 
@@ -66,5 +79,11 @@ export {
     FTable,
     FActionsButton,
     FConfirmDialog,
-    FTextArea
+    FTextArea,
+    FSelect,
+    FTextEditor,
+    FFileInputItem,
+    FFileInput,
+    FContainer,
+    FColorPicker
 };

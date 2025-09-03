@@ -1,8 +1,7 @@
 <script setup>
 import {computed, ref} from 'vue';
-import Icon from "@/shared/components/icons/Icon.vue";
 import {mdiClose} from "@mdi/js";
-import {FInput} from "@uikit";
+import {FIcon, FInput} from "@uikit";
 
 const props = defineProps({
     users: Array, // всі доступні користувачі
@@ -55,7 +54,7 @@ const removeUser = (user) => {
             >
                 {{ user.username }}
                 <button @click="removeUser(user)" class="remove-btn">
-                    <Icon :icon="mdiClose"/>
+                    <f-icon :icon="mdiClose"/>
                 </button>
             </span>
         </div>

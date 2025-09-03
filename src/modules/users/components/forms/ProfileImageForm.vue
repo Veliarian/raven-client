@@ -1,7 +1,6 @@
 <script setup>
 
-import {mdiTrashCan, mdiTrashCanOutline, mdiTrayArrowUp} from "@mdi/js";
-import Icon from "@/shared/components/Icon.vue";
+import {mdiTrashCan, mdiTrayArrowUp} from "@mdi/js";
 import ProfileImage from "@/shared/components/ProfileImage.vue";
 import {useI18n} from "vue-i18n";
 import {ref} from "vue";

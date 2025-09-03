@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="f-card" :class="{'selected' : select}">
+    <div class="f-card">
         <div class="icon-box">
             <f-icon :icon="icon" :color="color" size="48" padding="10" enable-background/>
         </div>
