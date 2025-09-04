@@ -1,7 +1,8 @@
 <script setup>
 import {ref} from "vue";
-import {FButton, FContainer, FInput, FTextEditor} from "@uikit";
+import {FButton, FContainer} from "@uikit";
 import {mdiArrowLeft, mdiContentSave} from "@mdi/js";
+import LessonEditorContent from "@/modules/lessons/components/LessonEditorContent.vue";
 
 const props = defineProps({
     lesson: {
@@ -9,8 +10,6 @@ const props = defineProps({
         default: () => ({topic: "", content: ""})
     }
 });
-
-const lessonContent = ref("<p>Початковий текст уроку...</p>");
 
 const emit = defineEmits(["save", "cancel"]);
 
@@ -32,7 +31,6 @@ function saveLesson() {
         <header class="lesson-editor-header">
             <div class="lesson-editor-header-item">
                 <f-button :icon="mdiArrowLeft" type="light">Back to Lessons</f-button>
-                <h2>{{ lesson.name ? "Edit Lesson" : "New Lesson" }}</h2>
             </div>
             <div class="lesson-editor-header-item">
                 <f-button :icon="mdiContentSave" @click="saveLesson">Save Lesson</f-button>
@@ -40,9 +38,12 @@ function saveLesson() {
         </header>
 
         <main class="lesson-editor-body">
-            <section class="lesson-editor-text-editor">
+            <section class="lesson-editor-content">
                 <f-container>
-                    <f-text-editor/>
+                    <h3>{{ lesson.name ? "Edit Lesson" : "New Lesson" }}</h3>
+                </f-container>
+                <f-container class="content-editor-container">
+                    <lesson-editor-content class="content-editor"/>
                 </f-container>
             </section>
             <section class="lesson-editor-files">
@@ -59,6 +60,8 @@ function saveLesson() {
 
 <style scoped>
 .lesson-editor {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
@@ -76,7 +79,14 @@ function saveLesson() {
 }
 
 .lesson-editor-body {
+    flex: 1;
     display: flex;
+    gap: var(--spacing-md);
+}
+
+.lesson-editor-content {
+    display: flex;
+    flex-direction: column;
     gap: var(--spacing-md);
 }
 
@@ -84,5 +94,9 @@ function saveLesson() {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+}
+
+.content-editor-container {
+    flex: 1;
 }
 </style>

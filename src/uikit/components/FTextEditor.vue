@@ -1,7 +1,7 @@
 <script setup>
-import {ref, reactive, onMounted} from "vue";
-import {FButton, FColorPicker, FSelect} from "@uikit";
-import {mdiImage, mdiLink, mdiTable} from "@mdi/js";
+import { ref, reactive, onMounted } from "vue";
+import { FButton, FSelect, FColorPicker } from "@uikit";
+import { mdiImage, mdiLink, mdiTable } from "@mdi/js";
 
 const content = ref("");
 const editorRef = ref(null);
@@ -21,6 +21,7 @@ const fonts = [
     { id: "Courier New", label: "Courier New" },
     { id: "Georgia", label: "Georgia" }
 ];
+
 const fontSizes = [
     { id: "12px", label: "12px" },
     { id: "14px", label: "14px" },
@@ -31,39 +32,83 @@ const fontSizes = [
     { id: "48px", label: "48px" }
 ];
 
-// ==== Selection / Range API ====
-function applyStyle(tag = "span", styles = {}) {
+// ==== UTILS ====
+function applyStyleToSelection(styleObj = {}, toggle = false) {
     const selection = window.getSelection();
     if (!selection.rangeCount) return;
+
     const range = selection.getRangeAt(0);
     if (range.collapsed) return;
 
-    const el = document.createElement(tag);
-    Object.assign(el.style, styles);
+    const fragment = range.extractContents();
+    const wrapper = document.createElement("span");
 
-    const extracted = range.extractContents();
-    el.appendChild(extracted);
-    range.insertNode(el);
+    if (toggle) {
+        let allHave = true;
+        fragment.childNodes.forEach(node => {
+            if (node.nodeType === 3) return;
+            for (const key in styleObj) {
+                if (node.style?.[key] !== styleObj[key]) allHave = false;
+            }
+        });
 
-    range.setStartAfter(el);
-    range.setEndAfter(el);
+        if (allHave) {
+            fragment.childNodes.forEach(node => {
+                if (node.nodeType === 3) return;
+                for (const key in styleObj) node.style[key] = "";
+            });
+            range.insertNode(fragment);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            return;
+        }
+    }
+
+    Object.assign(wrapper.style, styleObj);
+    wrapper.appendChild(fragment);
+    range.insertNode(wrapper);
+
     selection.removeAllRanges();
-    selection.addRange(range);
+    const newRange = document.createRange();
+    newRange.setStartBefore(wrapper);
+    newRange.setEndAfter(wrapper);
+    selection.addRange(newRange);
 }
 
-function toggleBold() { applyStyle("span", { fontWeight: "bold" }); }
-function toggleItalic() { applyStyle("span", { fontStyle: "italic" }); }
-function toggleUnderline() { applyStyle("span", { textDecoration: "underline" }); }
-function toggleStrike() { applyStyle("span", { textDecoration: "line-through" }); }
+// ==== ACTIONS ====
+function toggleBold() { applyStyleToSelection({ fontWeight: "bold" }, true); }
+function toggleItalic() { applyStyleToSelection({ fontStyle: "italic" }, true); }
+function toggleUnderline() { applyStyleToSelection({ textDecoration: "underline" }, true); }
+function toggleStrike() { applyStyleToSelection({ textDecoration: "line-through" }, true); }
 
+function setFont(font) { toolbar.fontFamily = font; applyStyleToSelection({ fontFamily: font }); }
+function setFontSize(size) { toolbar.fontSize = size; applyStyleToSelection({ fontSize: size }); }
+function setTextColor(color) { textColor.value = color; applyStyleToSelection({ color }); }
+function setBgColor(color) { bgColor.value = color; applyStyleToSelection({ backgroundColor: color }); }
+
+// ==== Insert ====
 function insertLink(url) {
     if (!url) return;
-    applyStyle("a", { color: "#0077cc", textDecoration: "underline" });
     const selection = window.getSelection();
-    const anchor = selection.anchorNode?.parentElement;
-    if (anchor?.tagName === "A") {
-        anchor.href = url;
-    }
+    if (!selection.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+    if (range.collapsed) return;
+
+    const wrapper = document.createElement("a");
+    wrapper.href = url;
+    wrapper.style.color = "#0077cc";
+    wrapper.style.textDecoration = "underline";
+
+    const fragment = range.extractContents();
+    wrapper.appendChild(fragment);
+    range.insertNode(wrapper);
+
+    selection.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.setStartBefore(wrapper);
+    newRange.setEndAfter(wrapper);
+    selection.addRange(newRange);
 }
 
 function insertImage(url) {
@@ -102,13 +147,7 @@ function insertTable(rows = 2, cols = 2) {
     selection.getRangeAt(0).insertNode(table);
 }
 
-function setFont(font) { toolbar.fontFamily = font; applyStyle("span", { fontFamily: font }); }
-function setFontSize(size) { toolbar.fontSize = size; applyStyle("span", { fontSize: size }); }
-
-function setTextColor(color) { textColor.value = color; applyStyle("span", { color }); }
-function setBgColor(color) { bgColor.value = color; applyStyle("span", { backgroundColor: color }); }
-
-// Синхронізація
+// ==== SYNC CONTENT ====
 onMounted(() => {
     editorRef.value.addEventListener("input", () => {
         content.value = editorRef.value.innerHTML;
@@ -120,18 +159,8 @@ onMounted(() => {
     <div class="lesson-editor">
         <!-- Toolbar -->
         <div class="toolbar">
-            <f-select
-                v-model="toolbar.fontFamily"
-                :options="fonts"
-                placeholder="Font"
-                @update:modelValue="setFont"
-            />
-            <f-select
-                v-model="toolbar.fontSize"
-                :options="fontSizes"
-                placeholder="Size"
-                @update:modelValue="setFontSize"
-            />
+            <f-select v-model="toolbar.fontFamily" :options="fonts" placeholder="Font" @update:modelValue="setFont"/>
+            <f-select v-model="toolbar.fontSize" :options="fontSizes" placeholder="Size" @update:modelValue="setFontSize"/>
 
             <f-button type="light" @click="toggleBold"><b>B</b></f-button>
             <f-button type="light" @click="toggleItalic"><i>I</i></f-button>
@@ -142,17 +171,8 @@ onMounted(() => {
             <f-button type="light" :icon="mdiLink" @click="() => insertLink(prompt('Enter URL'))"/>
             <f-button type="light" :icon="mdiImage" @click="() => insertImage(prompt('Image URL'))"/>
 
-            <!-- Кастомні ColorPicker -->
-            <f-color-picker
-                v-model="textColor"
-                label="Text color"
-                @update:modelValue="setTextColor"
-            />
-            <f-color-picker
-                v-model="bgColor"
-                label="Highlight color"
-                @update:modelValue="setBgColor"
-            />
+            <f-color-picker v-model="textColor" label="Text color" @update:modelValue="setTextColor"/>
+            <f-color-picker v-model="bgColor" label="Highlight color" @update:modelValue="setBgColor"/>
         </div>
 
         <!-- Editable Content -->
@@ -180,7 +200,5 @@ onMounted(() => {
     border-radius: var(--radius-md);
     padding: var(--spacing-s-m);
     overflow-y: auto;
-    font-family: v-bind('toolbar.fontFamily');
-    font-size: v-bind('toolbar.fontSize');
 }
 </style>
