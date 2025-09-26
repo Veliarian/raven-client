@@ -27,6 +27,7 @@ import FFileInput from "@uikit/components/form/FFileInput.vue";
 import FTextEditor from "@uikit/components/FTextEditor.vue";
 import FContainer from "@uikit/components/ui/FContainer.vue";
 import FColorPicker from "@uikit/components/ui/FColorPicker.vue";
+import FStringEditable from "@uikit/components/form/FStringEditable.vue";
 
 export const UiKit = {
     install(app) {
@@ -50,6 +51,7 @@ export const UiKit = {
         app.component("FSelect", FSelect);
         app.component("FFileInputItem", FFileInputItem);
         app.component("FFileInput", FFileInput);
+        app.component("FStringEditable", FStringEditable);
 
         app.component("FTitle", FTitle);
 
@@ -85,5 +87,6 @@ export {
     FFileInputItem,
     FFileInput,
     FContainer,
-    FColorPicker
+    FColorPicker,
+    FStringEditable
 };

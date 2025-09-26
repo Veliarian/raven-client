@@ -1,12 +1,17 @@
 <script setup>
+import {useSlots} from "vue";
+
 defineOptions({
     name: "FSeparator",
 });
+
+const slots = useSlots();
+const shouldShowSpan = () => slots;
 </script>
 
 <template>
     <div class="separator">
-        <span>
+        <span v-if="$slots.default">
             <slot/>
         </span>
     </div>
